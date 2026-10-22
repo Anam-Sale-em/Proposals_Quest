@@ -127,8 +127,13 @@ def search_jobs(keywords: list[str], exclude: list[str], budget_floor: Optional[
     # Translation"), so every result is re-checked here: a keyword must appear as a whole phrase.
     res = _get("/projects/active/", {"query": " ".join(keywords), "limit": 100, "full_description": "true",
                                      "job_details": "true", "sort_field": "time_updated"})
+    return filter_projects(res.get("projects") or [], keywords, exclude, budget_floor)
+
+
+def filter_projects(projects: list[dict], keywords: list[str], exclude: list[str], budget_floor: Optional[float]) -> list[JobPost]:
+    """Newest first; keeps jobs that mention a keyword, drops excluded terms and budgets under the floor."""
     jobs = []
-    for p in sorted(res.get("projects") or [], key=lambda x: x.get("time_submitted", 0), reverse=True):
+    for p in sorted(projects, key=lambda x: x.get("time_submitted", 0), reverse=True):
         j = _to_jobpost(p)
         if not matched_keywords(j, keywords):
             continue

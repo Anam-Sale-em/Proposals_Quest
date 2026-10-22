@@ -86,7 +86,7 @@ from proposal_v2.integrations import FetchError, fetch_by_link, match_places, pd
 from proposal_v2.links import LINK_WARNING, LinkError  # noqa: E402
 from proposal_v2.llm import LLMError, make_llm  # noqa: E402
 from proposal_v2.pipeline import DuplicateJob, Pipeline, PipelineError  # noqa: E402
-from proposal_v2.sample import load_sample, sample_jobs  # noqa: E402
+from proposal_v2.sample import WHOLE_PAGE_CASES, sample_fetched_job, sample_search, split_client_box, load_sample, sample_jobs  # noqa: E402
 from proposal_v2.storage import make_storage  # noqa: E402
 
 USER_ERRORS = (LinkError, PipelineError, LLMError, FetchError)
@@ -265,10 +265,11 @@ def screen_new() -> None:
                    "Paste the job's link, then copy the job page's text into Job details.")
         if is_sample:
             jobs = sample_jobs()
-            pick = st.selectbox("Try a sample job", ["—"] + [f"{j['id']}: {j['title']}" for j in jobs])
+            pick = st.selectbox("Try a sample job", ["—"] + [f"{j['id']}: {j['title']}" + (" (whole page pasted as is)" if j["id"] in WHOLE_PAGE_CASES else "") for j in jobs])
             if pick != "—" and st.button("Fill the form"):
                 j = next(x for x in jobs if pick.startswith(x["id"]))
-                ss.f_link, ss.f_details, ss.f_client = j["link"], j["job_details"], ""
+                post, box = split_client_box(j["id"], j["job_details"])
+                ss.f_link, ss.f_details, ss.f_client = j["link"], post, box
                 st.rerun()
         link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr")
         details = st.text_area("Job details *", key="f_details", height=220,
@@ -288,10 +289,15 @@ def screen_new() -> None:
 
     with tab_link:
         st.caption("Only Freelancer.com links can be fetched; Upwork and others come in by paste.")
-        flink = st.text_input("Freelancer.com project link")
-        if st.button("Fetch job"):
+        use_sample = False
+        if is_sample:
+            st.info("Sample workspace: try a saved sample Freelancer.com job, or paste a real link to fetch it live.")
+            use_sample = st.button("Use the sample Freelancer.com job")
+        flink = st.text_input("Freelancer.com project link",
+                              placeholder="https://www.freelancer.com/projects/automation/...")
+        if st.button("Fetch job") or use_sample:
             try:
-                job = run(fetch_by_link, flink)
+                job = sample_fetched_job() if use_sample else run(fetch_by_link, flink)
                 rec = pipe.from_fetched(job) if job else None
             except DuplicateJob as e:
                 ss.duplicate = e.record.job_key
@@ -303,6 +309,9 @@ def screen_new() -> None:
     with tab_kw:
         st.caption("Lists new Freelancer.com jobs that mention one of your keywords. Separate keywords with commas. "
                    "It decides nothing; the fit check runs once you pick a job.")
+        if is_sample:
+            st.info("Sample workspace: this searches 4 saved sample Freelancer.com jobs, not the live site. "
+                    "Switch to My workspace to search live.")
         kw = st.text_input("Keywords", ", ".join(profile.keywords), placeholder="React Native, n8n, Flutter")
         ex = st.text_input("Exclude terms", ", ".join(profile.exclude_terms))
         floor = num("Budget floor (USD, optional)", profile.budget_floor_usd, "kw_floor")
@@ -311,7 +320,7 @@ def screen_new() -> None:
             profile.exclude_terms = [x.strip() for x in ex.split(",") if x.strip()]
             profile.budget_floor_usd = floor
             storage().put_profile(uid, profile)
-            jobs = run(search_jobs, profile.keywords, profile.exclude_terms, floor)
+            jobs = run(sample_search if is_sample else search_jobs, profile.keywords, profile.exclude_terms, floor)
             if jobs is not None:
                 seen = {r.job_key for r in storage().list_proposals(uid)}
                 ss.results = [j.model_dump(mode="json") for j in jobs if j.job_key not in seen][: load_config()["feed"]["max_results"]]

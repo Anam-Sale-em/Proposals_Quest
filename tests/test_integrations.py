@@ -123,3 +123,12 @@ def test_match_places_says_where_the_keyword_is():
     j = JobPost(job_key="k", platform="freelancer", link="l", title="SaaS build",
                 description="Workflows run on n8n.", skills=["PHP", "Supabase"])
     assert match_places(j, ["n8n", "Flutter"]) == [("n8n", "description")]
+
+
+def test_sample_freelancer_tabs_work_offline():
+    from proposal_v2.sample import sample_fetched_job, sample_search
+    job = sample_fetched_job()
+    assert job.job_key == "freelancer:90000001" and job.budget.max_usd == 750 and "n8n" in job.skills
+    titles = [j.title for j in sample_search(["n8n", "automation"], [], 300)]
+    assert titles == ["n8n workflow to sync Airtable leads into HubSpot", "Move 6 Zapier zaps to n8n"]  # INR job under the floor, logo job no match
+    assert len(sample_search(["n8n", "automation"], [], None)) == 3

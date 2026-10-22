@@ -157,3 +157,12 @@ def test_freelancer_trust_uses_reviews_rating_and_payment():
     assert fl(reviews=0, payment_verified=True).score == 35  # Low
     assert fl(rating=3.2, reviews=5, payment_verified=False).score == 18  # Red flag
     assert score_client(ClientProfile(rating=4.9, reviews=2), ["off_platform"], platform="freelancer").score == 15
+
+
+def test_sample_form_puts_the_client_box_in_its_own_field():
+    from proposal_v2.sample import sample_jobs, split_client_box
+    jobs = {j["id"]: j for j in sample_jobs()}
+    post, box = split_client_box("T01", jobs["T01"]["job_details"])
+    assert "About the client" not in post and box.startswith("About the client")
+    post, box = split_client_box("T07", jobs["T07"]["job_details"])
+    assert box == "" and "About the client" in post  # the whole-page test stays whole

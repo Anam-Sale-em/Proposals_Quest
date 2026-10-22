@@ -1,0 +1,33 @@
+{
+  "_note": "Saved sample Freelancer.com projects in the public API's shape, for the Sample workspace. Fictional; not live jobs.",
+  "projects": [
+    {
+      "id": 90000001, "seo_url": "automation/n8n-sync-airtable-hubspot-90000001", "type": "fixed", "time_submitted": 40,
+      "title": "n8n workflow to sync Airtable leads into HubSpot",
+      "description": "We collect leads in Airtable from two web forms. I need an n8n workflow that sends each new lead to HubSpot as a contact, skips leads that already exist (match on email), and posts a short summary in our Slack sales channel. We self-host n8n on a VPS. Please include basic error alerts so we know when a sync fails. Tell me how you would handle duplicates.",
+      "budget": {"minimum": 250, "maximum": 750}, "currency": {"code": "USD", "exchange_rate": 1.0},
+      "jobs": [{"name": "n8n"}, {"name": "Airtable"}, {"name": "HubSpot"}, {"name": "Automation"}, {"name": "API Integration"}]
+    },
+    {
+      "id": 90000002, "seo_url": "zapier/move-zapier-zaps-to-n8n-90000002", "type": "fixed", "time_submitted": 30,
+      "title": "Move 6 Zapier zaps to n8n",
+      "description": "Our Zapier bill keeps growing. We want our 6 zaps (Gmail, Google Sheets, Slack, Trello) rebuilt in n8n cloud and documented so our office manager can follow them. The zaps are simple: new email with a label goes to a Sheet row, new Trello card posts to Slack, and similar.",
+      "budget": {"minimum": 500, "maximum": 1000}, "currency": {"code": "USD", "exchange_rate": 1.0},
+      "jobs": [{"name": "Zapier"}, {"name": "n8n"}, {"name": "Google Sheets"}, {"name": "Slack"}]
+    },
+    {
+      "id": 90000003, "seo_url": "automation/make-scenario-shopify-90000003", "type": "fixed", "time_submitted": 20,
+      "title": "Small automation for Shopify order alerts",
+      "description": "Need a simple automation that sends a WhatsApp alert to me when a Shopify order above a set value comes in. Any tool is fine.",
+      "budget": {"minimum": 1500, "maximum": 12500}, "currency": {"code": "INR", "exchange_rate": 0.012},
+      "jobs": [{"name": "Shopify"}, {"name": "Automation"}]
+    },
+    {
+      "id": 90000004, "seo_url": "graphic-design/logo-for-bakery-90000004", "type": "fixed", "time_submitted": 10,
+      "title": "Logo for a home bakery",
+      "description": "Looking for a warm, simple logo for my home bakery. Three concepts, two revisions.",
+      "budget": {"minimum": 30, "maximum": 250}, "currency": {"code": "USD", "exchange_rate": 1.0},
+      "jobs": [{"name": "Graphic Design"}, {"name": "Logo Design"}]
+    }
+  ]
+}
