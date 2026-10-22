@@ -37,8 +37,77 @@ def _money(x: float) -> str:
     return f"${x:,.0f}"
 
 
-def score_client(client: ClientProfile, post_flags: Iterable[str] = (), cutoffs: Optional[dict] = None) -> TrustResult:
+def score_freelancer(client: ClientProfile, flags: set, cutoffs: Optional[dict] = None) -> TrustResult:
+    """Freelancer.com shows no hires or spend, only reviews, a star rating and payment verified.
+    Each employer review is a finished project, so the review count stands in for hires."""
+    shown = [client.rating, client.reviews, client.payment_verified]
+    coverage = f"{sum(1 for f in shown if f is not None)} of 3 fields"
+    if client.reviews is None and client.rating is None:
+        reasons = ["Reviews and rating aren't filled in, so the client can't be scored"]
+        reasons += [f"Red flag: {FLAG_TEXT[f]}" for f in sorted(flags) if f in FLAG_TEXT]
+        if "off_platform" in flags or "pay_to_apply" in flags:
+            return TrustResult(score=5 if "pay_to_apply" in flags else 15, band="Red flag", coverage=coverage, reasons=reasons)
+        return TrustResult(score=None, band="Unknown", coverage=coverage, reasons=reasons)
+
+    reviews = client.reviews or 0
+    reasons: list[tuple[int, str]] = []
+    caps = [79]  # Freelancer.com shows too little for Excellent
+    if reviews == 0:
+        base, label = 25, "No reviews yet"
+    else:
+        base, label = 40, f"{reviews} review(s)"
+        for n, b in ((3, 48), (10, 56), (25, 64)):
+            if reviews >= n:
+                base, label = b, f"{n}+ reviews ({reviews})"
+    reasons.append((base, label))
+    score = base
+
+    r = client.rating
+    if r is not None and reviews >= 1:
+        if reviews >= 3 and r >= 4.8:
+            score += 10
+            reasons.append((10, f"Rated {r} from {reviews} reviews"))
+        elif reviews >= 3 and r >= 4.5:
+            score += 5
+            reasons.append((5, f"Rated {r} from {reviews} reviews"))
+        elif r < 4.0:
+            cut = 25 if reviews >= 3 else 10
+            score -= cut
+            reasons.append((-cut, f"Low rating: {r} from {reviews} reviews"))
+
+    pv = client.payment_verified
+    if pv is True:
+        score += 10
+        reasons.append((10, "Payment verified"))
+    elif pv is False:
+        score -= 5
+        caps.append(39)
+        reasons.append((-5, "Payment not verified (score can't go above 39)"))
+
+    score, caps = _post_flags(score, caps, reasons, flags)
+    score = min(max(0, min(100, score)), min(caps))
+    ordered = [text for _, text in sorted(reasons, key=lambda x: -abs(x[0]))]
+    return TrustResult(score=score, band=band_for(score, cutoffs), coverage=coverage, reasons=ordered)
+
+
+def _post_flags(score: int, caps: list, reasons: list, flags: set) -> tuple[int, list]:
+    if "off_platform" in flags:
+        caps.append(15)
+        reasons.append((-100, f"Red flag: {FLAG_TEXT['off_platform']} (capped at 15)"))
+    if "pay_to_apply" in flags:
+        caps.append(5)
+        reasons.append((-100, f"Red flag: {FLAG_TEXT['pay_to_apply']} (capped at 5)"))
+    if "unpaid_test" in flags:
+        score -= 15
+        reasons.append((-15, f"Red flag: {FLAG_TEXT['unpaid_test']}"))
+    return score, caps
+
+
+def score_client(client: ClientProfile, post_flags: Iterable[str] = (), cutoffs: Optional[dict] = None,
+                 platform: str = "") -> TrustResult:
     flags = set(post_flags)
+    if platform == "freelancer":
+        return score_freelancer(client, flags, cutoffs)
     covered = sum(1 for f in COVERAGE_FIELDS if getattr(client, f) is not None)
     coverage = f"{covered} of 6 fields"
     if client.hires is None or client.total_spent_usd is None:
@@ -120,15 +189,7 @@ def score_client(client: ClientProfile, post_flags: Iterable[str] = (), cutoffs:
             reasons.append((-15, f"Only {_money(per_hire)} spent per hire"))
 
     # Step 3: red flags in the post
-    if "off_platform" in flags:
-        caps.append(15)
-        reasons.append((-100, f"Red flag: {FLAG_TEXT['off_platform']} (capped at 15)"))
-    if "pay_to_apply" in flags:
-        caps.append(5)
-        reasons.append((-100, f"Red flag: {FLAG_TEXT['pay_to_apply']} (capped at 5)"))
-    if "unpaid_test" in flags:
-        score -= 15
-        reasons.append((-15, f"Red flag: {FLAG_TEXT['unpaid_test']}"))
+    score, caps = _post_flags(score, caps, reasons, flags)
 
     excellent_ok = (
         hires >= 10 and spent >= 10000 and pv is True

@@ -100,7 +100,7 @@ class Pipeline:
         fit check: no assessment call and no Skip, but red flags and a low budget still show as warnings."""
         profile = self.profile()
         flags = [f.kind for f in rec.job.red_flags]
-        rec.trust = score_client(rec.client, flags, profile.trust_cutoffs or None)
+        rec.trust = score_client(rec.client, flags, profile.trust_cutoffs or None, rec.job.platform)
         gate, gate_text = budget_gate(rec.job.budget, profile)
         red_text = next((f"the post says \"{f.evidence.strip().rstrip('.!')[:120]}\"" for f in rec.job.red_flags), "")
         if not check:

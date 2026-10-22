@@ -281,6 +281,8 @@ def screen_new() -> None:
             if jobs is not None:
                 seen = {r.job_key for r in storage().list_proposals(uid)}
                 ss.results = [j.model_dump(mode="json") for j in jobs if j.job_key not in seen][: load_config()["feed"]["max_results"]]
+        if ss.get("results"):
+            st.caption("Freelancer.com doesn't share client history, so check the client on the job page before you pick.")
         for i, jd in enumerate(ss.get("results") or []):
             from proposal_v2.contracts import JobPost
 
@@ -289,7 +291,6 @@ def screen_new() -> None:
                 hits = {norm(k) for k in matched_keywords(j, profile.keywords)}
                 tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
                 st.markdown(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}")
-                st.caption("Client history isn't shared by Freelancer.com. Check it on the job page.")
                 c1, c2 = st.columns([1, 1])
                 c1.link_button("Open job ↗", j.link)
                 if c2.button("Pick", key=f"pick{i}"):
@@ -337,17 +338,24 @@ def screen_confirm() -> None:
     questions = st.text_area("Screening questions (one per line)", "\n".join(job.screening_questions))
 
     st.subheader("Client history")
-    st.caption("Leave a field blank if the post doesn't show it.")
+    on_freelancer = job.platform == "freelancer"
+    if on_freelancer:
+        st.caption("Copy these from \"About the Client\" on the job page: the star rating, the number next to it "
+                   "(reviews) and Payment verified. Leave them blank and trust shows Unknown.")
+    else:
+        st.caption("Leave a field blank if the post doesn't show it.")
     k1, k2, k3 = st.columns(3)
     pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
     pv = k1.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
     rating = num("Rating", c.rating, f"c_rating_{rec.job_key}")
     reviews = num("Reviews", c.reviews, f"c_reviews_{rec.job_key}")
-    jobs_posted = num("Jobs posted", c.jobs_posted, f"c_jobs_{rec.job_key}")
-    hire_rate = num("Hire rate %", c.hire_rate_pct, f"c_hr_{rec.job_key}")
-    spent = num("Total spent (USD)", c.total_spent_usd, f"c_spent_{rec.job_key}")
-    hires = num("Hires", c.hires, f"c_hires_{rec.job_key}")
-    active = num("Active hires", c.active_hires, f"c_active_{rec.job_key}")
+    jobs_posted = hire_rate = spent = hires = active = None
+    if not on_freelancer:  # Freelancer.com doesn't show these
+        jobs_posted = num("Jobs posted", c.jobs_posted, f"c_jobs_{rec.job_key}")
+        hire_rate = num("Hire rate %", c.hire_rate_pct, f"c_hr_{rec.job_key}")
+        spent = num("Total spent (USD)", c.total_spent_usd, f"c_spent_{rec.job_key}")
+        hires = num("Hires", c.hires, f"c_hires_{rec.job_key}")
+        active = num("Active hires", c.active_hires, f"c_active_{rec.job_key}")
 
     if job.allowed_instructions or job.refused_instructions or job.ignored_instructions or job.red_flags:
         st.subheader("Instructions in the post")

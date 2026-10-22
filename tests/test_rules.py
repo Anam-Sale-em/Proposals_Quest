@@ -144,3 +144,16 @@ def test_instruction_policy_backstop():
     assert allowed and allowed[0].check == "starts_with" and allowed[0].value == "blue whale"
     assert ignored, "AI-directed instruction must be ignored and logged"
     assert any(f.kind == "off_platform" for f in flags)
+
+
+def test_freelancer_trust_uses_reviews_rating_and_payment():
+    from proposal_v2.trust import score_client
+    fl = lambda **k: score_client(ClientProfile(**k), [], platform="freelancer")
+    assert fl().band == "Unknown" and fl(payment_verified=True).band == "Unknown"
+    got = fl(rating=5.0, reviews=2, payment_verified=True)  # the CEX/DEX client: 40 + 10
+    assert (got.score, got.band, got.coverage) == (50, "Medium", "3 of 3 fields")
+    assert fl(rating=4.9, reviews=12, payment_verified=True).score == 76  # 56 + 10 + 10, High
+    assert fl(rating=5.0, reviews=40, payment_verified=True).score == 79  # capped below Excellent
+    assert fl(reviews=0, payment_verified=True).score == 35  # Low
+    assert fl(rating=3.2, reviews=5, payment_verified=False).score == 18  # Red flag
+    assert score_client(ClientProfile(rating=4.9, reviews=2), ["off_platform"], platform="freelancer").score == 15

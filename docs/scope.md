@@ -51,7 +51,7 @@ In this repo v1 means my previous workflow, so the brief's "v1 scope" is called 
 4. One-tap outcomes (Mark as sent stays)
 5. The Details expander
 
-**Depends on a check:** Freelancer.com fetch by link and by keyword ships only if its public API passes the Day 2 check. Otherwise those jobs come in by paste. The keyword feed only lists new matching jobs, each with its trust label; it filters and decides nothing. The decision runs once I pick a job.
+**Freelancer.com:** fetch by link and by keyword passed the Day 2 check against the live API. The public API returns no client, so I copy the rating, review count and payment status from the job page; Freelancer.com jobs are scored on those three (reviews stand in for hires) and can't reach Excellent. The keyword feed only lists new jobs that mention a keyword, with their skills; it decides nothing. The decision runs once I pick a job.
 
 **Only if ahead:** the n8n Community jobs adapter, and talking points for video interviews.
 

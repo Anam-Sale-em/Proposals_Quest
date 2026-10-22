@@ -62,6 +62,7 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 39 | Names check: match plurals and skip generic words (list in config). New job always opens a fresh form after another page; the sidebar button reads \"+ New job\" | Me (spotted on the live app); Claude (fixes) | Yes | A false \"needs review\" on an honest draft, and a lost way back to the form |
 | 40 | Remove the "Approximate" budget checkbox from the confirm screen; extraction still records it | Me | Yes | It changed nothing on screen and only confused |
 | 41 | Keyword feed: keep only jobs where a keyword appears as a whole phrase in the skills, title or description; convert non-USD budgets with the API's exchange rate so the budget floor applies; show each job's skills with matches in bold | Me (spotted on the live app); Claude (fix) | Yes | Freelancer.com's search matched single words, so "React Native" returned a Turkish translation job, and INR/EUR jobs slipped past the floor |
+| 42 | Freelancer.com trust: score on reviews, rating and payment verified, the only client fields it shows. Reviews stand in for hires (0 = 25, 1+ = 40, 3+ = 48, 10+ = 56, 25+ = 64), same rating and payment modifiers and post red flags, capped at 79. The confirm screen shows only those three fields for Freelancer.com jobs | Me (only reviews and stars are shown); Claude (the tiers) | Yes | Every Freelancer.com job was Unknown even with the client box filled in, because hires and spend never exist there |
 
 ## To verify by hand
 
