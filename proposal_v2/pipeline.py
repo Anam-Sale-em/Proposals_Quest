@@ -24,8 +24,17 @@ from .trust import score_client
 from .validators import failures_for_retry, validate
 
 
-SENT_LOG_HEADER = ["Date sent", "Job", "Link", "Decision", "Client trust", "Proof", "Minutes, paste to sent",
+SENT_LOG_HEADER = ["Date sent", "Job", "Link", "v2's call", "You overrode it", "Client trust", "Proof", "Minutes, paste to sent",
                    "Share edited before send", "Outcome"]
+
+
+def _call(d) -> str:
+    """v2's recommendation in words, for the sent log."""
+    if d is None:
+        return ""
+    if d.code == "unchecked":
+        return "Fit check skipped"
+    return {"apply": "Apply", "apply_with_questions": "Apply with questions", "skip": "Skip"}[d.decision]
 
 
 class PipelineError(Exception):
@@ -249,8 +258,9 @@ class Pipeline:
             if r.status != "sent":
                 continue
             o = r.outcome
-            w.writerow([(o.sent_at or "")[:10], r.job.title, r.job.link,
-                        r.decision.decision if r.decision else "", r.trust.band if r.trust else "", r.framing or "",
+            w.writerow([(o.sent_at or "")[:10], r.job.title, r.job.link, _call(r.decision),
+                        "Yes" if r.decision and r.decision.overridden else "",
+                        r.trust.band if r.trust else "", r.framing or "",
                         o.minutes_paste_to_sent, o.edit_share, (o.result or "").replace("_", " ")])
         return buf.getvalue()
 
