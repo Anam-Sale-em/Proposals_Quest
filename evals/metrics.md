@@ -46,7 +46,7 @@ The clock starts when the job is opened and stops when the proposal is ready to 
 
 ## Two weeks after launch
 
-- Proposals sent through v2 (rows in my Sheet) against proposals sent outside it.
+- Proposals sent through v2 (rows in the sent log) against proposals sent outside it.
 - Reply rate by trust band and by decision.
 - Share of proposals sent with light edits.
 - Skips I overrode.

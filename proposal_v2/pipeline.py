@@ -15,7 +15,6 @@ from .config import load_config
 from .contracts import (Assessment, Brief, ClaimLists, CVImport, Decision, Extraction, JobPost, Profile, Project,
                         ProposalDraft, ProposalRecord, ProposalVersion, now_iso)
 from .decision import budget_gate, decide, fit_result, pre_decision
-from .integrations import append_sheet_row
 from .links import LinkError, ParsedLink, parse_link, title_match
 from .llm import LLM
 from .policy import apply_policy
@@ -25,7 +24,8 @@ from .trust import score_client
 from .validators import failures_for_retry, validate
 
 
-SENT_LOG_HEADER = ["Date", "Job", "Link", "Decision", "Client trust", "Proof", "Minutes, paste to sent", "Share edited before send"]
+SENT_LOG_HEADER = ["Date sent", "Job", "Link", "Decision", "Client trust", "Proof", "Minutes, paste to sent",
+                   "Share edited before send", "Outcome"]
 
 
 class PipelineError(Exception):
@@ -234,16 +234,25 @@ class Pipeline:
         if v:
             rec.outcome.edit_share = round(1 - difflib.SequenceMatcher(None, v.text, sent_text).ratio(), 3)
         rec.status = "sent"
-        profile = self.profile()
-        # The Sheet keeps the north-star numbers even when the app's local files are reset.
-        ok, msg = append_sheet_row(profile.sheet_url, [
-            now.strftime("%Y-%m-%d"), rec.job.title, rec.job.link,
-            rec.decision.decision if rec.decision else "", rec.trust.band if rec.trust else "", rec.framing or "",
-            rec.outcome.minutes_paste_to_sent, rec.outcome.edit_share,
-        ], header=SENT_LOG_HEADER)
-        rec.outcome.sheet_logged, rec.outcome.sheet_error = ok, "" if ok else msg
-        self.storage.put_proposal(rec)  # the send saves whether or not the Sheet was reached
-        return rec, msg
+        self.storage.put_proposal(rec)
+        return rec, "Saved as sent."
+
+    def sent_log_csv(self) -> str:
+        """Every sent proposal as CSV, for the My jobs download (open it in any spreadsheet)."""
+        import csv
+        import io
+
+        buf = io.StringIO()
+        w = csv.writer(buf)
+        w.writerow(SENT_LOG_HEADER)
+        for r in sorted(self.storage.list_proposals(self.uid), key=lambda r: r.outcome.sent_at or ""):
+            if r.status != "sent":
+                continue
+            o = r.outcome
+            w.writerow([(o.sent_at or "")[:10], r.job.title, r.job.link,
+                        r.decision.decision if r.decision else "", r.trust.band if r.trust else "", r.framing or "",
+                        o.minutes_paste_to_sent, o.edit_share, (o.result or "").replace("_", " ")])
+        return buf.getvalue()
 
     def set_outcome(self, rec: ProposalRecord, result: str) -> ProposalRecord:
         rec.outcome.result = result

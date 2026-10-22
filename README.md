@@ -20,14 +20,9 @@ python -m streamlit run app.py
 
 Open the link Streamlit prints and enter your passphrase. Then set your minimum rates (your workspace), or pick **Sample workspace → Load sample data** to try the 12 test jobs.
 
-### Google Sheet (the sent log)
+### Sent log
 
-Optional. Without it, sends are saved in the app only.
-
-1. In [Google Cloud Console](https://console.cloud.google.com), create or pick a project, and enable the **Google Sheets API** and **Google Drive API**.
-2. Under IAM & Admin → Service Accounts, create a service account, then Keys → Add key → JSON. Save the file in this folder as `service-account.json` (gitignored) and add `GOOGLE_SERVICE_ACCOUNT_FILE=service-account.json` to `.env`.
-3. Create a Google Sheet and share it, as an Editor, with the service account's email (`client_email` in the JSON, ending in `iam.gserviceaccount.com`).
-4. **Sent log:** paste a Sheet link in the app under Settings → Google Sheet. Every Mark as sent adds a row to its first tab: date, job, link, decision, client trust, proof, minutes from paste to sent, and the share of the draft you edited. These rows outlast the app's local files.
+My jobs → **Download sent log (CSV)** gives every sent proposal with its decision, client trust, proof, minutes from paste to sent, the share of the draft you edited and the outcome. It opens in Excel or Google Sheets. On the live link, download it now and then: the app's files reset when it restarts.
 
 ### Live link (Streamlit Community Cloud, free)
 
@@ -46,7 +41,7 @@ Limits: the app sleeps after 12 hours without visitors (open the link and click 
 2. **Confirm the details:** check what v2 took from the post, fix anything wrong, then **Confirm and check**.
 3. **Decision card:** one decision and one reason. **Write proposal**, or **Override** a Skip (logged). **Details** shows the trust score with its top reasons, the four fit answers, the link status and the skill overlap.
 4. **Draft:** your best project is pre-selected as proof (switch it, or choose plan only). Edit the text, answer the screening questions, read the claim-check notes, or revise with a comment (it changes only what you ask).
-5. **Send:** Open job, paste, **Mark as sent** (adds a row to your Google Sheet), then record the outcome with one tap.
+5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap.
 
 ## Run the tests and evals
 
@@ -86,7 +81,6 @@ Each eval run writes `evals/results/<prompt_version>_<time>/` with `results.csv`
 | Sleeping app | Streamlit's "This app has gone to sleep" page | Click the wake button; wait about 30 seconds |
 | Failed extraction | "No job title or description was found in the paste" | Copy the job's own page (not a search page) and paste again, or fill the fields by hand on the confirm screen |
 | Wrong link or job | "The link and the details may be different jobs" | Fix the link or details, or Proceed anyway (logged) |
-| Unreachable Google Sheet | "Saved as sent. Couldn't reach your Google Sheet…" | The send is saved anyway. Share the Sheet with the service-account email as an editor; check the link in Settings |
 | A Skip that looks wrong | The card's reason | Open Details to see which rule fired; Override (logged), or adjust minimum rates or trust cut-offs in Settings (every change logged) |
 | Draft needs review | Yellow box with the failing sentences | Edit those sentences, switch the proof, or add the missing project under Projects |
 | Freelancer.com fetch fails | "Freelancer.com didn't return this job…" | Paste the job text instead |
@@ -96,7 +90,7 @@ Logs: `logs/runs/<date>.jsonl` has one line per LLM call (step, model, provider,
 ## Data and privacy
 
 - Your data stays in your workspace (`data/users/me/` locally, or Firestore). The sample workspace is separate.
-- Settings → **Delete all data in this workspace** removes it. Rows already in your Google Sheet stay there.
+- Settings → **Delete all data in this workspace** removes it. Download the sent log first if you want to keep it.
 - Leave confidential client details and NDA work out of your projects.
 - Gemini's free tier may use content to improve Google's products. Use a paid key for anyone else's data.
 - `private/` (gitignored) holds v1's export, v1's raw drafts and my Day 4 calls. None of it is committed.

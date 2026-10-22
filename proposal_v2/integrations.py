@@ -1,60 +1,14 @@
-"""External integrations besides the LLMs: the user's Google Sheet, Freelancer.com's public
-API and PDF text for CV import. Each failure returns a plain message instead of raising."""
+"""External integrations besides the LLMs: Freelancer.com's public API and PDF text for CV import.
+Each failure becomes a plain message for the user."""
 from __future__ import annotations
 
 import io
-import json
 import re
 import time
 from typing import Optional
 
-from .config import load_config, secret
+from .config import load_config
 from .contracts import Budget, JobPost
-
-# --------------------------------------------------------------------------- Google Sheet
-
-
-class NoServiceAccount(Exception):
-    pass
-
-
-def gspread_client():
-    """A gspread client from the service account in .env or st.secrets. Raises NoServiceAccount."""
-    import gspread
-
-    info = secret("GOOGLE_SERVICE_ACCOUNT_JSON")
-    path = secret("GOOGLE_SERVICE_ACCOUNT_FILE")
-    if info:
-        return gspread.service_account_from_dict(json.loads(info))
-    if path:
-        return gspread.service_account(filename=path)
-    try:
-        import streamlit as st
-
-        return gspread.service_account_from_dict(dict(st.secrets["gcp_service_account"]))
-    except Exception:
-        raise NoServiceAccount("No Google service account is set.")
-
-
-def append_sheet_row(sheet_url: str, row: list, header: Optional[list] = None) -> tuple[bool, str]:
-    """Adds one row to the first tab of the user's own Sheet, writing the header first if the
-    tab is empty. Returns (ok, message). Never raises."""
-    if not sheet_url:
-        return False, "No Google Sheet is set in Settings, so this send wasn't added to a Sheet."
-    try:
-        try:
-            gc = gspread_client()
-        except NoServiceAccount:
-            return False, "The Google Sheet isn't connected (no service account set). The send is saved here."
-        ws = gc.open_by_url(sheet_url).sheet1
-        if header and not ws.acell("A1").value:
-            ws.append_row(header)
-        ws.append_row(row, value_input_option="USER_ENTERED")
-        return True, "Added to your Google Sheet."
-    except Exception as e:
-        hint = "Share the Sheet with the app's service-account email as an editor." if "403" in str(e) or "PERMISSION" in str(e).upper() else "Check the Sheet link in Settings."
-        return False, f"Couldn't reach your Google Sheet, so the send is saved here only. {hint}"
-
 
 # --------------------------------------------------------------------------- Freelancer.com
 API = "https://www.freelancer.com/api/projects/0.1"

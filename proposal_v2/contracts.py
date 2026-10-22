@@ -203,7 +203,6 @@ class Profile(BaseModel):
     min_hourly_usd: Optional[float] = None
     min_fixed_usd: Optional[float] = None
     trust_cutoffs: dict[str, float] = Field(default_factory=dict)
-    sheet_url: str = ""
     keywords: list[str] = Field(default_factory=list)
     exclude_terms: list[str] = Field(default_factory=list)
     budget_floor_usd: Optional[float] = None
@@ -293,8 +292,6 @@ class Outcome(BaseModel):
     edit_share: Optional[float] = None  # 0 = sent as drafted, 1 = fully rewritten
     result: Optional[Literal["replied", "interview", "hired", "no_reply"]] = None
     result_at: Optional[str] = None
-    sheet_logged: Optional[bool] = None
-    sheet_error: str = ""
 
 
 class ProposalRecord(BaseModel):

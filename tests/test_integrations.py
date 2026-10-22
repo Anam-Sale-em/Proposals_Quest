@@ -1,8 +1,8 @@
-"""Integrations with the network mocked: Freelancer.com adapter and the Google Sheet fallback."""
+"""Integrations with the network mocked: the Freelancer.com adapter and the LLM fallbacks."""
 import pytest
 
 from proposal_v2 import integrations
-from proposal_v2.integrations import FetchError, append_sheet_row, fetch_by_link, search_jobs
+from proposal_v2.integrations import FetchError, fetch_by_link, search_jobs
 
 PROJECT = {"id": 39811234, "title": "Python script for Shopify orders", "seo_url": "python/python-script-shopify-orders",
            "description": "Pull orders daily into Google Sheets.", "type": "fixed", "budget": {"minimum": 250, "maximum": 750},
@@ -53,15 +53,6 @@ def test_search_filters_excludes_and_floor(monkeypatch):
     assert [j.title for j in jobs] == ["Python script for Shopify orders"]
 
 
-def test_sheet_failure_never_raises(monkeypatch):
-    monkeypatch.delenv("GOOGLE_SERVICE_ACCOUNT_JSON", raising=False)
-    monkeypatch.delenv("GOOGLE_SERVICE_ACCOUNT_FILE", raising=False)
-    ok, msg = append_sheet_row("", ["x"])
-    assert not ok and "No Google Sheet" in msg
-    ok, msg = append_sheet_row("https://docs.google.com/spreadsheets/d/abc", ["x"])
-    assert not ok and "saved here" in msg
-
-
 def test_app_llm_never_caches_into_the_committed_eval_folder(tmp_path, monkeypatch):
     from proposal_v2.llm import CACHE_DIR, make_llm
     monkeypatch.setenv("PV2_DATA_ROOT", str(tmp_path))
@@ -70,26 +61,6 @@ def test_app_llm_never_caches_into_the_committed_eval_folder(tmp_path, monkeypat
     from proposal_v2.contracts import ClaimLists
     llm._write_cache("k1", ClaimLists(), "gemini", "m", "claims")
     assert (tmp_path / "llm_cache" / "k1.json").exists() and not (CACHE_DIR / "k1.json").exists()
-
-
-def test_sent_log_writes_header_once_then_rows(monkeypatch):
-    class WS:
-        def __init__(self):
-            self.rows = []
-
-        def acell(self, a1):
-            return type("C", (), {"value": self.rows[0][0] if self.rows else None})()
-
-        def append_row(self, row, value_input_option=None):
-            self.rows.append(row)
-
-    ws = WS()
-    client = type("Cl", (), {"open_by_url": lambda self, url: type("Sh", (), {"sheet1": ws})()})()
-    monkeypatch.setattr(integrations, "gspread_client", lambda: client)
-    for _ in range(2):
-        ok, _ = append_sheet_row("https://docs.google.com/spreadsheets/d/x", ["2026-10-22", "Job", 12.5], header=["Date", "Job", "Minutes"])
-        assert ok
-    assert ws.rows == [["Date", "Job", "Minutes"], ["2026-10-22", "Job", 12.5], ["2026-10-22", "Job", 12.5]]
 
 
 def test_busy_gemini_retries_then_falls_back_through_the_model_list(monkeypatch, tmp_path):

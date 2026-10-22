@@ -25,7 +25,7 @@ flowchart TD
     J2 -- "still fails" --> X4["Needs review: failing sentences shown"]
     J -- "passes" --> L["User edits, copies, sends on the platform"]
     J2 -- "passes" --> L
-    L --> M["Mark as sent → record + Google Sheet row<br/>→ one-tap outcome"]
+    L --> M["Mark as sent → saved record<br/>→ one-tap outcome → CSV sent log"]
 ```
 
 ## Boundaries
@@ -38,7 +38,7 @@ flowchart TD
 | Models | `llm.py`, `prompts.py` | Gemini first, Groq fallback, response cache, replay mode, run log | Yes |
 | Workflow | `pipeline.py` | Step order, the one retry, overrides, revisions, send and outcomes | Calls `llm.py` |
 | Data | `storage.py` | Local JSON or Firestore, same paths: `users/{uid}/proposals/{job_key}`, `projects/{id}`, `settings/profile` | — |
-| Tools | `integrations.py` | Google Sheet log, Freelancer.com public API, PDF text | — |
+| Tools | `integrations.py` | Freelancer.com public API, PDF text | — |
 | Interface | `app.py` (Streamlit), `scripts/cli.py` | Passphrase gate, screens, session state keyed by job key | — |
 | Evaluation | `evaluation.py`, `scripts/run_evals.py`, `scripts/judge.py` | Frozen fixtures, per-case checks, CSV, judge with labels removed | Cached |
 

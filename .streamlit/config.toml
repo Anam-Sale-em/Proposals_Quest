@@ -1,0 +1,8 @@
+# Proposal Pipeline v2 look: calm slate ink on a misty paper ground, harbor blue for actions.
+[theme]
+base = "light"
+primaryColor = "#22577A"
+backgroundColor = "#F5F7F6"
+secondaryBackgroundColor = "#E9EFF2"
+textColor = "#1D2B36"
+font = "sans serif"

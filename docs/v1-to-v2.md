@@ -17,7 +17,7 @@ v1 was built for an agency's sales format: every job a person chose got a propos
 | Visuals | 36 frames, 120+ min and paid credits per approved proposal | None: text only | Non-goal |
 | Secrets | Kept in n8n node settings; a signed token for each Firestore call | `.env` locally, `st.secrets` in the cloud, official SDKs | The example config holds no secrets |
 | Length | No check | A length validator per platform | T06 |
-| Outcomes | Not tracked | Mark as sent logs the time and adds a row to my Google Sheet; one-tap outcome; "Still waiting?" after 7 days | Two-week adoption metrics |
+| Outcomes | Not tracked | Mark as sent logs the time and the edits; the sent log downloads as CSV; one-tap outcome; "Still waiting?" after 7 days | Two-week adoption metrics |
 | Evaluation | Tested by hand on 100+ real jobs | 12 frozen test cases, a 5-item rubric, a plain-ChatGPT and v1 baseline, and run logs keyed by prompt version | This package |
 | Model | Gemini 3.5 Flash | Gemini 3.8 Flash for the brief and draft; 3.5 Flash-Lite, still offered, for extraction and assessment; Groq as fallback | Model comparison on the 12 cases |
 

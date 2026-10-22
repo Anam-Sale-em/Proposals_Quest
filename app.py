@@ -13,6 +13,9 @@ import streamlit as st
 from proposal_v2.config import load_config, save_env, secret
 
 st.set_page_config(page_title="Proposal Pipeline v2", page_icon="📝", layout="centered")
+from proposal_v2.ui_style import CSS, chip, trust_chip, verdict_html  # noqa: E402
+
+st.markdown(CSS, unsafe_allow_html=True)
 
 
 # =========================================================================== passphrase gate
@@ -440,10 +443,13 @@ def screen_card() -> None:
     st.title(rec.job.title)
     if ss.get("flash"):
         st.warning(ss.pop("flash"))
-    box = st.info if d.code == "unchecked" else {"apply": st.success, "apply_with_questions": st.info, "skip": st.error}[d.decision]
-    box(f"**{decision_label(d)}**  \n{d.reason}" + (" (overridden)" if d.overridden else ""))
-    if d.card_note:
-        st.warning(f"Note: {d.card_note}.")
+    tone = "unchecked" if d.code == "unchecked" else d.decision
+    word = decision_label(d) + (" (your override)" if d.overridden else "")
+    chips = [trust_chip(rec.trust), chip(f"Budget: {rec.job.budget.raw_text or 'not stated'}")]
+    if d.fit:
+        chips.append(chip(f"Fit: {d.fit.band}"))
+    note = f"{d.card_note[0].upper()}{d.card_note[1:]}." if d.card_note else ""
+    st.markdown(verdict_html(word, tone, d.reason, chips, note), unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
         open_job_button(rec)
@@ -510,7 +516,7 @@ def screen_draft() -> None:
         st.warning(msg + ". Add your work under **Projects** (+ Add project), then pick it in **Proof** above and click **Rewrite with this proof**.")
     val = v.validation
     if val.ok:
-        st.success("✅ Nothing made up. Every number, tool and past project in this draft comes from your Projects, your skills or the job post.")
+        st.markdown('<div class="quiet-ok">✓ Checked against your projects and the post</div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Check before sending. These lines may claim something your Projects or the post don't back up:")
     for note in val.notes:
@@ -555,12 +561,11 @@ def screen_draft() -> None:
         if c2.button("Mark as sent", type="primary"):
             r = run(pipe.mark_sent, rec, text)
             if r:
-                (st.success if r[0].outcome.sheet_logged else st.warning)(f"Saved as sent. {r[1]}")
+                st.success(r[1])
                 st.rerun()
     else:
         o = rec.outcome
-        st.success(f"Sent {o.sent_at[:10]} · {o.minutes_paste_to_sent} min from paste to sent"
-                   + ("" if o.sheet_logged else f" · {o.sheet_error}"))
+        st.success(f"Sent {o.sent_at[:10]} · {o.minutes_paste_to_sent} min from paste to sent")
         if Pipeline.still_waiting(rec):
             st.info("Still waiting? Record what happened:")
         cols = st.columns(4)
@@ -582,6 +587,10 @@ def page_jobs() -> None:
     m1.metric("Sent", len(sent))
     m2.metric("Skipped", len([r for r in recs if r.status == "skipped"]))
     m3.metric("Median min, paste → sent", f"{statistics.median(mins):.0f}" if mins else "—")
+    if sent:
+        st.download_button("Download sent log (CSV)", pipe.sent_log_csv(), file_name="sent-log.csv", mime="text/csv",
+                           help="Every sent proposal with its decision, client trust, minutes and outcome. Opens in Excel or Google Sheets. "
+                                "The live app's files reset when it restarts, so download it now and then.")
     for r in recs:
         with st.container(border=True):
             badge = " · ⏳ Still waiting?" if Pipeline.still_waiting(r) else ""
@@ -671,14 +680,11 @@ def page_settings() -> None:
         hi = c2.number_input("High", value=float(cut.get("high", cfg["high"])))
         me = c3.number_input("Medium", value=float(cut.get("medium", cfg["medium"])))
         lo = c4.number_input("Low", value=float(cut.get("low", cfg["low"])))
-        st.subheader("Google Sheet")
-        sheet = st.text_input("Sheet link", p.sheet_url, help="Every Mark as sent adds a row: date, job, link, decision, client trust, proof, minutes from paste to sent, and how much you edited the draft. Share the Sheet with the app's service-account email as an editor.")
         if st.form_submit_button("Save"):
             p.min_hourly_usd, p.min_fixed_usd = h, f
             p.work_types = [x.strip() for x in wt.split(",") if x.strip()]
             p.skills = [x.strip() for x in sk.split(",") if x.strip()]
             p.trust_cutoffs = {"excellent": ex, "high": hi, "medium": me, "low": lo}
-            p.sheet_url = sheet.strip()
             storage().put_profile(uid, p)
             st.success("Saved. Every change is logged.")
     log = storage().settings_log(uid)
@@ -687,7 +693,7 @@ def page_settings() -> None:
             for e in reversed(log[-20:]):
                 st.markdown(f"- {e['at']} · {e['by']}: " + ", ".join(e["changes"]))
     with st.expander("Delete all data in this workspace"):
-        st.caption("Removes your jobs, drafts, projects and settings from this app. Rows already in your Google Sheet stay there.")
+        st.caption("Removes your jobs, drafts, projects and settings from this app. Download your sent log from My jobs first if you want to keep it.")
         if st.checkbox("I understand this can't be undone") and st.button("Delete everything"):
             storage().clear_user(uid)
             ss.screen, ss.job_key, ss.pending = "new", None, None

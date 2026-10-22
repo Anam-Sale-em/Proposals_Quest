@@ -66,6 +66,8 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 43 | Keyword feed: each card says where a keyword matched (skills, title or description) | Me (two n8n jobs showed no n8n) | Yes | A match in the description alone was invisible on the card |
 | 44 | Number boxes read loose input ("USD, 300", "$1,500", "1.5k") and only reject zero or several numbers | Me (spotted on the live app) | Yes | A valid floor was rejected and silently ignored |
 | 45 | The experience pass skips sentences that say the work is new or only describe a plan (prompt v2.0.2) | Me (spotted on a live draft); Claude (fix) | Yes | v2's own honest plan-only framing was flagged as an unsupported claim (F5) |
+| 46 | New look: a calm slate-and-harbor-blue theme with one font (Figtree), and the decision shown as one card with the verdict, the reason and client trust, budget and fit. A draft that passes the claim check shows one quiet line instead of a green box; problems still show in full | Me (wanted it friendlier and more trustworthy); Claude (design) | Yes | The decision is the one thing to read first; a big banner on every passing draft read as v2 doubting itself |
+| 47 | Remove the Google Sheet sent log; My jobs gets a "Download sent log (CSV)" button instead | Me | Yes | Writing to a Sheet needs a Google service account set up by the app's owner, and every other user would have to share their Sheet with it. A CSV opens in any spreadsheet with no setup |
 
 ## To verify by hand
 

@@ -91,9 +91,9 @@ def test_paste_to_send_on_a_sample_job(env):
     _paste(at, "T01")
     assert at.title[0].value == "Confirm the details", [e.value for e in at.error]
     _btn(at, "Confirm and check").click().run()
-    assert any("Apply" in s.value for s in at.success), [e.value for e in at.error]
+    assert any('class="verdict"' in m.value and ">Apply<" in m.value for m in at.markdown), [e.value for e in at.error]
     _btn(at, "Write proposal").click().run()
-    assert any("Nothing made up" in s.value for s in at.success), [w.value for w in at.warning]
+    assert any("Checked against your projects" in m.value for m in at.markdown), [w.value for w in at.warning]
     _btn(at, "Mark as sent").click().run()
     assert any(m.value.startswith("Sent ") for m in at.success), [w.value for w in at.warning]
     at.sidebar.radio(key="page").set_value("My jobs").run()
@@ -106,7 +106,7 @@ def test_skip_override_and_duplicate(env):
     _sample(at)
     _paste(at, "T10")
     _btn(at, "Confirm and check").click().run()
-    assert any("Skip" in e.value and "WhatsApp" in e.value for e in at.error), [e.value for e in at.error]
+    assert any(">Skip<" in m.value and "WhatsApp" in m.value for m in at.markdown), [e.value for e in at.error]
     _btn(at, "Override and write anyway").click().run()
     assert not at.exception, at.exception
     _btn(at, "+ New job", at.sidebar).click().run()

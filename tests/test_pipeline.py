@@ -75,7 +75,9 @@ def test_revise_and_mark_sent(pipe):
     assert rec.latest().text.startswith("Hello") and len(rec.versions) == 2
     rec, msg = pipe.mark_sent(rec, rec.latest().text + " Thanks!")
     assert rec.status == "sent" and rec.outcome.minutes_paste_to_sent is not None
-    assert rec.outcome.sheet_logged is False and "Sheet" in msg  # no Sheet set: the send still saves
+    assert msg == "Saved as sent."
+    csv_text = pipe.sent_log_csv()
+    assert csv_text.startswith("Date sent,Job,Link") and rec.job.title in csv_text
     assert pipe.storage.get_proposal("t", rec.job_key).status == "sent"
 
 
