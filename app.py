@@ -6,6 +6,7 @@ Nothing loads, and no LLM call runs, until the passphrase is entered.
 from __future__ import annotations
 
 import hmac
+import re
 import statistics
 
 import streamlit as st
@@ -13,7 +14,7 @@ import streamlit as st
 from proposal_v2.config import load_config, save_env, secret
 
 st.set_page_config(page_title="Proposal Pipeline v2", page_icon="📝", layout="centered")
-from proposal_v2.ui_style import CSS, chip, trust_chip, verdict_html  # noqa: E402
+from proposal_v2.ui_style import BRAND, CSS, chip, trust_chip, verdict_html  # noqa: E402
 
 st.markdown(CSS, unsafe_allow_html=True)
 
@@ -128,7 +129,7 @@ ss.setdefault("pending", None)
 
 # =========================================================================== sidebar
 with st.sidebar:
-    st.header("Proposal Pipeline v2")
+    st.markdown(BRAND, unsafe_allow_html=True)
     ws = st.radio("Workspace", ["My workspace", "Sample workspace"], key="workspace",
                   help="Your data and the sample data are kept apart.")
     is_sample = ws == "Sample workspace"
@@ -320,7 +321,7 @@ def screen_new() -> None:
             from proposal_v2.contracts import JobPost
 
             j = JobPost.model_validate(jd)
-            with st.container(border=True):
+            with st.container(border=True, key=f"card_feed_{i}"):
                 places = match_places(j, profile.keywords)
                 hits = {norm(k) for k, _ in places}
                 tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
@@ -594,7 +595,7 @@ def page_jobs() -> None:
                            help="Every sent proposal with its decision, client trust, minutes and outcome. Opens in Excel or Google Sheets. "
                                 "The live app's files reset when it restarts, so download it now and then.")
     for r in recs:
-        with st.container(border=True):
+        with st.container(border=True, key="card_job_" + re.sub(r"\W", "_", r.job_key)):
             badge = " · ⏳ Still waiting?" if Pipeline.still_waiting(r) else ""
             outcome = f" · {r.outcome.result.replace('_', ' ')}" if r.outcome.result else ""
             st.markdown(f"**{r.job.title}**  \n{summary_line(r)} · {r.status.capitalize()}{outcome}{badge}")
@@ -625,7 +626,7 @@ def page_projects() -> None:
             if not res.projects:
                 st.info("No projects found in that text.")
     for i, pd in enumerate(ss.get("proposed") or []):
-        with st.container(border=True):
+        with st.container(border=True, key=f"card_proj_{i}"):
             st.caption("Suggested. Nothing is added until you confirm it.")
             p = ProposedProject.model_validate(pd)
             project_form(Project(id="new", **p.model_dump()), key=f"prop{i}", on_save=lambda i=i: ss.proposed.pop(i))
