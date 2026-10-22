@@ -120,9 +120,14 @@ with st.sidebar:
             load_sample(storage(), uid)
             ss.screen, ss.job_key, ss.pending = "new", None, None
             st.success("Sample data loaded.")
-    if "nav_to" in ss:
+    opening = "nav_to" in ss  # "Open" on a job in My jobs: show that job, not a blank form
+    if opening:
         ss.page = ss.pop("nav_to")
     page = st.radio("Go to", ["New job", "My jobs", "Projects", "Settings"], key="page")
+    # Coming back to New job from another page starts a fresh form.
+    if page == "New job" and ss.get("last_page", "New job") != "New job" and not opening:
+        ss.screen, ss.pending, ss.duplicate = "new", None, None
+    ss.last_page = page
     mode = llm().mode
     if mode != "live":
         st.caption(f"AI mode: {mode} (saved responses)")
@@ -323,7 +328,6 @@ def screen_confirm() -> None:
     amount = b1.number_input("Amount / rate", value=float(job.budget.amount_usd or 0), min_value=0.0) if kind in ("fixed", "hourly") else None
     lo = b2.number_input("From", value=float(job.budget.min_usd or 0), min_value=0.0) if kind in ("hourly", "fixed_range") else None
     hi = b3.number_input("To", value=float(job.budget.max_usd or 0), min_value=0.0) if kind in ("hourly", "fixed_range") else None
-    approx = st.checkbox("Approximate (e.g. $10K+)", job.budget.approximate)
     skills = st.text_input("Skills", ", ".join(job.skills))
     questions = st.text_area("Screening questions (one per line)", "\n".join(job.screening_questions))
 
@@ -362,7 +366,7 @@ def screen_confirm() -> None:
             return
         job.title, job.description = title.strip(), desc.strip()
         job.budget = Budget(kind=kind, amount_usd=amount or None, min_usd=lo or None, max_usd=hi or None,
-                            approximate=approx, raw_text=job.budget.raw_text)
+                            approximate=job.budget.approximate, raw_text=job.budget.raw_text)
         job.skills = [s.strip() for s in skills.split(",") if s.strip()]
         job.screening_questions = [q.strip() for q in questions.splitlines() if q.strip()]
         rec.client = ClientProfile(payment_verified=pv_opts[pv], rating=rating, reviews=None if reviews is None else int(reviews),
@@ -439,7 +443,7 @@ def screen_draft() -> None:
     st.title(rec.job.title)
     if rec.decision.code == "unchecked" and rec.decision.card_note:
         st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
-    st.caption(f"{decision_label(rec.decision)} · trust {rec.trust.band if rec.trust else '—'} · version {v.n}")
+    st.caption(f"{decision_label(rec.decision)}{' (overridden)' if rec.decision.overridden else ''} · trust {rec.trust.band if rec.trust else '—'} · version {v.n}")
 
     projects = pipe.projects()
     labels = {l.project_id: l.label for l in (rec.assessment.project_labels if rec.assessment else [])}
@@ -454,6 +458,13 @@ def screen_draft() -> None:
         ss.nav_to = "Projects"
         st.rerun()
 
+    if v.framing == "plan_only":
+        asks = [r for r in rec.job.explicit_requirements
+                if any(w in r.lower() for w in ("share", "portfolio", "example", "sample", "built", "past work", "previous work", "link"))]
+        why = "Your Projects library is empty" if not projects else "No project was picked as proof"
+        msg = f"**No past work is cited.** {why}, so this draft has no proof"
+        msg += f" and doesn't answer the client's request: _{asks[0]}_" if asks else ""
+        st.warning(msg + ". Add your work under **Projects** (+ Add project), then pick it in **Proof** above and click **Rewrite with this proof**.")
     val = v.validation
     if val.ok:
         st.success("Claim check passed: every number, tool and past-work claim traces to your project or the post.")
@@ -644,7 +655,7 @@ def page_settings() -> None:
 # =========================================================================== router
 if page == "New job":
     {"new": screen_new, "confirm": screen_confirm, "card": screen_card, "draft": screen_draft}[ss.screen]()
-    if ss.screen != "new" and st.sidebar.button("← New job"):
+    if ss.screen != "new" and st.sidebar.button("+ New job"):
         ss.pending = None
         go("new")
 elif page == "My jobs":
