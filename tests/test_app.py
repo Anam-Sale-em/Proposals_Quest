@@ -93,7 +93,7 @@ def test_paste_to_send_on_a_sample_job(env):
     _btn(at, "Confirm and check").click().run()
     assert any("Apply" in s.value for s in at.success), [e.value for e in at.error]
     _btn(at, "Write proposal").click().run()
-    assert any("Claim check passed" in s.value for s in at.success), [w.value for w in at.warning]
+    assert any("Nothing made up" in s.value for s in at.success), [w.value for w in at.warning]
     _btn(at, "Mark as sent").click().run()
     assert any(m.value.startswith("Sent ") for m in at.success), [w.value for w in at.warning]
     at.sidebar.radio(key="page").set_value("My jobs").run()
@@ -130,7 +130,7 @@ def test_fit_check_can_be_skipped_but_still_warns(env):
     _btn(at, "Confirm and write").click().run()
     assert not at.exception, at.exception
     assert any("Fit check skipped" in w.value and "WhatsApp" in w.value for w in at.warning), [w.value for w in at.warning]
-    assert at.caption and any("Not checked" in c.value for c in at.caption)
+    assert at.caption and any("Fit check skipped" in c.value for c in at.caption)
 
 
 

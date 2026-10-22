@@ -90,7 +90,21 @@ DECISION_LABEL = {"apply": "Apply", "apply_with_questions": "Apply with question
 
 
 def decision_label(d) -> str:
-    return "Not checked" if d.code == "unchecked" else DECISION_LABEL[d.decision]
+    return "Fit check skipped" if d.code == "unchecked" else DECISION_LABEL[d.decision]
+
+
+def summary_line(rec) -> str:
+    """e.g. "Decision: Apply · Client trust: High (64/100)" or "Fit check skipped · Client trust: Unknown"."""
+    d = rec.decision
+    if d is None:
+        first = "Not decided yet"
+    elif d.code == "unchecked":
+        first = "Fit check skipped"
+    else:
+        first = f"Decision: {DECISION_LABEL[d.decision]}{' (your override)' if d.overridden else ''}"
+    t = rec.trust
+    trust = "—" if t is None else (t.band if t.score is None else f"{t.band} ({t.score}/100)")
+    return f"{first} · Client trust: {trust}"
 
 
 @st.cache_resource
@@ -472,7 +486,7 @@ def screen_draft() -> None:
     st.title(rec.job.title)
     if rec.decision.code == "unchecked" and rec.decision.card_note:
         st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
-    st.caption(f"{decision_label(rec.decision)}{' (overridden)' if rec.decision.overridden else ''} · trust {rec.trust.band if rec.trust else '—'} · version {v.n}")
+    st.caption(f"{summary_line(rec)} · Draft {v.n}")
 
     projects = pipe.projects()
     labels = {l.project_id: l.label for l in (rec.assessment.project_labels if rec.assessment else [])}
@@ -496,9 +510,9 @@ def screen_draft() -> None:
         st.warning(msg + ". Add your work under **Projects** (+ Add project), then pick it in **Proof** above and click **Rewrite with this proof**.")
     val = v.validation
     if val.ok:
-        st.success("Claim check passed: every number, tool and past-work claim traces to your project or the post.")
+        st.success("✅ Nothing made up. Every number, tool and past project in this draft comes from your Projects, your skills or the job post.")
     else:
-        st.warning("Needs review. The claim check still found problems after one retry:")
+        st.warning("⚠️ Check before sending. These lines may claim something your Projects or the post don't back up:")
     for note in val.notes:
         st.markdown(f"- {note}")
 
@@ -570,10 +584,9 @@ def page_jobs() -> None:
     m3.metric("Median min, paste → sent", f"{statistics.median(mins):.0f}" if mins else "—")
     for r in recs:
         with st.container(border=True):
-            dec = decision_label(r.decision) if r.decision else "—"
             badge = " · ⏳ Still waiting?" if Pipeline.still_waiting(r) else ""
             outcome = f" · {r.outcome.result.replace('_', ' ')}" if r.outcome.result else ""
-            st.markdown(f"**{r.job.title}**  \n{dec} · {r.status}{outcome} · trust {r.trust.band if r.trust else '—'}{badge}")
+            st.markdown(f"**{r.job.title}**  \n{summary_line(r)} · {r.status.capitalize()}{outcome}{badge}")
             if st.button("Open", key=f"open_{r.job_key}"):
                 ss.nav_to = "New job"
                 go("draft" if r.versions else "card", r.job_key)
