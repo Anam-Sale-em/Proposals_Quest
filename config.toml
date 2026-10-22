@@ -8,12 +8,17 @@ prompt_version = "v2.0.0"
 draft = "gemini-3.8-flash"
 # Extraction, assessment, claim lists and CV import: the cheap Lite model.
 light = "gemini-3.5-flash-lite"
-# Fallback when Gemini rate-limits or errors. Check Groq's current model list before use.
-fallback = "llama-3.3-70b-versatile"
-# Eval judge: a different model from both drafting candidates, so nothing grades itself.
-judge = "openai/gpt-oss-120b"
+# Groq fallbacks, tried in order when both Gemini models are busy or failing.
+# Run `python scripts/check_models.py` to see which models your keys can use.
+fallbacks = ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "openai/gpt-oss-20b"]
+# Eval judge, tried in order: a different model from the drafting candidates where possible.
+judges = ["llama-3.3-70b-versatile", "openai/gpt-oss-20b"]
 temperature_extract = 0.0
 temperature_draft = 0.4
+
+[retries]
+# Seconds to wait before retrying a busy model (Gemini 503 "high demand", 429, 500).
+waits_s = [3, 8]
 
 [rate_limits]
 # Free-tier per-minute limits from AI Studio (21 Oct 2026). The client waits between calls to stay under them.

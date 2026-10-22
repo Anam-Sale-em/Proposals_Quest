@@ -57,6 +57,7 @@ python scripts/run_evals.py --replay     # same, from saved responses only: iden
 python scripts/run_evals.py --record     # call the APIs again and refresh the saved responses
 python scripts/judge.py evals/results/<run> [--hand evals/hand_scores.csv]
 python scripts/cli.py --fixture T01      # one job from paste to proposal in the terminal
+python scripts/check_models.py           # which configured models your keys can use (no quota used)
 ```
 
 Each eval run writes `evals/results/<prompt_version>_<time>/` with `results.csv` (per-case checks, latency, tokens, model calls and blank columns for hand rubric scores), `summary.md` and every draft. The offline tests use a scripted stand-in for the LLM (`tests/scripted_llm.py`) to check the plumbing and code rules; real model quality comes from `run_evals.py`.
@@ -79,7 +80,8 @@ Each eval run writes `evals/results/<prompt_version>_<time>/` with `results.csv`
 | Problem | What you see | What to do |
 | --- | --- | --- |
 | Gemini rate limit (free tier: 5 a minute, 20 a day on 3.8 Flash) | Slower answers; run log shows `groq` as provider | Nothing: Groq takes over. If both fail, the app says so; wait a minute, or add billing to the Gemini project |
-| Both AI providers fail | "The AI service didn't respond properly…" | Check the keys in `.env` / Secrets and both quotas; set `LLM_MODE=replay` for a demo |
+| Gemini busy (503 "high demand") | A slower answer; the run log shows retries, then another model | Nothing: v2 retries, tries the other Gemini model, then Groq. If everything is busy, the app says so; wait a minute |
+| Every model fails | "The AI service didn't respond properly after trying every model…" | Run `python scripts/check_models.py`, then list only available models under `[models]` in `config.toml`; check both keys and quotas; set `LLM_MODE=replay` for a demo |
 | Replay mode has no saved response | "Replay mode has no saved response for the … step" | Run once with `LLM_MODE=live`, or `run_evals.py --record` |
 | Sleeping app | Streamlit's "This app has gone to sleep" page | Click the wake button; wait about 30 seconds |
 | Failed extraction | "No job title or description was found in the paste" | Copy the job's own page (not a search page) and paste again, or fill the fields by hand on the confirm screen |

@@ -55,6 +55,7 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 32 | Double-click starters (`start.bat` / `start.command`) for non-developers | Claude | No, replaced by #33 | Windows warns on any downloaded script, so non-developers use the live link instead; the in-app key setup screen stays for local runs |
 | 33 | Non-developers use a live link on Streamlit Community Cloud instead of installing; the local starter stays for developers. Online, the key setup screen is hidden from visitors | Me (no install warnings for non-developers); Claude (setup guard) | Yes | Windows warns on any downloaded script, and a non-developer won't run past that warning |
 | 34 | Remove login and sign-up; keep one passphrase box | Me (remove login); Claude (keep the passphrase) | Yes | Accounts were more setup than a five-day quest needs; the passphrase still stops strangers on the live link from spending the Gemini quota |
+| 35 | On a busy Gemini model, retry after 3 s and 8 s, then the other Gemini model, then a list of Groq models; add `check_models.py` | Claude, after the first live run failed (F1 in `evals/failures.md`) | Pending | One fallback model name was a single point of failure |
 
 ## To verify by hand
 

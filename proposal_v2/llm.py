@@ -79,9 +79,19 @@ class LLM:
             raise ReplayMiss(f"Replay mode has no saved response for the {step} step. Run once with LLM_MODE=live or the eval runner with --record.")
 
         errors = []
-        providers = [("groq", cfg["models"]["judge"])] if role == "judge" else [("gemini", model), ("groq", cfg["models"]["fallback"])]
-        for provider, prov_model in providers:
-            for attempt in range(2):  # one repair attempt on a schema failure
+        m = cfg["models"]
+        waits = list(cfg.get("retries", {}).get("waits_s", [3, 8]))
+        if role == "judge":
+            providers = [("groq", j, []) for j in m.get("judges", [m.get("judge")]) if j]
+        else:
+            # A busy model is retried after a short wait, then the other Gemini model, then each Groq fallback.
+            other = m["light"] if role != "light" else m["draft"]
+            providers = [("gemini", model, waits), ("gemini", other, waits[:1])]
+            providers += [("groq", f, []) for f in m.get("fallbacks", [m.get("fallback")]) if f]
+        for provider, prov_model, retry_waits in providers:
+            busy_retries = list(retry_waits)
+            attempt = 0
+            while attempt < 2:  # one repair attempt on a schema failure
                 t0 = time.time()
                 try:
                     self._throttle(prov_model)
@@ -95,15 +105,22 @@ class LLM:
                     self._write_cache(key, obj, provider, prov_model, step)
                     return obj
                 except ValidationError as e:
-                    errors.append(f"schema: {str(e)[:300]}")
+                    errors.append(f"{prov_model} schema: {str(e)[:200]}")
                     self._record(CallRecord(step, role, provider, prov_model, False, round(time.time() - t0, 2), error="schema"))
+                    attempt += 1
                     continue
                 except _Unavailable as e:
-                    errors.append(str(e))
+                    errors.append(f"{prov_model}: {e}")
                     self._record(CallRecord(step, role, provider, prov_model, False, round(time.time() - t0, 2), error=str(e)[:120]))
-                    break  # next provider
-        raise LLMError("The AI service didn't respond properly after retrying both providers. Wait a minute and try again; "
-                       "if it keeps happening, check your Gemini and Groq keys and quotas. Details: " + "; ".join(errors)[-400:])
+                    if e.retryable and busy_retries:
+                        time.sleep(busy_retries.pop(0))
+                        continue
+                    break  # next model
+        busy = any(" 503" in x or " 429" in x or "high demand" in x for x in errors)
+        lead = ("The AI models are busy right now, and the backups didn't answer either. Wait a minute and try again."
+                if busy else "The AI service didn't respond properly after trying every model. Check your Gemini and Groq keys and quotas,"
+                " and run `python scripts/check_models.py` to see which models your keys can use.")
+        raise LLMError(lead + " Details: " + " | ".join(errors)[-500:])
 
     def steps_called(self) -> list[str]:
         return [c.step for c in self.calls if not c.error]
@@ -130,9 +147,10 @@ class LLM:
                 ),
             )
         except gerrors.APIError as e:
-            raise _Unavailable(f"gemini {getattr(e, 'code', '')}: {str(e)[:160]}")
+            code = getattr(e, "code", 0) or 0
+            raise _Unavailable(f"gemini {code}: {str(e)[:160]}", retryable=code in (429, 500, 502, 503, 504))
         except Exception as e:  # network and SDK errors
-            raise _Unavailable(f"gemini: {str(e)[:160]}")
+            raise _Unavailable(f"gemini: {str(e)[:160]}", retryable=True)
         usage = resp.usage_metadata
         return resp.text or "", getattr(usage, "prompt_token_count", 0) or 0, getattr(usage, "candidates_token_count", 0) or 0
 
@@ -151,6 +169,8 @@ class LLM:
                 response_format={"type": "json_object"},
                 temperature=temperature,
             )
+        except (groq.RateLimitError, groq.InternalServerError, groq.APIConnectionError) as e:
+            raise _Unavailable(f"groq: {str(e)[:160]}", retryable=True)
         except groq.APIError as e:
             raise _Unavailable(f"groq: {str(e)[:160]}")
         except Exception as e:
@@ -211,7 +231,9 @@ class LLM:
 
 
 class _Unavailable(Exception):
-    pass
+    def __init__(self, msg: str, retryable: bool = False):
+        super().__init__(msg)
+        self.retryable = retryable
 
 
 def _strip_fences(text: str) -> str:
