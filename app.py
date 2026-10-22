@@ -77,7 +77,8 @@ gate()
 # Everything below runs only after the passphrase.
 from proposal_v2.contracts import (Budget, ClientProfile, Profile, Project, ProposalRecord,  # noqa: E402
                                    ProposedProject)
-from proposal_v2.integrations import FetchError, fetch_by_link, pdf_text, search_jobs  # noqa: E402
+from proposal_v2.skills import norm  # noqa: E402
+from proposal_v2.integrations import FetchError, fetch_by_link, matched_keywords, pdf_text, search_jobs  # noqa: E402
 from proposal_v2.links import LINK_WARNING, LinkError  # noqa: E402
 from proposal_v2.llm import LLMError, make_llm  # noqa: E402
 from proposal_v2.pipeline import DuplicateJob, Pipeline, PipelineError  # noqa: E402
@@ -266,8 +267,9 @@ def screen_new() -> None:
                 go("confirm")
 
     with tab_kw:
-        st.caption("Lists new matching Freelancer.com jobs. It filters and decides nothing; the decision runs once you pick a job.")
-        kw = st.text_input("Keywords", ", ".join(profile.keywords))
+        st.caption("Lists new Freelancer.com jobs that mention one of your keywords. Separate keywords with commas. "
+                   "It decides nothing; the fit check runs once you pick a job.")
+        kw = st.text_input("Keywords", ", ".join(profile.keywords), placeholder="React Native, n8n, Flutter")
         ex = st.text_input("Exclude terms", ", ".join(profile.exclude_terms))
         floor = num("Budget floor (USD, optional)", profile.budget_floor_usd, "kw_floor")
         if st.button("Search"):
@@ -284,7 +286,10 @@ def screen_new() -> None:
 
             j = JobPost.model_validate(jd)
             with st.container(border=True):
-                st.markdown(f"**{j.title}**  \n{j.budget.raw_text} · Trust: Unknown, check the client manually")
+                hits = {norm(k) for k in matched_keywords(j, profile.keywords)}
+                tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
+                st.markdown(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}")
+                st.caption("Client history isn't shared by Freelancer.com. Check it on the job page.")
                 c1, c2 = st.columns([1, 1])
                 c1.link_button("Open job ↗", j.link)
                 if c2.button("Pick", key=f"pick{i}"):

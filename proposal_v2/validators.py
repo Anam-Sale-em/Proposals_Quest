@@ -13,7 +13,7 @@ from typing import Optional
 
 from .config import load_config
 from .contracts import ClaimLists, JobPost, Profile, Project, ScreeningAnswer, ValidationReport
-from .skills import mentioned_in, norm, norm_set
+from .skills import is_generic, mentioned_in, norm, norm_set
 
 NUM = re.compile(r"(?<![\w.])\$?\d[\d,]*(?:\.\d+)?\s?[kK]?(?![\w])%?")
 LIST_MARKER = re.compile(r"^\s*\d+[.)]\s", re.M)
@@ -111,7 +111,7 @@ def validate(
     allowed_names = norm_set(profile.skills) | norm_set(project.skills if project else []) | norm_set(job.skills) | norm_set(job.client_tools)
     jt, pt = job_text(job), project_text(project)
     for name in claims.tools_named:
-        if norm(name) in allowed_names or mentioned_in(name, jt) or mentioned_in(name, pt):
+        if is_generic(name) or norm(name) in allowed_names or mentioned_in(name, jt) or mentioned_in(name, pt):
             continue
         r.name_failures.append(name)
         r.notes.append(f"Check this: the draft mentions {name}, which isn't in your skills, your project or the post.")

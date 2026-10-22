@@ -111,3 +111,12 @@ def test_skipping_the_fit_check_makes_no_assessment_call(pipe):
     rec = pipe.decide(pipe.extract(j["link"], j["job_details"]), check=False)
     assert rec.decision.code == "unchecked" and rec.decision.decision == "apply"
     assert "assess" not in pipe.llm.steps_called() and rec.events[-1]["type"] == "fit_check_skipped"
+
+
+def test_names_check_ignores_generic_words_and_matches_plurals():
+    from proposal_v2.skills import is_generic, mentioned_in
+    assert mentioned_in("API", "Integrate the app with our existing REST APIs.")
+    assert is_generic("API") and is_generic("APIs") and is_generic("UI") and not is_generic("Salesforce")
+    job = JobPost(job_key="k", platform="upwork", link="l", title="RN app", description="Integrate with our REST APIs.")
+    r = validate("I'll connect the app to your API and REST API.", [], job, None, Profile(), ClaimLists(tools_named=["API", "REST API", "app"]))
+    assert not r.name_failures

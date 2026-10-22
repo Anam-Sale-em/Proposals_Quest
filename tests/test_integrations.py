@@ -128,3 +128,19 @@ def test_all_models_busy_gives_a_plain_message(monkeypatch, tmp_path):
     monkeypatch.setattr(llm_mod.LLM, "_groq", busy)
     with pytest.raises(llm_mod.LLMError, match="busy right now"):
         llm_mod.LLM(mode="live", cache_dir=tmp_path, log_dir=None).call("claims", "light", "s", "u", ClaimLists)
+
+
+def test_search_keeps_only_whole_phrase_matches_and_converts_currency(monkeypatch):
+    import requests
+    turkish = dict(PROJECT, id=4, title="Native Turkish Translation Audit", description="Review translations.",
+                   jobs=[{"name": "Translation"}], time_submitted=5)
+    weather = dict(PROJECT, id=5, title="Luxury Expo Weather App", description="Build a weather app.",
+                   jobs=[{"name": "React Native"}, {"name": "Expo"}], time_submitted=4)
+    inr = dict(PROJECT, id=6, title="Delivery app in React Native", description="Two screens.", jobs=[],
+               currency={"code": "INR", "exchange_rate": 0.01}, budget={"minimum": 12500, "maximum": 37500}, time_submitted=3)
+    monkeypatch.setattr(requests, "get", lambda url, params, timeout: Resp(200, {"status": "success", "result": {"projects": [turkish, weather, inr]}}))
+    jobs = search_jobs(["React Native"], [], 300)
+    assert [j.title for j in jobs] == ["Luxury Expo Weather App", "Delivery app in React Native"]
+    j = jobs[1]
+    assert j.budget.kind == "fixed_range" and j.budget.max_usd == 375 and "about $125 – 375" in j.budget.raw_text
+    assert [x.title for x in search_jobs(["React Native"], [], 400)] == ["Luxury Expo Weather App"]  # $375 top is under the floor

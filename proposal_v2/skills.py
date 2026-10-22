@@ -33,10 +33,14 @@ def overlap_text(required: Iterable[str], have: Iterable[str]) -> str:
 
 
 def mentioned_in(name: str, text: str) -> bool:
-    """True when the tool name appears in the text as whole words."""
-    n = norm(name)
+    """True when the tool name appears in the text as whole words, singular or plural ("API" matches "APIs")."""
     t = text.lower()
-    if re.search(r"(?<![a-z0-9])" + re.escape(n) + r"(?![a-z0-9])", t):
-        return True
-    raw = (name or "").strip().lower()
-    return bool(raw) and re.search(r"(?<![a-z0-9])" + re.escape(raw) + r"(?![a-z0-9])", t) is not None
+    for n in {norm(name), (name or "").strip().lower()}:
+        if n and re.search(r"(?<![a-z0-9])" + re.escape(n) + r"(?:s|es)?(?![a-z0-9])", t):
+            return True
+    return False
+
+
+def is_generic(name: str) -> bool:
+    """Generic words (API, app, UI, database...) aren't tools, so the names check skips them."""
+    return norm(name).rstrip("s") in {norm(g).rstrip("s") for g in load_config()["skills"].get("generic_terms", [])}

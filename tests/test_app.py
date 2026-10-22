@@ -109,7 +109,7 @@ def test_skip_override_and_duplicate(env):
     assert any("Skip" in e.value and "WhatsApp" in e.value for e in at.error), [e.value for e in at.error]
     _btn(at, "Override and write anyway").click().run()
     assert not at.exception, at.exception
-    _btn(at, "← New job", at.sidebar).click().run()
+    _btn(at, "+ New job", at.sidebar).click().run()
     _paste(at, "T10")
     assert any("already have a draft" in w.value for w in at.warning)
     assert not at.exception
@@ -131,3 +131,30 @@ def test_fit_check_can_be_skipped_but_still_warns(env):
     assert not at.exception, at.exception
     assert any("Fit check skipped" in w.value and "WhatsApp" in w.value for w in at.warning), [w.value for w in at.warning]
     assert at.caption and any("Not checked" in c.value for c in at.caption)
+
+
+
+def test_plan_only_draft_warns_about_missing_proof(env):
+    """My workspace starts with no projects, so a draft can only be plan-only, and the app says so."""
+    import json
+    from pathlib import Path
+    job = json.loads((Path(__file__).resolve().parent.parent / "fixtures" / "jobs" / "T01.json").read_text(encoding="utf-8"))
+    at = _open(_app())
+    _btn(at, "Save and start").click().run()  # onboarding: default minimum rates
+    at.checkbox(key="check_fit").uncheck().run()
+    at.text_input(key="f_link").input(job["pastes"][0]["link"])
+    at.text_area(key="f_details").input(job["pastes"][0]["job_details"])
+    _btn(at, "Check job").click().run()
+    _btn(at, "Confirm and write").click().run()
+    assert any("No past work is cited" in w.value and "library is empty" in w.value for w in at.warning), [w.value for w in at.warning]
+    assert not at.exception
+
+
+def test_new_job_page_starts_fresh_after_visiting_another_page(env):
+    at = _open(_app())
+    _sample(at)
+    _paste(at, "T01")
+    assert at.title[0].value == "Confirm the details"
+    at.sidebar.radio(key="page").set_value("My jobs").run()
+    at.sidebar.radio(key="page").set_value("New job").run()
+    assert at.title[0].value == "New job" and not at.exception

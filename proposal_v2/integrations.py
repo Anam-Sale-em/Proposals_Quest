@@ -87,25 +87,48 @@ def _get(path: str, params: dict) -> dict:
     return data["result"]
 
 
+def _money(v: float) -> str:
+    return f"{v:,.0f}" if v == int(v) else f"{v:,.2f}"
+
+
 def _to_jobpost(p: dict) -> JobPost:
+    """Freelancer.com project -> JobPost. Non-USD budgets are converted with the API's own exchange rate."""
     budget = p.get("budget") or {}
-    cur = ((p.get("currency") or {}).get("code") or "USD").upper()
+    currency = p.get("currency") or {}
+    cur = (currency.get("code") or "USD").upper()
+    rate = 1.0 if cur == "USD" else currency.get("exchange_rate")
     lo, hi = budget.get("minimum"), budget.get("maximum")
-    raw = f"{cur} {lo}–{hi}" + (" per hour" if p.get("type") == "hourly" else "")
-    if cur != "USD":
+    hourly = p.get("type") == "hourly"
+    per = " per hour" if hourly else ""
+    shown = " – ".join(_money(v) for v in (lo, hi) if v is not None)
+    raw = f"{cur} {shown}{per}"
+    if cur != "USD" and not rate:
         b = Budget(kind="none", raw_text=raw)
-    elif p.get("type") == "hourly":
-        b = Budget(kind="hourly", min_usd=lo, max_usd=hi or lo, raw_text=raw)
-    elif hi and lo and hi != lo:
-        b = Budget(kind="fixed_range", min_usd=lo, max_usd=hi, raw_text=raw)
     else:
-        b = Budget(kind="fixed", amount_usd=hi or lo, raw_text=raw)
+        lo_usd = round(lo * rate, 2) if lo is not None else None
+        hi_usd = round(hi * rate, 2) if hi is not None else None
+        if cur != "USD":
+            raw += " (about $" + " – ".join(_money(round(v)) for v in (lo_usd, hi_usd) if v is not None) + ")"
+        if hourly:
+            b = Budget(kind="hourly", min_usd=lo_usd, max_usd=hi_usd or lo_usd, raw_text=raw)
+        elif hi_usd and lo_usd and hi_usd != lo_usd:
+            b = Budget(kind="fixed_range", min_usd=lo_usd, max_usd=hi_usd, raw_text=raw)
+        else:
+            b = Budget(kind="fixed", amount_usd=hi_usd or lo_usd, raw_text=raw)
     seo = p.get("seo_url") or str(p["id"])
     return JobPost(
         job_key=f"freelancer:{p['id']}", platform="freelancer", link=f"https://www.freelancer.com/projects/{seo}",
         source="fetch", title=p.get("title", ""), description=p.get("description") or p.get("preview_description", ""),
         budget=b, skills=[j.get("name", "") for j in (p.get("jobs") or [])], link_status="Fetched",
     )
+
+
+def matched_keywords(job: JobPost, keywords: list[str]) -> list[str]:
+    """Keywords found as a whole phrase in the job's skills, title or description."""
+    from .skills import mentioned_in
+
+    text = "\n".join([job.title, job.description, " | ".join(job.skills)])
+    return [k for k in keywords if k.strip() and mentioned_in(k.strip(), text)]
 
 
 def fetch_by_link(url: str) -> JobPost:
@@ -131,11 +154,15 @@ def fetch_by_link(url: str) -> JobPost:
 def search_jobs(keywords: list[str], exclude: list[str], budget_floor: Optional[float]) -> list[JobPost]:
     if not keywords:
         raise FetchError("Add at least one keyword.")
-    res = _get("/projects/active/", {"query": " ".join(keywords), "limit": 30, "full_description": "true",
+    # Freelancer.com's search matches single words loosely ("React Native" returns "Native Turkish
+    # Translation"), so every result is re-checked here: a keyword must appear as a whole phrase.
+    res = _get("/projects/active/", {"query": " ".join(keywords), "limit": 100, "full_description": "true",
                                      "job_details": "true", "sort_field": "time_updated"})
     jobs = []
     for p in sorted(res.get("projects") or [], key=lambda x: x.get("time_submitted", 0), reverse=True):
         j = _to_jobpost(p)
+        if not matched_keywords(j, keywords):
+            continue
         text = (j.title + " " + j.description).lower()
         if any(x.lower() in text for x in exclude if x.strip()):
             continue

@@ -34,3 +34,27 @@ Real failures found while running v2, each with its root cause, the fix and how 
 **How it's checked:** T11 (the "10 years" instruction) must still be refused; this job's portfolio request must land in explicit requirements. Rerun on the live app and the eval set: _to fill in_.
 
 **Lesson:** a safety rule written too broadly blocks legitimate asks. Policy definitions need a counter-example as well as an example.
+
+## F3 · A plan-only draft ignored the client's request for past work · 2026-10-22
+
+**What happened:** the React Native job asked applicants to "share 1–2 React Native applications you've built". The draft named no app and said the offline and API work was "new for me".
+
+**Root cause:** the Projects library was empty, so v2 wrote a plan-only draft. That's correct, because it must never invent proof. But nothing told the user that the draft had no proof, or that it skipped an explicit request. The Solution Brief was fine; the gap was between the library and the draft, and it was silent.
+
+**Fix:** the draft screen now warns when no project is cited, names any request for past work it couldn't answer, and says how to fix it (add the project, pick it under Proof, Rewrite with this proof).
+
+**How it's checked:** an app test opens an empty workspace, writes a draft and asserts the warning. Rerun on the live app with projects added: _to fill in_.
+
+**Lesson:** a safe default (no invented proof) still needs to be visible. Silent safety reads as a weak draft.
+
+## F4 · The claim check flagged "API" on a post that asks for REST APIs · 2026-10-22
+
+**What happened:** the React Native draft was marked "needs review" with "the draft mentions API, which isn't in your skills, your project or the post", although the post says "Integrate the app with our existing REST APIs".
+
+**Root cause:** two gaps in the names pass. It matched whole words only, so "API" didn't match "APIs". It also treated generic words as tools, so "API" was checked like "Salesforce" would be.
+
+**Fix:** names now match singular or plural, and a list of generic words in `config.toml` (API, app, UI, backend, database and others) is skipped by the names pass. Specific tools are still checked.
+
+**How it's checked:** a unit test asserts "API" matches "APIs", generic words pass, and "Salesforce" is still treated as a tool. Rerun on the live app: _to fill in_.
+
+**Lesson:** false alarms cost trust as much as misses. A "needs review" on an honest draft trains the user to ignore the check.

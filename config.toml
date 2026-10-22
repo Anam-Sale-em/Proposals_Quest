@@ -57,6 +57,9 @@ questions_first_max_words = 150
 # Alias map for skill overlap and the names check: alias = canonical name.
 aliases = { "gsheets" = "google sheets", "google sheets api" = "google sheets", "sheets" = "google sheets", "js" = "javascript", "node" = "node.js", "nodejs" = "node.js", "postgres" = "postgresql", "slack api" = "slack", "gmail api" = "gmail", "shopify api" = "shopify", "rest apis" = "rest api", "api integration" = "rest api", "webhook" = "webhooks", "gemini api" = "gemini", "openai api" = "openai", "rn" = "react native" }
 
+# Generic words the names check never treats as tools.
+generic_terms = ["api", "rest api", "app", "mobile app", "web app", "ui", "ux", "ui/ux", "backend", "frontend", "database", "dashboard", "integration", "automation", "workflow", "cloud", "server", "script", "sdk", "website", "ios", "android"]
+
 [storage]
 # "json" (local files) or "firestore". Firestore is first to cut.
 backend = "json"
