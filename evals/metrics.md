@@ -21,7 +21,7 @@ The clock starts when the job is opened and stops when the proposal is ready to 
 | Quality | Rubric pass rate | 5 items; pass = 4 of 5 with item 3 required. Hand-scored, then judge-scored with labels removed | 3 of 3 raw drafts pass (T01–T03) | 0 of 5 real drafts pass | Every draft passes |
 | Quality | Unsupported claims per draft | Counted by hand on every draft | 0 on T01–T03, plus 1 borderline | 5–7 case-study claims per draft (29 across 5 real drafts) | 0 |
 | Quality | Decision accuracy | Right decision on the 12 test cases | Drafts every job, no skip path | Drafts every job, no skip path | Reported per case |
-| Quality | Skip accuracy | v2's decision against my considered call, on 6–10 fresh Day 4 jobs | No skip path | No skip path | Reported |
+| Quality | Skip accuracy (jobs with the fit check on) | v2's decision against my considered call, on 6–10 fresh Day 4 jobs | No skip path | No skip path | Reported |
 | Quality | Jobs rightly skipped | Fresh Day 4 jobs I'd apply to at a glance, skipped after reading, that v2 also skipped | None | None | Reported |
 | Quality | Trust agreement | v2's trust band against my trust call, on the fresh Day 4 jobs | No client check | No client check | Reported |
 | Quality | Claim-check recall | Unsupported claims the claim check catches, against the hand labels | No claim check | No claim check | Reported |

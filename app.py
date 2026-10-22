@@ -88,6 +88,10 @@ USER_ERRORS = (LinkError, PipelineError, LLMError, FetchError)
 DECISION_LABEL = {"apply": "Apply", "apply_with_questions": "Apply with questions", "skip": "Skip"}
 
 
+def decision_label(d) -> str:
+    return "Not checked" if d.code == "unchecked" else DECISION_LABEL[d.decision]
+
+
 @st.cache_resource
 def storage():
     return make_storage()
@@ -212,6 +216,10 @@ def screen_new() -> None:
         if c3.button("Dismiss"):
             ss.duplicate = None
             st.rerun()
+    # Stored outside the widget, because Streamlit drops a widget's value once it leaves the page.
+    ss.fit_choice = st.checkbox("Check if this job is a good fit first", value=ss.get("fit_choice", True), key="check_fit",
+                help="Checks the client, the budget and the fit, then recommends Apply, Apply with questions or Skip. "
+                     "Untick it to go straight to the draft; red flags and a low budget still show as warnings.")
     tab_paste, tab_link, tab_kw = st.tabs(["Paste a job", "Freelancer.com link", "Keyword search"])
 
     with tab_paste:
@@ -347,7 +355,8 @@ def screen_confirm() -> None:
     if c_back.button("Back"):
         ss.pending = None
         go("new")
-    if c_go.button("Confirm and check", type="primary", disabled=not proceed_ok):
+    checking = ss.get("fit_choice", True)
+    if c_go.button("Confirm and check" if checking else "Confirm and write", type="primary", disabled=not proceed_ok):
         if not title.strip() or not desc.strip():
             st.error("Title and description are required.")
             return
@@ -363,11 +372,16 @@ def screen_confirm() -> None:
         if job.link_status == "Warned":
             rec.events.append({"type": "link_warning_proceeded"})
         try:
-            done = run(pipe.decide, rec)
+            done = run(pipe.decide, rec, checking)
         except DuplicateJob:
             done = None
         if done:
             ss.pending = None
+            if not checking:
+                ss.job_key = done.job_key
+                if run(pipe.write, done):
+                    go("draft", done.job_key)
+                ss.flash = "The draft couldn't be written just now. Click Write proposal to try again."
             go("card", done.job_key)
 
 
@@ -377,8 +391,10 @@ def screen_card() -> None:
         go("new")
     d = rec.decision
     st.title(rec.job.title)
-    box = {"apply": st.success, "apply_with_questions": st.info, "skip": st.error}[d.decision]
-    box(f"**{DECISION_LABEL[d.decision]}**  \n{d.reason}" + (" (overridden)" if d.overridden else ""))
+    if ss.get("flash"):
+        st.warning(ss.pop("flash"))
+    box = st.info if d.code == "unchecked" else {"apply": st.success, "apply_with_questions": st.info, "skip": st.error}[d.decision]
+    box(f"**{decision_label(d)}**  \n{d.reason}" + (" (overridden)" if d.overridden else ""))
     if d.card_note:
         st.warning(f"Note: {d.card_note}.")
     c1, c2 = st.columns(2)
@@ -421,7 +437,9 @@ def screen_draft() -> None:
     if not v:
         go("card")
     st.title(rec.job.title)
-    st.caption(f"{DECISION_LABEL[rec.decision.decision]} · trust {rec.trust.band if rec.trust else '—'} · version {v.n}")
+    if rec.decision.code == "unchecked" and rec.decision.card_note:
+        st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
+    st.caption(f"{decision_label(rec.decision)} · trust {rec.trust.band if rec.trust else '—'} · version {v.n}")
 
     projects = pipe.projects()
     labels = {l.project_id: l.label for l in (rec.assessment.project_labels if rec.assessment else [])}
@@ -512,7 +530,7 @@ def page_jobs() -> None:
     m3.metric("Median min, paste → sent", f"{statistics.median(mins):.0f}" if mins else "—")
     for r in recs:
         with st.container(border=True):
-            dec = DECISION_LABEL.get(r.decision.decision, "") if r.decision else "—"
+            dec = decision_label(r.decision) if r.decision else "—"
             badge = " · ⏳ Still waiting?" if Pipeline.still_waiting(r) else ""
             outcome = f" · {r.outcome.result.replace('_', ' ')}" if r.outcome.result else ""
             st.markdown(f"**{r.job.title}**  \n{dec} · {r.status}{outcome} · trust {r.trust.band if r.trust else '—'}{badge}")

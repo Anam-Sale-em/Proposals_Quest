@@ -120,3 +120,14 @@ def test_projects_open_before_rates_are_set(env):
     assert at.title[0].value == "Welcome"  # New job waits for the rates
     at.sidebar.radio(key="page").set_value("Projects").run()
     assert at.title[0].value == "Projects" and not at.exception
+
+
+def test_fit_check_can_be_skipped_but_still_warns(env):
+    at = _open(_app())
+    _sample(at)
+    at.checkbox(key="check_fit").uncheck().run()
+    _paste(at, "T10")  # the red-flag WhatsApp job
+    _btn(at, "Confirm and write").click().run()
+    assert not at.exception, at.exception
+    assert any("Fit check skipped" in w.value and "WhatsApp" in w.value for w in at.warning), [w.value for w in at.warning]
+    assert at.caption and any("Not checked" in c.value for c in at.caption)

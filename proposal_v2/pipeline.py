@@ -12,14 +12,14 @@ from typing import Optional
 
 from . import prompts
 from .config import load_config
-from .contracts import (Assessment, Brief, ClaimLists, CVImport, Extraction, JobPost, Profile, Project,
+from .contracts import (Assessment, Brief, ClaimLists, CVImport, Decision, Extraction, JobPost, Profile, Project,
                         ProposalDraft, ProposalRecord, ProposalVersion, now_iso)
 from .decision import budget_gate, decide, fit_result, pre_decision
 from .integrations import append_sheet_row
 from .links import LinkError, ParsedLink, parse_link, title_match
 from .llm import LLM
 from .policy import apply_policy
-from .skills import overlap_text
+from .skills import overlap, overlap_text
 from .storage import Storage
 from .trust import score_client
 from .validators import failures_for_retry, validate
@@ -95,13 +95,28 @@ class Pipeline:
         return ProposalRecord(uid=self.uid, job_key=job.job_key, job=job)
 
     # ------------------------------------------------------------------ decide
-    def decide(self, rec: ProposalRecord) -> ProposalRecord:
-        """Called once the user confirms the extracted fields."""
+    def decide(self, rec: ProposalRecord, check: bool = True) -> ProposalRecord:
+        """Called once the user confirms the extracted fields. With check=False the user skips the
+        fit check: no assessment call and no Skip, but red flags and a low budget still show as warnings."""
         profile = self.profile()
         flags = [f.kind for f in rec.job.red_flags]
         rec.trust = score_client(rec.client, flags, profile.trust_cutoffs or None)
         gate, gate_text = budget_gate(rec.job.budget, profile)
         red_text = next((f"the post says \"{f.evidence.strip().rstrip('.!')[:120]}\"" for f in rec.job.red_flags), "")
+        if not check:
+            warnings = []
+            if rec.trust.band == "Red flag":
+                warnings.append(f"red-flag client: {red_text or rec.trust.reasons[0]}")
+            if gate == "below_minimum":
+                warnings.append(f"the budget is below your minimum ({gate_text})")
+            rec.decision = Decision(decision="apply", code="unchecked", budget_gate=gate,
+                                    reason="Not checked: you chose to write the proposal without the fit check.",
+                                    card_note="; ".join(warnings) or None)
+            rec.chosen_proof, rec.framing = self.suggested_proof(rec)
+            rec.events.append({"at": now_iso(), "type": "fit_check_skipped"})
+            rec.status = "decided"
+            self.storage.put_proposal(rec)
+            return rec
         d = pre_decision(rec.trust, gate, gate_text, red_text)
         if d is None:
             projects = self.projects()
@@ -120,7 +135,14 @@ class Pipeline:
 
     def suggested_proof(self, rec: ProposalRecord) -> tuple[Optional[str], str]:
         if not rec.assessment:
-            return None, "plan_only"
+            # No assessment (fit check skipped): pick the project with the most skill overlap, and frame it
+            # conservatively as same-skills, since nothing has judged it "similar". The user can switch it.
+            best, best_n = None, 0
+            for p in self.projects():
+                n = overlap(rec.job.skills, p.skills)[0]
+                if n > best_n:
+                    best, best_n = p.id, n
+            return (best, "same_skills") if best else (None, "plan_only")
         ids = {p.id for p in self.projects()}
         for label in ("similar", "same_skills"):
             for l in rec.assessment.project_labels:

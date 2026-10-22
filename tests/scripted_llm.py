@@ -115,6 +115,10 @@ class ScriptedLLM(LLM):
             text = (f"{opener}as I understand it, you want help connecting a few tools. Before I plan it: which tools are involved, "
                     f"what should happen between them, and what budget do you have in mind? In a past project, {p['title']}, I built a similar flow. "
                     "Could you share those details?")
+        elif p is None:
+            text = (f"{opener}you need {FIXTURES[cid]['title'].lower()}. I'd start by confirming the data and access, then build it "
+                    "step by step and test it with you. This part would be new for me, so I'd share a working first version early. "
+                    "When would you like it live?")
         else:
             proof = (f"I did nearly this before in {p['title']}: {p['result']}" if exp.get("framing") == "similar"
                      else f"Different domain, same core work: in {p['title']} I {p['what_i_did'][0].lower() + p['what_i_did'][1:]}")

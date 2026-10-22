@@ -106,7 +106,7 @@ def test_busy_gemini_retries_then_falls_back_through_the_model_list(monkeypatch,
 
     def groq(self, model, *a):
         tried.append(model)
-        if model == "openai/gpt-oss-120b":
+        if model == "openai/gpt-oss-120b":  # e.g. not available to this key
             raise llm_mod._Unavailable("groq: 404 model does not exist")
         return '{"tools_named": ["n8n"], "experience_sentences": []}', 10, 5
 
@@ -115,7 +115,7 @@ def test_busy_gemini_retries_then_falls_back_through_the_model_list(monkeypatch,
     llm = llm_mod.LLM(mode="live", cache_dir=tmp_path, log_dir=None)
     out = llm.call("claims", "light", "s", "u", ClaimLists)
     assert out.tools_named == ["n8n"]
-    assert tried == ["gemini-3.5-flash-lite"] * 3 + ["gemini-3.8-flash"] * 2 + ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"]
+    assert tried == ["gemini-3.5-flash-lite"] * 3 + ["gemini-3.8-flash"] * 2 + ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
 
 
 def test_all_models_busy_gives_a_plain_message(monkeypatch, tmp_path):

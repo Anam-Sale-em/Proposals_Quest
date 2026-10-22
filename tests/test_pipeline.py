@@ -104,3 +104,10 @@ def test_eval_runner_offline(tmp_path):
     summary = (out / "summary.md").read_text(encoding="utf-8")
     assert "Cases passed: **12 of 12**" in summary, summary
     assert (out / "results.csv").exists() and (out / "drafts" / "T01.md").exists()
+
+
+def test_skipping_the_fit_check_makes_no_assessment_call(pipe):
+    j = _job("T08")  # a logo job the check would Skip
+    rec = pipe.decide(pipe.extract(j["link"], j["job_details"]), check=False)
+    assert rec.decision.code == "unchecked" and rec.decision.decision == "apply"
+    assert "assess" not in pipe.llm.steps_called() and rec.events[-1]["type"] == "fit_check_skipped"

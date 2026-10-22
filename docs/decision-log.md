@@ -56,6 +56,8 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 33 | Non-developers use a live link on Streamlit Community Cloud instead of installing; the local starter stays for developers. Online, the key setup screen is hidden from visitors | Me (no install warnings for non-developers); Claude (setup guard) | Yes | Windows warns on any downloaded script, and a non-developer won't run past that warning |
 | 34 | Remove login and sign-up; keep one passphrase box | Me (remove login); Claude (keep the passphrase) | Yes | Accounts were more setup than a five-day quest needs; the passphrase still stops strangers on the live link from spending the Gemini quota |
 | 35 | On a busy Gemini model, retry after 3 s and 8 s, then the other Gemini model, then a list of Groq models; add `check_models.py` | Claude, after the first live run failed (F1 in `evals/failures.md`) | Pending | One fallback model name was a single point of failure |
+| 36 | Narrow "claim" instructions to orders to assert a fact; portfolio requests become explicit requirements (prompt v2.0.1). Groq fallbacks limited to models the key can use; judge = Qwen, a different family | Claude, after F2 and `check_models.py` | Pending | A portfolio request was refused as a claim; Llama isn't available to this key |
+| 37 | The fit check is optional: ticked by default; unticked, v2 skips the assessment call and the Skip, and shows red flags and a low budget as warnings on the draft. Proof then comes from skill overlap, framed as same-skills | Me (optional check); Claude (warnings kept, conservative framing) | Yes (optional), Pending (rest) | Some jobs the freelancer already wants; the check shouldn't stand in the way, but safety warnings stay |
 
 ## To verify by hand
 

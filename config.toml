@@ -1,7 +1,7 @@
 # Proposal Pipeline v2: every threshold and limit lives here.
 # Secrets never go in this file: they live in .env (local) or st.secrets (cloud).
 
-prompt_version = "v2.0.0"
+prompt_version = "v2.0.1"
 
 [models]
 # Brief, proposal and revisions: the stronger Flash model.
@@ -10,9 +10,9 @@ draft = "gemini-3.8-flash"
 light = "gemini-3.5-flash-lite"
 # Groq fallbacks, tried in order when both Gemini models are busy or failing.
 # Run `python scripts/check_models.py` to see which models your keys can use.
-fallbacks = ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "openai/gpt-oss-20b"]
+fallbacks = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
 # Eval judge, tried in order: a different model from the drafting candidates where possible.
-judges = ["llama-3.3-70b-versatile", "openai/gpt-oss-20b"]
+judges = ["qwen/qwen3.8-27b", "openai/gpt-oss-20b"]
 temperature_extract = 0.0
 temperature_draft = 0.4
 

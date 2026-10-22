@@ -42,7 +42,7 @@ Limits: the app sleeps after 12 hours without visitors (open the link and click 
 
 ## Using it
 
-1. **New job:** paste the job link and the whole job post (copying the whole page is fine; v2 keeps only the main post and its own client box). Add the client box separately if it isn't in the paste. Freelancer.com jobs can also come in by link or keyword search.
+1. **New job:** paste the job link and the whole job post (copying the whole page is fine; v2 keeps only the main post and its own client box). Add the client box separately if it isn't in the paste. Freelancer.com jobs can also come in by link or keyword search. **Check if this job is a good fit first** is ticked by default; untick it to go straight to the draft (red flags and a low budget still show as warnings).
 2. **Confirm the details:** check what v2 took from the post, fix anything wrong, then **Confirm and check**.
 3. **Decision card:** one decision and one reason. **Write proposal**, or **Override** a Skip (logged). **Details** shows the trust score with its top reasons, the four fit answers, the link status and the skill overlap.
 4. **Draft:** your best project is pre-selected as proof (switch it, or choose plan only). Edit the text, answer the screening questions, read the claim-check notes, or revise with a comment (it changes only what you ask).

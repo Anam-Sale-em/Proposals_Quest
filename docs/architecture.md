@@ -1,6 +1,6 @@
 # Architecture and data flow
 
-Code decides; the LLM extracts and writes; the user approves twice and always sends. Every rule that judges a job (trust, budget, fit × trust, link and duplicate checks, the instruction policy, the claim check) runs in plain Python and is unit-tested with no LLM.
+Code decides; the LLM extracts and writes; the user approves twice and always sends. The fit check is on by default; the user can untick it to go straight to the draft, which skips the assessment call and turns red flags and a low budget into warnings instead of a Skip. Every rule that judges a job (trust, budget, fit × trust, link and duplicate checks, the instruction policy, the claim check) runs in plain Python and is unit-tested with no LLM.
 
 ## Data flow
 
@@ -51,8 +51,8 @@ flowchart TD
 | Solution Brief | draft | Gemini 3.8 Flash | 1 per Apply |
 | Proposal | draft | Gemini 3.8 Flash | 1, plus 1 on retry |
 | Claim lists | light | Gemini 3.5 Flash-Lite | 1, plus 1 on retry |
-| Fallback | — | A busy Gemini model is retried after 3 s and 8 s, then the other Gemini model, then Groq models in order (`openai/gpt-oss-120b`, `llama-3.3-70b-versatile`, `openai/gpt-oss-20b`) | When Gemini is busy, rate-limited or failing |
-| Judge (evals) | judge | Groq (`llama-3.3-70b-versatile`, then `openai/gpt-oss-20b`) | 1 per draft |
+| Fallback | — | A busy Gemini model is retried after 3 s and 8 s, then the other Gemini model, then Groq models in order (`openai/gpt-oss-120b`, `openai/gpt-oss-20b`) | When Gemini is busy, rate-limited or failing |
+| Judge (evals) | judge | Groq (`qwen/qwen3.8-27b`, a different model family from the drafters, then `openai/gpt-oss-20b`) | 1 per draft |
 
 An Apply job makes 2 calls on 3.8 Flash (free tier: 20 a day), so caching and the Groq fallback matter. Model names live in `config.toml`.
 
