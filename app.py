@@ -257,9 +257,11 @@ def screen_new() -> None:
     ss.fit_choice = st.checkbox("Check if this job is a good fit first", value=ss.get("fit_choice", True), key="check_fit",
                 help="Checks the client, the budget and the fit, then recommends Apply, Apply with questions or Skip. "
                      "Untick it to go straight to the draft; red flags and a low budget still show as warnings.")
-    tab_paste, tab_link, tab_kw = st.tabs(["Paste a job", "Freelancer.com link", "Keyword search"])
+    tab_paste, tab_link, tab_kw = st.tabs(["Paste a job (any platform)", "Freelancer.com link", "Freelancer.com search"])
 
     with tab_paste:
+        st.caption("Works with jobs from **Upwork, Freelancer.com, Guru, PeopleperHour and Fiverr**. "
+                   "Paste the job's link, then copy the job page's text into Job details.")
         if is_sample:
             jobs = sample_jobs()
             pick = st.selectbox("Try a sample job", ["—"] + [f"{j['id']}: {j['title']}" for j in jobs])
@@ -267,7 +269,7 @@ def screen_new() -> None:
                 j = next(x for x in jobs if pick.startswith(x["id"]))
                 ss.f_link, ss.f_details, ss.f_client = j["link"], j["job_details"], ""
                 st.rerun()
-        link = st.text_input("Job link *", key="f_link", placeholder="https://www.upwork.com/jobs/...")
+        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr")
         details = st.text_area("Job details *", key="f_details", height=220,
                                help="The whole job post. If you copy the whole page, v2 keeps only the main post and its own client box.")
         client = st.text_area("Client history (optional)", key="f_client", height=90,
