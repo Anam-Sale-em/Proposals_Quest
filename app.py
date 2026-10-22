@@ -14,6 +14,7 @@ import streamlit as st
 from proposal_v2.config import load_config, save_env, secret
 
 st.set_page_config(page_title="Proposal Pipeline v2", page_icon="📝", layout="centered")
+from proposal_v2.prompts import budget_words  # noqa: E402
 from proposal_v2.ui_style import BRAND, CSS, chip, trust_chip, verdict_html  # noqa: E402
 
 st.markdown(CSS, unsafe_allow_html=True)
@@ -210,6 +211,11 @@ def open_job_button(rec: ProposalRecord, where=st) -> None:
     link_or_note(rec.job.link, where)
 
 
+def md(text: str, where=st) -> None:
+    """Markdown with dollar signs kept literal (Streamlit reads $...$ as maths)."""
+    where.markdown(text.replace("$", "\\$"))
+
+
 def link_or_note(link: str, where=st) -> None:
     """Open job, or a note for sample jobs, whose made-up links lead nowhere."""
     if is_sample_link(link):
@@ -345,7 +351,7 @@ def screen_new() -> None:
                 hits = {norm(k) for k, _ in places}
                 tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
                 found = ", ".join(f"**{k}** ({where})" for k, where in places)
-                st.markdown(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}  \n🔎 Matches {found}")
+                md(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}  \n🔎 Matches {found}")
                 c1, c2 = st.columns([1, 1])
                 link_or_note(j.link, c1)
                 if c2.button("Pick", key=f"pick{i}"):
@@ -489,18 +495,18 @@ def screen_card() -> None:
                     go("draft")
     with st.expander("Details"):
         t = rec.trust
-        st.markdown(f"**Client trust:** {t.score if t.score is not None else '—'} · {t.band} ({t.coverage})")
+        md(f"**Client trust:** {t.score if t.score is not None else '—'} · {t.band} ({t.coverage})")
         for reason in t.reasons[:3]:
-            st.markdown(f"- {reason}")
-        st.markdown(f"**Budget:** {rec.job.budget.raw_text or 'not stated'} · gate: {d.budget_gate.replace('_', ' ')}")
+            md(f"- {reason}")
+        md(f"**Budget:** {budget_words(rec.job.budget)} · against your minimum: {d.budget_gate.replace('_', ' ')}")
         if d.fit:
             f = d.fit
             yn = lambda b: "Yes" if b else "No"  # noqa: E731
-            st.markdown(f"**Fit:** {f.band}  \n- Skills: {yn(f.skills)}. {f.reasons.get('skills', '')}  \n"
+            md(f"**Fit:** {f.band}  \n- Skills: {yn(f.skills)}. {f.reasons.get('skills', '')}  \n"
                         f"- Kind of work you do: {yn(f.work_type)}. {f.reasons.get('work_type', '')}  \n"
                         f"- Proof in your projects: {yn(f.proof)}  \n- Realistic for the budget: {yn(f.realistic)}. {f.reasons.get('realistic', '')}  \n"
                         f"- Clear enough to plan: {yn(f.clear)}. {f.reasons.get('clear', '')}")
-            st.markdown(f"**Skill overlap:** {f.skill_overlap}")
+            md(f"**Skill tags:** {f.skill_overlap}")
         st.markdown(f"**Link check:** {rec.job.link_status}")
 
 

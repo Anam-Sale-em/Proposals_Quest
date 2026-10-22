@@ -174,3 +174,10 @@ def test_sample_links_are_recognised():
     assert is_sample_link(sample_fetched_job().link)
     assert not is_sample_link("https://www.freelancer.in/projects/blockchain/Build-Secure-CEX-DEX-Token")
     assert not is_sample_link("https://www.upwork.com/jobs/~021234567890123456")
+
+
+def test_budget_goes_to_the_model_in_plain_words():
+    from proposal_v2.prompts import budget_words
+    assert budget_words(Budget(kind="hourly", min_usd=40, max_usd=150)) == "hourly rate of $40–$150 per hour (paid per hour worked, not a total)"
+    assert budget_words(Budget(kind="fixed_range", min_usd=250, max_usd=750)) == "fixed price, total $250–$750"
+    assert budget_words(Budget(kind="none")) == "not stated"

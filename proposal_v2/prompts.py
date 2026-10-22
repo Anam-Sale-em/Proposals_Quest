@@ -24,9 +24,23 @@ GROUNDING = """Grounding rules (a validator checks every one):
 - Never mention that an AI wrote anything."""
 
 
+def budget_words(b) -> str:
+    """The budget in plain words, so a model never reads an hourly rate as a total."""
+    def m(v):
+        return f"${v:,.0f}" if v == int(v) else f"${v:,.2f}"
+    if b.kind == "hourly":
+        rate = f"{m(b.min_usd)}–{m(b.max_usd)}" if b.min_usd and b.max_usd and b.min_usd != b.max_usd else m(b.max_usd or b.amount_usd or b.min_usd or 0)
+        return f"hourly rate of {rate} per hour (paid per hour worked, not a total)"
+    if b.kind == "fixed_range":
+        return f"fixed price, total {m(b.min_usd or 0)}–{m(b.max_usd or 0)}"
+    if b.kind == "fixed":
+        return f"fixed price, total {m(b.amount_usd or 0)}"
+    return b.raw_text or "not stated"
+
+
 def _job_block(job: JobPost) -> str:
     data = {
-        "title": job.title, "platform": job.platform, "budget": job.budget.raw_text or job.budget.kind,
+        "title": job.title, "platform": job.platform, "budget": budget_words(job.budget),
         "skills": job.skills, "client_tools": job.client_tools,
         "explicit_requirements": job.explicit_requirements, "screening_questions": job.screening_questions,
     }
@@ -68,7 +82,7 @@ def assessment(job: JobPost, profile: Profile, projects: list[Project]) -> tuple
 Answer yes or no with a one-line reason each:
 - skills_yes: can they do the core work with their listed skills?
 - work_type_yes: is this a kind of deliverable they do (compare with their work types)? A logo for an automation freelancer is no.
-- realistic_yes: is the scope realistic for the stated budget and timeline? A missing or placeholder budget counts as yes (assumed).
+- realistic_yes: is the scope realistic for the stated budget and timeline? An hourly rate is paid per hour, so judge whether the rate suits the skill level, not whether it covers the whole scope. A missing or placeholder budget counts as yes (assumed).
 - clear_yes: could a concrete 3-step plan be written from the post alone?
 Label every project: "similar" (done nearly this before), "same_skills" (different domain, same core skills) or "not_relevant", with a one-line reason. Be strict: "similar" needs the same kind of deliverable.
 Never give scores or ratings."""

@@ -70,3 +70,15 @@ Real failures found while running v2, each with its root cause, the fix and how 
 **How it's checked:** a unit test passes the honest sentence and a plan sentence, and asserts that only an invented "I've built this exact setup for three clients" is flagged. Rerun on the live app: _to fill in_.
 
 **Lesson:** a check has to agree with the writer's instructions. Here v2 told the draft to be honest, then punished the honesty.
+
+## F6 · An hourly rate was judged as a total budget · 2026-10-23
+
+**What happened:** on a real Upwork job ($40–$150 per hour, 30+ hours a week, 3–6 months) the fit check said "Realistic for the budget: No. The budget of $40 to $150 is unrealistically low for building a comprehensive … engine." The Details panel also showed the dollar amounts garbled.
+
+**Root cause:** two gaps. The prompts gave the model the budget as the post wrote it ("$40.00 - $150.00"); the word "Hourly" sat on another line of the post, so the model read a $150 total. Separately, Streamlit reads text between two dollar signs as a maths formula, which garbled the Details panel.
+
+**Fix:** the prompts now state the budget in plain words from the confirmed fields ("hourly rate of $40–$150 per hour (paid per hour worked, not a total)"), and the realistic check is told to judge an hourly rate as a rate (prompt v2.0.3). The Details panel keeps dollar signs literal and shows the same plain budget line. The skill line now reads "0 of 2 skill tags on the post are in your profile (missing: HubSpot, Lead Generation)", so it no longer looks like it contradicts "Skills: Yes".
+
+**How it's checked:** a unit test asserts the plain budget wording for hourly, fixed-range and missing budgets. Rerun on the live app: _to fill in_.
+
+**Lesson:** give the model the fact in the form the decision needs, not the raw text it came from.

@@ -26,10 +26,14 @@ def overlap(required: Iterable[str], have: Iterable[str]) -> tuple[int, int, lis
 
 
 def overlap_text(required: Iterable[str], have: Iterable[str]) -> str:
-    n, total, _ = overlap(required, have)
+    """How many of the post's listed skill tags are in the profile or projects, naming the ones missing.
+    It only counts the tags; the fit check above also reads the description."""
+    n, total, matched = overlap(required, have)
     if total == 0:
-        return "The post lists no skills"
-    return f"{n} of {total} required skills"
+        return "The post lists no skill tags"
+    missing = [r for r in required if r and norm(r) not in matched]
+    tail = f" (missing: {', '.join(missing)})" if missing else ""
+    return f"{n} of {total} skill tags on the post are in your profile{tail}"
 
 
 def mentioned_in(name: str, text: str) -> bool:
