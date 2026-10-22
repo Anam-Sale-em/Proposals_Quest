@@ -58,3 +58,15 @@ Real failures found while running v2, each with its root cause, the fix and how 
 **How it's checked:** a unit test asserts "API" matches "APIs", generic words pass, and "Salesforce" is still treated as a tool. Rerun on the live app: _to fill in_.
 
 **Lesson:** false alarms cost trust as much as misses. A "needs review" on an honest draft trains the user to ignore the check.
+
+## F5 · The claim check flagged the draft's own honest "new for me" sentence · 2026-10-22
+
+**What happened:** a plan-only draft said "This entire workflow setup is new for me, and here is how I would de-risk it: I will verify API access credentials…". The claim check marked it "doesn't match your chosen project or profile".
+
+**Root cause:** v2's own plan-only framing asks the draft to say the work is new. The claim-list step then returned that sentence as a past-work claim with no project, and the experience pass flagged every such sentence without checking whether it claimed anything.
+
+**Fix:** the experience pass now judges only sentences that claim past work (I've built, I used, experience with, in a past project and so on). Sentences that say the work is new, or only describe a plan, are skipped. The claim-list prompt says the same (prompt v2.0.2).
+
+**How it's checked:** a unit test passes the honest sentence and a plan sentence, and asserts that only an invented "I've built this exact setup for three clients" is flagged. Rerun on the live app: _to fill in_.
+
+**Lesson:** a check has to agree with the writer's instructions. Here v2 told the draft to be honest, then punished the honesty.

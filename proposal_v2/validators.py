@@ -19,6 +19,12 @@ NUM = re.compile(r"(?<![\w.])\$?\d[\d,]*(?:\.\d+)?\s?[kK]?(?![\w])%?")
 LIST_MARKER = re.compile(r"^\s*\d+[.)]\s", re.M)
 YEARS_CLAIM = re.compile(r"\b\d+\+?\s*(?:years?|yrs)\b[^.]*?\b(?:experience|exp)\b|\b(?:years?) of (?:hands-on )?experience\b", re.I)
 VOICE = re.compile(r"\b(our team|our agency|our developers|our engineers|our engineering team|we've built|we have built|we built)\b", re.I)
+# The experience pass only judges sentences that claim past work. An honest "this is new for me"
+# or a plan ("I will verify...") claims nothing, even if the claim-list step returns it.
+NEW_WORK = re.compile(r"\b(new (?:for|to) me|haven't (?:built|done|used|worked)|have not (?:built|done|used|worked)|first time)\b", re.I)
+PAST_CLAIM = re.compile(r"\b(I've|I have|I had|I've been|I was|I built|I used|I worked|I created|I developed|I delivered|I shipped|"
+                        r"I set up|I led|I made|I automated|I integrated|I wrote|I launched|I handled|experience|experienced|"
+                        r"past project|previous(?:ly)?|in my last|my last project|recently)\b", re.I)
 ATTACHMENT = re.compile(r"(video walkthrough|recorded (?:a|an)\b[^.]{0,30}\bvideo|personali[sz]ed video|see attached|attached (?:is|are)|loom video)", re.I)
 
 
@@ -119,6 +125,8 @@ def validate(
     # Pass 3: experience. Every past-work sentence maps to the chosen project or the profile.
     chosen_id = project.id if project else None
     for c in claims.experience_sentences:
+        if NEW_WORK.search(c.sentence) or not PAST_CLAIM.search(c.sentence):
+            continue
         target_id = (c.maps_to or "none").strip()
         ok = (chosen_id is not None and target_id == chosen_id) or target_id == "profile"
         if target_id == "profile":

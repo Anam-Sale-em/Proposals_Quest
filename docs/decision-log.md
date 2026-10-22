@@ -63,6 +63,9 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 40 | Remove the "Approximate" budget checkbox from the confirm screen; extraction still records it | Me | Yes | It changed nothing on screen and only confused |
 | 41 | Keyword feed: keep only jobs where a keyword appears as a whole phrase in the skills, title or description; convert non-USD budgets with the API's exchange rate so the budget floor applies; show each job's skills with matches in bold | Me (spotted on the live app); Claude (fix) | Yes | Freelancer.com's search matched single words, so "React Native" returned a Turkish translation job, and INR/EUR jobs slipped past the floor |
 | 42 | Freelancer.com trust: score on reviews, rating and payment verified, the only client fields it shows. Reviews stand in for hires (0 = 25, 1+ = 40, 3+ = 48, 10+ = 56, 25+ = 64), same rating and payment modifiers and post red flags, capped at 79. The confirm screen shows only those three fields for Freelancer.com jobs | Me (only reviews and stars are shown); Claude (the tiers) | Yes | Every Freelancer.com job was Unknown even with the client box filled in, because hires and spend never exist there |
+| 43 | Keyword feed: each card says where a keyword matched (skills, title or description) | Me (two n8n jobs showed no n8n) | Yes | A match in the description alone was invisible on the card |
+| 44 | Number boxes read loose input ("USD, 300", "$1,500", "1.5k") and only reject zero or several numbers | Me (spotted on the live app) | Yes | A valid floor was rejected and silently ignored |
+| 45 | The experience pass skips sentences that say the work is new or only describe a plan (prompt v2.0.2) | Me (spotted on a live draft); Claude (fix) | Yes | v2's own honest plan-only framing was flagged as an unsupported claim (F5) |
 
 ## To verify by hand
 

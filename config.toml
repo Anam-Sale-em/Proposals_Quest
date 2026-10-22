@@ -1,7 +1,7 @@
 # Proposal Pipeline v2: every threshold and limit lives here.
 # Secrets never go in this file: they live in .env (local) or st.secrets (cloud).
 
-prompt_version = "v2.0.1"
+prompt_version = "v2.0.2"
 
 [models]
 # Brief, proposal and revisions: the stronger Flash model.

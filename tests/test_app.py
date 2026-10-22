@@ -158,3 +158,10 @@ def test_new_job_page_starts_fresh_after_visiting_another_page(env):
     at.sidebar.radio(key="page").set_value("My jobs").run()
     at.sidebar.radio(key="page").set_value("New job").run()
     assert at.title[0].value == "New job" and not at.exception
+
+
+def test_number_fields_accept_loose_input():
+    from app import parse_number
+    assert parse_number("USD, 300") == 300 and parse_number("$1,500") == 1500 and parse_number("1.5k") == 1500
+    assert parse_number("80%") == 80 and parse_number("4.9") == 4.9 and parse_number("  ") == "blank"
+    assert parse_number("abc") is None and parse_number("300-500") is None

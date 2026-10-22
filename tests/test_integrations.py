@@ -144,3 +144,11 @@ def test_search_keeps_only_whole_phrase_matches_and_converts_currency(monkeypatc
     j = jobs[1]
     assert j.budget.kind == "fixed_range" and j.budget.max_usd == 375 and "about $125 – 375" in j.budget.raw_text
     assert [x.title for x in search_jobs(["React Native"], [], 400)] == ["Luxury Expo Weather App"]  # $375 top is under the floor
+
+
+def test_match_places_says_where_the_keyword_is():
+    from proposal_v2.contracts import JobPost
+    from proposal_v2.integrations import match_places
+    j = JobPost(job_key="k", platform="freelancer", link="l", title="SaaS build",
+                description="Workflows run on n8n.", skills=["PHP", "Supabase"])
+    assert match_places(j, ["n8n", "Flutter"]) == [("n8n", "description")]

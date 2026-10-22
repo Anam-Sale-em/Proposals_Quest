@@ -123,6 +123,21 @@ def _to_jobpost(p: dict) -> JobPost:
     )
 
 
+def match_places(job: JobPost, keywords: list[str]) -> list[tuple[str, str]]:
+    """(keyword, where) for each keyword the job mentions: "skills", "title" or "description"."""
+    from .skills import mentioned_in
+
+    out = []
+    for k in (k.strip() for k in keywords):
+        if not k:
+            continue
+        for where, text in (("skills", " | ".join(job.skills)), ("title", job.title), ("description", job.description)):
+            if mentioned_in(k, text):
+                out.append((k, where))
+                break
+    return out
+
+
 def matched_keywords(job: JobPost, keywords: list[str]) -> list[str]:
     """Keywords found as a whole phrase in the job's skills, title or description."""
     from .skills import mentioned_in

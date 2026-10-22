@@ -151,7 +151,7 @@ def revise(job: JobPost, profile: Profile, project: Optional[Project], current: 
 def claim_lists(text: str, answers: list, project: Optional[Project]) -> tuple[str, str]:
     system = """You audit a freelance proposal. List:
 - tools_named: every tool, product, platform, language or skill the proposal and answers name (including the client's own tools).
-- experience_sentences: every sentence that claims past work or experience ("I've built", "I used", "in a past project", "experience with"). For each, maps_to is the project id it describes, "profile" when it only restates the freelancer's general skills, or "none" when it matches neither.
+- experience_sentences: every sentence that claims past work or experience ("I've built", "I used", "in a past project", "experience with"). For each, maps_to is the project id it describes, "profile" when it only restates the freelancer's general skills, or "none" when it matches neither. Leave out sentences that say the work is new for the freelancer, and sentences that only describe what they will do.
 Copy sentences exactly. Don't judge them; just list them."""
     pid = project.id if project else "none (plan only)"
     user = (f"Chosen project id: {pid}\nChosen project: {project.model_dump_json() if project else 'none'}\n\n"

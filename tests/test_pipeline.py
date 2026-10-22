@@ -120,3 +120,13 @@ def test_names_check_ignores_generic_words_and_matches_plurals():
     job = JobPost(job_key="k", platform="upwork", link="l", title="RN app", description="Integrate with our REST APIs.")
     r = validate("I'll connect the app to your API and REST API.", [], job, None, Profile(), ClaimLists(tools_named=["API", "REST API", "app"]))
     assert not r.name_failures
+
+
+def test_new_for_me_and_plans_are_not_past_work_claims():
+    job = JobPost(job_key="k", platform="upwork", link="l", title="Agent setup", description="Set up agents.")
+    honest = "This entire workflow setup is new for me, and here is how I would de-risk it: I will verify API access."
+    plan = "I will verify API access credentials and add fallback handling."
+    fake = "I've built this exact setup for three clients."
+    claims = ClaimLists(experience_sentences=[ExperienceClaim(sentence=s, maps_to="none") for s in (honest, plan, fake)])
+    r = validate(" ".join([honest, plan, fake]), [], job, None, Profile(), claims)
+    assert r.experience_failures == [fake]

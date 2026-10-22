@@ -78,7 +78,7 @@ gate()
 from proposal_v2.contracts import (Budget, ClientProfile, Profile, Project, ProposalRecord,  # noqa: E402
                                    ProposedProject)
 from proposal_v2.skills import norm  # noqa: E402
-from proposal_v2.integrations import FetchError, fetch_by_link, matched_keywords, pdf_text, search_jobs  # noqa: E402
+from proposal_v2.integrations import FetchError, fetch_by_link, match_places, pdf_text, search_jobs  # noqa: E402
 from proposal_v2.links import LINK_WARNING, LinkError  # noqa: E402
 from proposal_v2.llm import LLMError, make_llm  # noqa: E402
 from proposal_v2.pipeline import DuplicateJob, Pipeline, PipelineError  # noqa: E402
@@ -164,14 +164,28 @@ def current() -> ProposalRecord | None:
 def num(label: str, value, key: str, help: str | None = None):
     """A number field that can be left blank (blank = not shown)."""
     raw = st.text_input(label, "" if value is None else (f"{value:g}" if isinstance(value, float) else str(value)), key=key, help=help)
-    raw = raw.replace("$", "").replace(",", "").replace("%", "").strip()
-    if not raw:
+    v = parse_number(raw)
+    if v == "blank":
         return None
-    try:
-        return float(raw)
-    except ValueError:
-        st.caption(f":red[{label}: enter a number or leave it blank]")
+    if v is None:
+        st.caption(f":red[{label}: enter one number, like 300, or leave it blank]")
         return value
+    return v
+
+
+def parse_number(raw: str):
+    """Reads one number from loose input: "USD, 300", "$1,500", "1.5k", "80%". Returns "blank",
+    the number, or None when there's no number or more than one."""
+    import re
+
+    s = re.sub(r"(?<=\d),(?=\d{3}\b)", "", raw or "").strip()
+    if not s:
+        return "blank"
+    found = re.findall(r"\d+(?:\.\d+)?\s*[kK]?\b", s)
+    if len(found) != 1:
+        return None
+    n = found[0].strip()
+    return float(n[:-1]) * 1000 if n[-1] in "kK" else float(n)
 
 
 def open_job_button(rec: ProposalRecord) -> None:
@@ -288,9 +302,11 @@ def screen_new() -> None:
 
             j = JobPost.model_validate(jd)
             with st.container(border=True):
-                hits = {norm(k) for k in matched_keywords(j, profile.keywords)}
+                places = match_places(j, profile.keywords)
+                hits = {norm(k) for k, _ in places}
                 tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
-                st.markdown(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}")
+                found = ", ".join(f"**{k}** ({where})" for k, where in places)
+                st.markdown(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}  \n🔎 Matches {found}")
                 c1, c2 = st.columns([1, 1])
                 c1.link_button("Open job ↗", j.link)
                 if c2.button("Pick", key=f"pick{i}"):
