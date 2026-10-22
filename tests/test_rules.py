@@ -166,3 +166,11 @@ def test_sample_form_puts_the_client_box_in_its_own_field():
     assert "About the client" not in post and box.startswith("About the client")
     post, box = split_client_box("T07", jobs["T07"]["job_details"])
     assert box == "" and "About the client" in post  # the whole-page test stays whole
+
+
+def test_sample_links_are_recognised():
+    from proposal_v2.sample import is_sample_link, sample_fetched_job, sample_jobs
+    assert all(is_sample_link(j["link"]) for j in sample_jobs())
+    assert is_sample_link(sample_fetched_job().link)
+    assert not is_sample_link("https://www.freelancer.in/projects/blockchain/Build-Secure-CEX-DEX-Token")
+    assert not is_sample_link("https://www.upwork.com/jobs/~021234567890123456")

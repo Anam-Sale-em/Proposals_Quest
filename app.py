@@ -86,7 +86,7 @@ from proposal_v2.integrations import FetchError, fetch_by_link, match_places, pd
 from proposal_v2.links import LINK_WARNING, LinkError  # noqa: E402
 from proposal_v2.llm import LLMError, make_llm  # noqa: E402
 from proposal_v2.pipeline import DuplicateJob, Pipeline, PipelineError  # noqa: E402
-from proposal_v2.sample import WHOLE_PAGE_CASES, sample_fetched_job, sample_search, split_client_box, load_sample, sample_jobs  # noqa: E402
+from proposal_v2.sample import WHOLE_PAGE_CASES, is_sample_link, sample_fetched_job, sample_search, split_client_box, load_sample, sample_jobs  # noqa: E402
 from proposal_v2.storage import make_storage  # noqa: E402
 
 USER_ERRORS = (LinkError, PipelineError, LLMError, FetchError)
@@ -206,8 +206,16 @@ def parse_number(raw: str):
     return float(n[:-1]) * 1000 if n[-1] in "kK" else float(n)
 
 
-def open_job_button(rec: ProposalRecord) -> None:
-    st.link_button("Open job ↗", rec.job.link)
+def open_job_button(rec: ProposalRecord, where=st) -> None:
+    link_or_note(rec.job.link, where)
+
+
+def link_or_note(link: str, where=st) -> None:
+    """Open job, or a note for sample jobs, whose made-up links lead nowhere."""
+    if is_sample_link(link):
+        where.caption("Sample job: there's no live page to open.")
+    else:
+        where.link_button("Open job ↗", link)
 
 
 # =========================================================================== onboarding
@@ -310,8 +318,8 @@ def screen_new() -> None:
         st.caption("Lists new Freelancer.com jobs that mention one of your keywords. Separate keywords with commas. "
                    "It decides nothing; the fit check runs once you pick a job.")
         if is_sample:
-            st.info("Sample workspace: this searches 4 saved sample Freelancer.com jobs, not the live site. "
-                    "Switch to My workspace to search live.")
+            st.info("Sample workspace: this searches 4 saved sample Freelancer.com jobs, not the live site, "
+                    "and shows the ones that match your keywords and budget floor. Switch to My workspace to search live.")
         kw = st.text_input("Keywords", ", ".join(profile.keywords), placeholder="React Native, n8n, Flutter")
         ex = st.text_input("Exclude terms", ", ".join(profile.exclude_terms))
         floor = num("Budget floor (USD, optional)", profile.budget_floor_usd, "kw_floor")
@@ -325,7 +333,9 @@ def screen_new() -> None:
                 seen = {r.job_key for r in storage().list_proposals(uid)}
                 ss.results = [j.model_dump(mode="json") for j in jobs if j.job_key not in seen][: load_config()["feed"]["max_results"]]
         if ss.get("results"):
-            st.caption("Freelancer.com doesn't share client history, so check the client on the job page before you pick.")
+            n = len(ss["results"])
+            st.markdown(f"**{n} job{'s' if n != 1 else ''} match.** Freelancer.com doesn't share client history, "
+                        "so check the client on the job page before you pick.")
         for i, jd in enumerate(ss.get("results") or []):
             from proposal_v2.contracts import JobPost
 
@@ -337,7 +347,7 @@ def screen_new() -> None:
                 found = ", ".join(f"**{k}** ({where})" for k, where in places)
                 st.markdown(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}  \n🔎 Matches {found}")
                 c1, c2 = st.columns([1, 1])
-                c1.link_button("Open job ↗", j.link)
+                link_or_note(j.link, c1)
                 if c2.button("Pick", key=f"pick{i}"):
                     try:
                         rec = pipe.from_fetched(j)

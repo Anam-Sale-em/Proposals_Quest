@@ -70,3 +70,12 @@ def sample_search(keywords: list[str], exclude: list[str], budget_floor):
     if not keywords:
         raise FetchError("Add at least one keyword.")
     return filter_projects(_freelancer_projects(), keywords, exclude, budget_floor)
+
+
+_SAMPLE_LINK = __import__("re").compile(r"~0100000000000000\d{2}|-9000000\d\b|/9000000\d\b")
+
+
+def is_sample_link(link: str) -> bool:
+    """Sample jobs (T01-T12 and the saved Freelancer.com ones) have made-up links with no live page."""
+    link = (link or "").strip().rstrip("/")
+    return bool(_SAMPLE_LINK.search(link)) or link in {j["link"].rstrip("/") for j in sample_jobs()}
