@@ -1,0 +1,15 @@
+Hi,
+I can build a Python script that pulls the previous day’s Shopify orders into Google Sheets automatically, with duplicate prevention, clear logging, and reliable daily scheduling.
+I’ve built a Shopify-to-PostgreSQL inventory sync using Python and Shopify webhooks, including scheduled reconciliation and change logging. I’ve also built n8n automations that validate incoming data, check for duplicates, and send Slack notifications. This project is a good fit for my experience with API integrations and data synchronization.
+My approach:
+
+* Shopify API: Fetch orders from the previous day using the appropriate date filters and pagination.
+* Google Sheets: Write the order number, date, customer email, items, total, and fulfilment status in the requested columns.
+* Duplicate prevention: Check existing order numbers before inserting new rows, so reruns won’t create duplicate entries.
+* Scheduling: Set up a daily cron job on a server or VPS, or use a scheduled cloud job, depending on your environment.
+* Rate limits: Respect Shopify’s API throttling and retry temporary rate-limit responses using backoff. I’ll also handle pagination and transient errors.
+* Logging: Record the run time, orders fetched, rows added, skipped duplicates, and any errors, so you can verify each run.
+
+I’ll test the script with sample orders, verify that rerunning it doesn’t duplicate existing entries, and provide setup instructions so you can run and maintain it easily.
+I can deliver a focused, reliable solution within your budget. Do you already have a server or cloud environment where the script should run, or would you prefer a recommendation for the simplest setup?
+Best regards

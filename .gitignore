@@ -1,0 +1,19 @@
+# Secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*service-account*.json
+
+# Real data and v1's export never go in the repo
+private/
+
+# App data and logs (eval results and the replay cache ARE committed)
+data/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/

@@ -1,0 +1,80 @@
+{
+  "profile_id": "sample",
+  "label": "Sample profile (synthetic): automation freelancer",
+  "source": "synthetic",
+  "note": "Fictional sample data so anyone can rerun the test set. It is not a real person. Real users keep their own projects in their private workspace.",
+  "work_types": [
+    "workflow automation",
+    "API integrations",
+    "data sync scripts",
+    "LLM-powered automations"
+  ],
+  "skills": [
+    "n8n",
+    "Python",
+    "JavaScript",
+    "REST APIs",
+    "Webhooks",
+    "Google Sheets API",
+    "Slack API",
+    "Shopify API",
+    "PostgreSQL",
+    "Gmail API",
+    "Airtable",
+    "Gemini API"
+  ],
+  "min_hourly_usd": 30,
+  "min_fixed_usd": 200,
+  "projects": [
+    {
+      "id": "P1",
+      "title": "Lead intake automation with n8n",
+      "problem": "Leads from the website's forms were copied into a spreadsheet by hand, with duplicates and slow follow-up.",
+      "what_i_did": "Built an n8n workflow: form webhooks, field validation, a duplicate check by email, a new Google Sheets row and a Slack alert to the sales channel.",
+      "skills": [
+        "n8n",
+        "Webhooks",
+        "Google Sheets API",
+        "Slack API",
+        "JavaScript"
+      ],
+      "result": "Lead entry dropped from about 2 hours a week to under 10 minutes.",
+      "link": null,
+      "role": "solo",
+      "can_name_client": false
+    },
+    {
+      "id": "P2",
+      "title": "Shopify to PostgreSQL inventory sync",
+      "problem": "Stock counts in the store and the warehouse database drifted apart, so items oversold.",
+      "what_i_did": "Wrote a Python service that listens to Shopify inventory webhooks, reconciles counts against PostgreSQL on a schedule and logs every change.",
+      "skills": [
+        "Python",
+        "Shopify API",
+        "Webhooks",
+        "PostgreSQL",
+        "REST APIs"
+      ],
+      "result": "Stock synced every 15 minutes, with no oversold orders in the first month.",
+      "link": null,
+      "role": "solo",
+      "can_name_client": false
+    },
+    {
+      "id": "P3",
+      "title": "Support inbox triage with an LLM",
+      "problem": "A small support team sorted every incoming email by hand.",
+      "what_i_did": "Built a Python job that reads new Gmail messages, classifies them with the Gemini API, writes them to Airtable and leaves low-confidence ones for a person to review.",
+      "skills": [
+        "Python",
+        "Gmail API",
+        "Gemini API",
+        "Airtable"
+      ],
+      "result": "About 300 emails a week sorted into 6 categories; low-confidence ones go to a person.",
+      "link": null,
+      "role": "solo",
+      "can_name_client": false
+    }
+  ]
+}

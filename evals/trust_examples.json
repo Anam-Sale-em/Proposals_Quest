@@ -1,0 +1,315 @@
+{
+  "source": "Sprint plan, client trust score: worked examples. All 16 must pass in code.",
+  "defaults": "Payment verified unless noted. A null field means the page doesn't show it, so its modifier is neutral.",
+  "note": "E13 and E14: the plan doesn't state jobs posted; 31 is used, and any value of 5 or more gives the same score.",
+  "examples": [
+    {
+      "id": "E01",
+      "client": "New, 1 job posted",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": 1,
+        "hire_rate_pct": null,
+        "total_spent_usd": 0,
+        "hires": 0,
+        "active_hires": 0,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 35,
+        "band": "Low"
+      }
+    },
+    {
+      "id": "E02",
+      "client": "New, unverified, 15 jobs posted, 0 hires",
+      "inputs": {
+        "payment_verified": false,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": 15,
+        "hire_rate_pct": 0,
+        "total_spent_usd": 0,
+        "hires": 0,
+        "active_hires": 0,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 10,
+        "band": "Red flag"
+      }
+    },
+    {
+      "id": "E03",
+      "client": "4 hires, $0 spent, none active",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 0,
+        "hires": 4,
+        "active_hires": 0,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 10,
+        "band": "Red flag"
+      }
+    },
+    {
+      "id": "E04",
+      "client": "1 hire, $0 spent, still active, 2-week-old account",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 0,
+        "hires": 1,
+        "active_hires": 1,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 35,
+        "band": "Low"
+      }
+    },
+    {
+      "id": "E05",
+      "client": "2 hires, $0 spent, one still active, 1-year-old account",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 0,
+        "hires": 2,
+        "active_hires": 1,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 35,
+        "band": "Low"
+      }
+    },
+    {
+      "id": "E06",
+      "client": "2 hires, $300",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 300,
+        "hires": 2,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 50,
+        "band": "Medium"
+      }
+    },
+    {
+      "id": "E07",
+      "client": "2 hires, $300, unverified",
+      "inputs": {
+        "payment_verified": false,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 300,
+        "hires": 2,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 35,
+        "band": "Low"
+      }
+    },
+    {
+      "id": "E08",
+      "client": "5 hires, $3,000, no reviews",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": 0,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 3000,
+        "hires": 5,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 66,
+        "band": "High"
+      }
+    },
+    {
+      "id": "E09",
+      "client": "6 hires, $8,000, 4.8 stars (5 reviews), $1,333 per hire; misses the Excellent rule",
+      "inputs": {
+        "payment_verified": true,
+        "rating": 4.8,
+        "reviews": 5,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 8000,
+        "hires": 6,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 79,
+        "band": "High"
+      }
+    },
+    {
+      "id": "E10",
+      "client": "30 hires, $900, 4.5 stars (12 reviews)",
+      "inputs": {
+        "payment_verified": true,
+        "rating": 4.5,
+        "reviews": 12,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 900,
+        "hires": 30,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 48,
+        "band": "Medium"
+      }
+    },
+    {
+      "id": "E11",
+      "client": "12 hires, $25,000, 3.6 stars (15 reviews)",
+      "inputs": {
+        "payment_verified": true,
+        "rating": 3.6,
+        "reviews": 15,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 25000,
+        "hires": 12,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 54,
+        "band": "Medium"
+      }
+    },
+    {
+      "id": "E12",
+      "client": "10 hires, $12,000, unverified, 4.9 stars (10 reviews); unverified cap",
+      "inputs": {
+        "payment_verified": false,
+        "rating": 4.9,
+        "reviews": 10,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": 12000,
+        "hires": 10,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 39,
+        "band": "Low"
+      }
+    },
+    {
+      "id": "E13",
+      "client": "25 hires, $60,000, 4.9 stars (20 reviews), 80% hire rate",
+      "inputs": {
+        "payment_verified": true,
+        "rating": 4.9,
+        "reviews": 20,
+        "jobs_posted": 31,
+        "hire_rate_pct": 80,
+        "total_spent_usd": 60000,
+        "hires": 25,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": 94,
+        "band": "Excellent"
+      }
+    },
+    {
+      "id": "E14",
+      "client": "Same client as E13, but the post says \"let's move to WhatsApp\"",
+      "inputs": {
+        "payment_verified": true,
+        "rating": 4.9,
+        "reviews": 20,
+        "jobs_posted": 31,
+        "hire_rate_pct": 80,
+        "total_spent_usd": 60000,
+        "hires": 25,
+        "active_hires": null,
+        "post_flags": [
+          "off_platform"
+        ]
+      },
+      "expected": {
+        "score": 15,
+        "band": "Red flag"
+      }
+    },
+    {
+      "id": "E15",
+      "client": "Freelancer.com page, payment verified only",
+      "inputs": {
+        "payment_verified": true,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": null,
+        "hires": null,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": null,
+        "band": "Unknown",
+        "coverage": "1 of 6 fields"
+      }
+    },
+    {
+      "id": "E16",
+      "client": "Post with no client box",
+      "inputs": {
+        "payment_verified": null,
+        "rating": null,
+        "reviews": null,
+        "jobs_posted": null,
+        "hire_rate_pct": null,
+        "total_spent_usd": null,
+        "hires": null,
+        "active_hires": null,
+        "post_flags": []
+      },
+      "expected": {
+        "score": null,
+        "band": "Unknown",
+        "coverage": "0 of 6 fields"
+      }
+    }
+  ]
+}

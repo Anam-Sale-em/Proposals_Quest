@@ -1,0 +1,70 @@
+# Proposal Pipeline v2: every threshold and limit lives here.
+# Secrets never go in this file: they live in .env (local) or st.secrets (cloud).
+
+prompt_version = "v2.0.0"
+
+[models]
+# Brief, proposal and revisions: the stronger Flash model.
+draft = "gemini-3.8-flash"
+# Extraction, assessment, claim lists and CV import: the cheap Lite model.
+light = "gemini-3.5-flash-lite"
+# Fallback when Gemini rate-limits or errors. Check Groq's current model list before use.
+fallback = "llama-3.3-70b-versatile"
+# Eval judge: a different model from both drafting candidates, so nothing grades itself.
+judge = "openai/gpt-oss-120b"
+temperature_extract = 0.0
+temperature_draft = 0.4
+
+[rate_limits]
+# Free-tier per-minute limits from AI Studio (21 Oct 2026). The client waits between calls to stay under them.
+"gemini-3.8-flash" = 5
+"gemini-3.5-flash-lite" = 15
+freelancer_api_per_minute = 20
+
+[link_check]
+title_match_threshold = 0.5
+supported_domains = ["upwork.com", "freelancer.com", "guru.com", "fiverr.com", "peopleperhour.com"]
+
+[budget]
+# A fixed budget under this is a placeholder, not a real budget.
+placeholder_floor_usd = 25
+
+[trust]
+# Band cut-offs: a score at or above the value gets the band. Editable in Settings; changes are logged.
+excellent = 80
+high = 60
+medium = 40
+low = 20
+
+[length]
+# Hard platform limits in characters. Verify against each platform before relying on them.
+upwork_chars = 5000
+freelancer_chars = 1500
+fiverr_chars = 1500
+guru_chars = 3000
+peopleperhour_chars = 3000
+default_chars = 3000
+# Target length the prompts aim for.
+proposal_max_words = 230
+questions_first_max_words = 150
+
+[skills]
+# Alias map for skill overlap and the names check: alias = canonical name.
+aliases = { "gsheets" = "google sheets", "google sheets api" = "google sheets", "sheets" = "google sheets", "js" = "javascript", "node" = "node.js", "nodejs" = "node.js", "postgres" = "postgresql", "slack api" = "slack", "gmail api" = "gmail", "shopify api" = "shopify", "rest apis" = "rest api", "api integration" = "rest api", "webhook" = "webhooks", "gemini api" = "gemini", "openai api" = "openai", "rn" = "react native" }
+
+[storage]
+# "json" (local files) or "firestore". Firestore is first to cut.
+backend = "json"
+json_root = "data"
+
+[outcomes]
+still_waiting_days = 7
+
+[feed]
+max_results = 10
+
+[prices]
+# USD per 1M tokens for the cost line in eval summaries. Fill from Google's pricing page;
+# 0 while everything runs on the free tier.
+input_per_m = 0.0
+output_per_m = 0.0

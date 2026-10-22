@@ -1,0 +1,14 @@
+{
+  "id": "T03",
+  "title": "Python script to pull Shopify orders into Google Sheets daily",
+  "source": "synthetic",
+  "note": "Synthetic job written to trigger this test case. The layout approximates the platform's job page; numbers and names are invented.",
+  "platform": "freelancer",
+  "intake": "paste",
+  "pastes": [
+    {
+      "link": "https://www.freelancer.com/projects/python/pull-shopify-orders-into-google-sheets",
+      "job_details": "Python script to pull Shopify orders into Google Sheets daily\n\nBudget $250 – $750 USD\nPaid on delivery\n\nProject details\nI need a Python script that runs once a day, pulls the previous day's orders from my Shopify store through the API, and adds them to a Google Sheet: order number, date, customer email, items, total and fulfilment status. It should skip orders that are already in the sheet and write a short log so I can see it ran.\n\nPlease explain how you would schedule it and how you would handle Shopify API rate limits.\n\nSkills Required\nPython · Shopify · Google Sheets · API\n\nAbout the client\nPayment verified"
+    }
+  ]
+}

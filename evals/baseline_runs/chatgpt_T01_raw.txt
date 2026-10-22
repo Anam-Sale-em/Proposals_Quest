@@ -1,0 +1,7 @@
+Hi,
+I’ve built a similar n8n workflow for lead intake where website form submissions were validated, checked for duplicate emails, added to Google Sheets, and sent to a Slack sales channel. It reduced manual lead entry from about 2 hours a week to under 10 minutes.
+For your workflow, I’d connect both Typeform forms to n8n, normalize and validate each email, and check Google Sheets for an existing matching email before inserting anything. If a match exists, the workflow will skip the duplicate; otherwise, it will add the name, email, company, form name, and timestamp, then send a concise Slack notification with a direct link to the new row.
+I’d also add error handling so failures trigger an email with the failed step and relevant execution details. Since your n8n instance is self-hosted, I’ll work with your existing setup and test both forms, duplicate submissions, and failure scenarios before handing it over.
+My focus would be to make the workflow reliable, easy to maintain, and straightforward to troubleshoot.
+I can get started once I have access to your existing n8n instance, Typeform forms, Google Sheet, and Slack channel.
+Best regards

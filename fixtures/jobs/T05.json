@@ -1,0 +1,14 @@
+{
+  "id": "T05",
+  "title": "Daily Airtable digest to Slack with n8n or Make",
+  "source": "synthetic",
+  "note": "Synthetic job written to trigger this test case. The layout approximates the platform's job page; numbers and names are invented.",
+  "platform": "upwork",
+  "intake": "paste",
+  "pastes": [
+    {
+      "link": "https://www.upwork.com/jobs/Daily-Airtable-digest-Slack-n8n-Make_~010000000000000005/",
+      "job_details": "Daily Airtable digest to Slack with n8n or Make\n\nPosted 3 hours ago · Worldwide\n\nEvery morning our ops lead opens Airtable, filters yesterday's new orders and pastes a summary into Slack. We want this automated with n8n (preferred) or Make.\n\nThe digest should list yesterday's new orders, their total value and any order marked \"urgent\". It should post at 8:00 in #ops and skip weekends.\n\nStart your proposal with the words \"blue whale\" so I know you read this. Proposals without it will be ignored.\n\nHourly: $30.00 – $50.00\nIntermediate\nLess than 1 month\n\nSkills and expertise: n8n · Airtable · Slack · Automation\n\nAbout the client\nPayment method verified\n4.6 of 5 reviews\nUnited Kingdom\n7 jobs posted\n71% hire rate, 1 open job\n$3.1K total spent\n5 hires, 1 active\nMember since Sep 9, 2023"
+    }
+  ]
+}

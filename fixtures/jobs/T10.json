@@ -1,0 +1,14 @@
+{
+  "id": "T10",
+  "title": "Weekly PDF sales report from Google Sheets",
+  "source": "synthetic",
+  "note": "Synthetic job written to trigger this test case. The layout approximates the platform's job page; numbers and names are invented.",
+  "platform": "upwork",
+  "intake": "paste",
+  "pastes": [
+    {
+      "link": "https://www.upwork.com/jobs/Weekly-PDF-sales-report-Google-Sheets_~010000000000000010/",
+      "job_details": "Weekly PDF sales report from Google Sheets\n\nPosted 2 hours ago · Worldwide\n\nEvery Monday we build a sales report by hand from our Google Sheet. We want it automated: pull last week's numbers, build a 2-page PDF with a chart, and email it to 4 managers.\n\nTo speed things up, let's move to WhatsApp. Message me on WhatsApp before applying and I'll share the full details and a test sheet there.\n\nFixed price: $600.00\nIntermediate\nLess than 1 month\n\nSkills and expertise: Google Sheets · Python · Automation\n\nAbout the client\nPayment method verified\n4.9 of 20 reviews\nUnited States\n31 jobs posted\n80% hire rate, 2 open jobs\n$60K total spent\n25 hires, 2 active\nMember since May 7, 2019"
+    }
+  ]
+}

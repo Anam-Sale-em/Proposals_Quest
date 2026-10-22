@@ -1,0 +1,14 @@
+{
+  "id": "T07",
+  "title": "Fix my n8n workflow: Google Sheets node fails on large batches",
+  "source": "synthetic",
+  "note": "Synthetic job written to trigger this test case. The layout approximates the platform's job page; numbers and names are invented.",
+  "platform": "upwork",
+  "intake": "paste",
+  "pastes": [
+    {
+      "link": "https://www.upwork.com/jobs/Fix-n8n-workflow-Google-Sheets-node-fails-large-batches_~010000000000000007/",
+      "job_details": "Skip to main content\nFind work   Deliver work   Manage finances   Messages\nSearch for jobs\nBack to search results\n\nFix my n8n workflow: Google Sheets node fails on large batches\n\nPosted 40 minutes ago · Worldwide\n\nOur n8n workflow imports a CSV of about 5,000 rows each night and appends them to a Google Sheet. It worked for months, but now the Google Sheets node fails partway with \"429 Too Many Requests\" and we end up with half the rows. We need someone to fix it so the full file lands every night, with retries and a Slack message if it still fails.\n\nFixed price: $250.00\nExpert\nLess than 1 month\n\nSkills and expertise: n8n · Google Sheets · API Integration\n\nActivity on this job\nProposals: 5 to 10\nLast viewed by client: 12 minutes ago\nInterviewing: 0\nInvites sent: 0\n\nAbout the client\nPayment method verified\n4.7 of 6 reviews\nAustralia\n10 jobs posted\n60% hire rate, 2 open jobs\n$2.6K total spent\n6 hires, 0 active\nMember since Nov 21, 2022\n\nOther open jobs by this client\nMonthly Xero to Google Sheets export (fixed price)\n\nSimilar jobs\nZapier expert for CRM cleanup\nFixed price: $1,200 · Expert\nAbout the client: Payment method verified · 5.0 of 31 reviews · $85K total spent · 40 hires\nMake.com scenario for Shopify orders\nHourly: $15.00 – $20.00 · Entry level\nAbout the client: Payment method not verified · $0 total spent · 0 hires\n\nAbout   Help   Terms of service   Privacy policy   Cookie settings\n© 2026 All rights reserved."
+    }
+  ]
+}

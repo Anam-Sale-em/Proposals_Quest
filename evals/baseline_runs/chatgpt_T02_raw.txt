@@ -1,0 +1,20 @@
+Hi,
+I can build a reliable two-way sync between HubSpot and your PostgreSQL users table, with changes flowing in both directions and conflicts logged for easy debugging.
+I’ve built a similar Shopify-to-PostgreSQL inventory sync using Python, webhooks, scheduled reconciliation, and change logging. I also built an n8n lead intake workflow that validates incoming data, checks for duplicates, and sends updates to Google Sheets and Slack. The same integration principles apply here.
+For your setup, I’d approach it by:
+
+* PostgreSQL → HubSpot: Detect new signups and push contact updates to HubSpot within 5 minutes.
+* HubSpot → PostgreSQL: Capture contact edits, including lifecycle stage changes, and write the relevant updates back to your database.
+* Conflict handling: Compare update timestamps, apply the most recent change, and log conflicts with enough detail to investigate them.
+* Reliability: Handle API errors, retries, duplicate events, and pagination, with scheduled reconciliation to catch missed updates.
+* Handoff: Deploy the service on your server and provide a concise README covering configuration, environment variables, deployment, and troubleshooting.
+
+I’d use Python with HubSpot’s API and PostgreSQL, keeping the service modular and straightforward for your developer to maintain.
+My fixed-price proposal is $800, with the timeline and deployment details confirmed after reviewing your existing schema and HubSpot setup.
+A couple of questions before starting:
+
+1. Does your PostgreSQL `users` table already have a HubSpot contact ID and an `updated_at` timestamp?
+2. Can I use HubSpot webhooks for change detection, or would you prefer a polling-based approach?
+
+I can start by reviewing the existing data structure and mapping the fields before implementing the sync.
+Best regards
