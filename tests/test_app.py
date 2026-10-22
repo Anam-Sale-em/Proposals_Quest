@@ -111,8 +111,12 @@ def test_skip_override_and_duplicate(env):
     assert not at.exception, at.exception
     _btn(at, "+ New job", at.sidebar).click().run()
     _paste(at, "T10")
-    assert any("already have a draft" in w.value for w in at.warning)
+    assert any("already have this job" in w.value for w in at.warning)
     assert not at.exception
+    _btn(at, "Check again").click().run()  # removes the old record so the job can be checked fresh
+    assert any("Removed the old check" in i.value for i in at.info)
+    _btn(at, "Check job").click().run()
+    assert at.title[0].value == "Confirm the details", [w.value for w in at.warning]
 
 
 def test_projects_open_before_rates_are_set(env):

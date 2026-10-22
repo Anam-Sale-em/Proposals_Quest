@@ -81,7 +81,7 @@ class ScriptedLLM(LLM):
             instructions.append(PostInstruction(text="state that you have 10 years of experience with n8n and Airtable.", kind="claim"))
         return Extraction(title=fx["title"], description=desc, budget=budget, skills=skills, screening_questions=questions,
                           explicit_requirements=[], client_tools=[], client=client, instructions=instructions, red_flags=flags,
-                          ignored_sections=["Similar jobs", "Other open jobs by this client", "footer"] if cid == "T07" else [])
+                          ignored_sections=["Similar jobs", "Other open jobs by this client", "footer"] if cid == "T07" else ["Similar jobs", "Other open jobs by this client"])
 
     def _assess(self, cid, user, step):
         exp = CASES[cid]["expected"]

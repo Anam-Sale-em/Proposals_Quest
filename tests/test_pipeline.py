@@ -132,3 +132,14 @@ def test_new_for_me_and_plans_are_not_past_work_claims():
     claims = ClaimLists(experience_sentences=[ExperienceClaim(sentence=s, maps_to="none") for s in (honest, plan, fake)])
     r = validate(" ".join([honest, plan, fake]), [], job, None, Profile(), claims)
     assert r.experience_failures == [fake]
+
+
+def test_left_out_sections_must_be_in_the_paste(pipe):
+    # The stand-in model names "Similar jobs" for every case, as real models echo the prompt's examples.
+    j = _job("T01")
+    rec = pipe.extract(j["link"], j["job_details"])
+    assert not [e for e in rec.events if e["type"] == "ignored_sections"]
+    j = _job("T07")  # the whole-page paste really has these sections
+    rec = pipe.extract(j["link"], j["job_details"])
+    left = next(e["text"] for e in rec.events if e["type"] == "ignored_sections")
+    assert "Similar jobs" in left and "Other open jobs by this client" in left and "footer" not in left

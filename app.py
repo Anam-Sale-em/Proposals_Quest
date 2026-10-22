@@ -211,6 +211,14 @@ def open_job_button(rec: ProposalRecord, where=st) -> None:
     link_or_note(rec.job.link, where)
 
 
+LINK_STATUS = {
+    "Matched": "Matched: the link's title matches the post",
+    "Warned": "Warned: the link's title doesn't match the post",
+    "Unchecked": "Not checked: this link has no job title in it to compare (normal for Upwork ID links)",
+    "Fetched": "Fetched straight from Freelancer.com",
+}
+
+
 def md(text: str, where=st) -> None:
     """Markdown with dollar signs kept literal (Streamlit reads $...$ as maths)."""
     where.markdown(text.replace("$", "\\$"))
@@ -251,13 +259,14 @@ if is_sample and not storage().get_profile(uid):
 def screen_new() -> None:
     st.title("New job")
     if ss.get("duplicate"):
-        st.warning("You already have a draft for this job: open it, or regenerate as a new version.")
-        c1, c2, c3 = st.columns(3)
+        st.warning("You already have this job. Open it, write a new version of the proposal, or check it again "
+                   "from scratch with the latest rules.")
+        c1, c2, c3, c4 = st.columns(4)
         if c1.button("Open"):
             k, ss.duplicate = ss.duplicate, None
             rec = storage().get_proposal(uid, k)
             go("draft" if rec and rec.versions else "card", k)
-        if c2.button("Regenerate as a new version"):
+        if c2.button("New version"):
             k, ss.duplicate = ss.duplicate, None
             rec = storage().get_proposal(uid, k)
             if rec and rec.decision:
@@ -265,9 +274,17 @@ def screen_new() -> None:
                     go("card", k)
                 if run(pipe.write, rec):
                     go("draft", k)
-        if c3.button("Dismiss"):
+        existing = storage().get_proposal(uid, ss.duplicate)
+        if existing and existing.status != "sent" and c3.button("Check again"):
+            storage().delete_proposal(uid, ss.duplicate)
+            ss.duplicate = None
+            ss.flash_new = "Removed the old check. Click Check job (or Fetch job) again to check it with the latest rules."
+            st.rerun()
+        if c4.button("Dismiss"):
             ss.duplicate = None
             st.rerun()
+    if ss.get("flash_new"):
+        st.info(ss.pop("flash_new"))
     # Stored outside the widget, because Streamlit drops a widget's value once it leaves the page.
     ss.fit_choice = st.checkbox("Check if this job is a good fit first", value=ss.get("fit_choice", True), key="check_fit",
                 help="Checks the client, the budget and the fit, then recommends Apply, Apply with questions or Skip. "
@@ -380,10 +397,10 @@ def screen_confirm() -> None:
         proceed_ok = proceed.checkbox("Proceed anyway")
     else:
         proceed_ok = True
-        st.caption(f"Link check: {job.link_status}")
+        st.caption(f"Link check: {LINK_STATUS.get(job.link_status, job.link_status)}")
     left_out = next((e["text"] for e in rec.events if e["type"] == "ignored_sections"), [])
     if left_out:
-        st.caption("Left out of the paste: " + ", ".join(left_out))
+        st.caption("Ignored, not part of this job's post: " + ", ".join(left_out))
 
     title = st.text_input("Title *", job.title)
     desc = st.text_area("Description *", job.description, height=200)
@@ -507,7 +524,7 @@ def screen_card() -> None:
                         f"- Proof in your projects: {yn(f.proof)}  \n- Realistic for the budget: {yn(f.realistic)}. {f.reasons.get('realistic', '')}  \n"
                         f"- Clear enough to plan: {yn(f.clear)}. {f.reasons.get('clear', '')}")
             md(f"**Skill tags:** {f.skill_overlap}")
-        st.markdown(f"**Link check:** {rec.job.link_status}")
+        st.markdown(f"**Link check:** {LINK_STATUS.get(rec.job.link_status, rec.job.link_status)}")
 
 
 def screen_draft() -> None:

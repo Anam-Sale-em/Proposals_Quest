@@ -71,6 +71,8 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 48 | Second design pass: deep-harbor sidebar with a brand mark and a menu-style nav, each page on one white sheet, tabs as a segmented control, tinted cards and metrics, Streamlit's own toolbar hidden | Me (still looked basic) | Yes | The app should feel calm and dependable to a non-developer on first open |
 | 49 | Sample workspace: the Freelancer.com link tab offers a saved sample job, and the search tab searches 4 saved sample jobs with the same filters as the live search. A real link still fetches live there; My workspace always searches live | Me (the two tabs had nothing to try) | Yes | Every tab can be tried without a real job, and the demo doesn't depend on what's live that day |
 | 50 | Prompts get the budget in plain words from the confirmed fields, and the realistic check judges an hourly rate as a rate (prompt v2.0.3); Details keeps dollar signs literal; the skill line names the missing tags | Me (spotted on a real job); Claude (fix) | Yes | A $40–$150/hour job was called unrealistic for a $150 total (F6) |
+| 51 | A duplicate job can be checked again from scratch with the latest rules (not once it's marked as sent, so the sent log stays intact) | Me (an old check kept showing after a fix) | Yes | A saved check keeps the answer it got when it ran; after a fix there was no way to rerun it |
+| 52 | "Ignored" sections are shown only when they are really in the paste, and the link check is explained in words (Unchecked = the link has no title to compare) | Me (spotted on a real job) | Yes | The model listed "Similar jobs" from the prompt's own examples on a paste that had none |
 
 ## To verify by hand
 

@@ -92,8 +92,10 @@ class Pipeline:
             rec.events.append({"at": now_iso(), "type": "ignored_ai_instruction", "text": [i.text for i in ignored]})
         if refused:
             rec.events.append({"at": now_iso(), "type": "refused_claim_instruction", "text": [i.text for i in refused]})
-        if ex.ignored_sections:
-            rec.events.append({"at": now_iso(), "type": "ignored_sections", "text": ex.ignored_sections})
+        # Keep only sections that really are in the paste: models tend to echo the prompt's examples.
+        seen = [sec for sec in ex.ignored_sections if sec.strip() and sec.strip().lower() in job_details.lower()]
+        if seen:
+            rec.events.append({"at": now_iso(), "type": "ignored_sections", "text": seen})
         return rec
 
     def from_fetched(self, job: JobPost) -> ProposalRecord:

@@ -24,6 +24,7 @@ class Storage(Protocol):
     def get_proposal(self, uid: str, job_key: str) -> Optional[ProposalRecord]: ...
     def put_proposal(self, rec: ProposalRecord) -> None: ...
     def list_proposals(self, uid: str) -> list[ProposalRecord]: ...
+    def delete_proposal(self, uid: str, job_key: str) -> None: ...
     def get_projects(self, uid: str) -> list[Project]: ...
     def put_project(self, uid: str, p: Project) -> None: ...
     def delete_project(self, uid: str, project_id: str) -> None: ...
@@ -57,6 +58,9 @@ class JsonStorage:
 
     def put_proposal(self, rec):
         self._write(self._p(rec.uid, "proposals", doc_id(rec.job_key) + ".json"), rec.model_dump(mode="json"))
+
+    def delete_proposal(self, uid, job_key):
+        self._p(uid, "proposals", doc_id(job_key) + ".json").unlink(missing_ok=True)
 
     def list_proposals(self, uid):
         folder = self._p(uid, "proposals")
@@ -137,6 +141,9 @@ class FirestoreStorage:
 
     def put_proposal(self, rec):
         self._u(rec.uid).collection("proposals").document(doc_id(rec.job_key)).set(rec.model_dump(mode="json"))
+
+    def delete_proposal(self, uid, job_key):
+        self._u(uid).collection("proposals").document(doc_id(job_key)).delete()
 
     def list_proposals(self, uid):
         recs = [ProposalRecord.model_validate(d.to_dict()) for d in self._u(uid).collection("proposals").stream()]
