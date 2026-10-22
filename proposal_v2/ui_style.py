@@ -36,6 +36,8 @@ CSS = """
 /* Streamlit chrome off: no Deploy button, menu or footer */
 header[data-testid="stHeader"] { background: transparent; }
 [data-testid="stToolbar"], [data-testid="stDecoration"], #MainMenu, footer { display: none !important; }
+/* No link icon next to headings */
+[data-testid="stHeaderActionElements"], .stApp h1 a, .stApp h2 a, .stApp h3 a { display: none !important; }
 
 /* The page sits on one white sheet */
 .block-container {
