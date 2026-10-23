@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "text": "I can help you build a reliable two-way sync between HubSpot and your PostgreSQL users table so your sales team and database stay aligned. My goal is to ensure new signups appear in HubSpot promptly and lifecycle stage edits flow back accurately.\n\nHere is my initial plan:\n1. Kick off the project and set up API credentials for PostgreSQL.\n2. Implement the signup listener to push new users.\n\nDifferent domain, same core work: in Shopify to PostgreSQL inventory sync I used Python, PostgreSQL, Webhooks, and REST APIs to reconcile counts and log changes, resulting in stock synced every 15 minutes, with no oversold orders in the first month.\n\nWhat server environment should the script run on?\n\nIf this sounds good, let's discuss the full plan covering conflict resolution, audit logging, and the deployment README.",
+  "screening_answers": []
+ }
+}

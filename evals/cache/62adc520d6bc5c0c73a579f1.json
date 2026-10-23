@@ -1,0 +1,54 @@
+{
+ "step": "extract",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "title": "Daily Airtable digest to Slack with n8n or Make",
+  "description": "Every morning our ops lead opens Airtable, filters yesterday's new orders and pastes a summary into Slack. We want this automated with n8n (preferred) or Make.\n\nThe digest should list yesterday's new orders, their total value and any order marked \"urgent\". It should post at 8:00 in #ops and skip weekends.\n\nStart your proposal with the words \"blue whale\" so I know you read this. Proposals without it will be ignored.",
+  "budget": {
+   "kind": "hourly",
+   "amount_usd": null,
+   "min_usd": 30.0,
+   "max_usd": 50.0,
+   "approximate": false,
+   "raw_text": "$30.00 \u2013 $50.00"
+  },
+  "skills": [
+   "n8n",
+   "Airtable",
+   "Slack",
+   "Automation"
+  ],
+  "screening_questions": [],
+  "explicit_requirements": [],
+  "client_tools": [],
+  "client": {
+   "payment_verified": true,
+   "rating": 4.6,
+   "reviews": 5,
+   "jobs_posted": 7,
+   "hire_rate_pct": 71.0,
+   "total_spent_usd": 3100.0,
+   "total_spent_approximate": true,
+   "hires": 5,
+   "active_hires": 1
+  },
+  "instructions": [
+   {
+    "text": "Start your proposal with the words \"blue whale\" so I know you read this.",
+    "kind": "format",
+    "check": "starts_with",
+    "value": "blue whale"
+   }
+  ],
+  "red_flags": [],
+  "ignored_sections": [
+   "Similar jobs",
+   "Other open jobs by this client",
+   "Recommended jobs",
+   "Footer",
+   "Navigation"
+  ]
+ }
+}

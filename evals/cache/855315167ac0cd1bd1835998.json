@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Shopify API, and Google Sheets API.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a data sync script, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250 to $750 is realistic for a simple daily data sync script.",
+  "clear_yes": true,
+  "clear_reason": "The post has clear steps to fetch Shopify orders via API, check for duplicates in Google Sheets, and append them.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data integration and deduplication into Google Sheets, but uses n8n instead of a standalone Python script and a form instead of Shopify."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and Shopify API to sync records, though the target is PostgreSQL instead of Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It is a Python script dealing with emails and Airtable rather than Shopify and Google Sheets."
+   }
+  ]
+ }
+}

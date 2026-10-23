@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has general automation and API integration skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation and API integrations match the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so it is assumed realistic.",
+  "clear_yes": false,
+  "clear_reason": "The post lacks specifics on which tools to connect, preventing a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "This project is not referenced in the job post."
+   },
+   {
+    "project_id": "P2",
+    "label": "not_relevant",
+    "reason": "This project is not referenced in the job post."
+   },
+   {
+    "project_id": "P3",
+    "label": "not_relevant",
+    "reason": "This project is not referenced in the job post."
+   }
+  ]
+ }
+}

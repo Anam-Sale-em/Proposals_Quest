@@ -1,0 +1,49 @@
+{
+ "step": "extract",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "title": "Build an n8n workflow: Typeform \u2192 Google Sheets \u2192 Slack, with duplicate check",
+  "description": "We collect demo requests through two Typeform forms. Right now someone copies each response into our Google Sheet and posts it in Slack by hand, and we keep getting duplicates when people submit twice.\n\nWe need an n8n workflow (we already self-host n8n) that:\n- Triggers on new responses from both Typeform forms\n- Checks the Sheet for an existing row with the same email and skips duplicates\n- Adds a new row with name, email, company, form name and timestamp\n- Posts a short message to our #sales Slack channel with a link to the row\n- Emails us if any step fails\n\nPlease share a similar workflow you've built and tell us how you'd handle duplicates.",
+  "budget": {
+   "kind": "hourly",
+   "amount_usd": null,
+   "min_usd": 25.0,
+   "max_usd": 40.0,
+   "approximate": false,
+   "raw_text": "$25.00 \u2013 $40.00"
+  },
+  "skills": [
+   "n8n",
+   "Google Sheets",
+   "Slack",
+   "Typeform",
+   "API Integration"
+  ],
+  "screening_questions": [],
+  "explicit_requirements": [
+   "share a similar workflow you've built",
+   "tell us how you'd handle duplicates"
+  ],
+  "client_tools": [],
+  "client": {
+   "payment_verified": true,
+   "rating": 4.6,
+   "reviews": 4,
+   "jobs_posted": 9,
+   "hire_rate_pct": 67.0,
+   "total_spent_usd": 4200.0,
+   "total_spent_approximate": true,
+   "hires": 6,
+   "active_hires": 2
+  },
+  "instructions": [],
+  "red_flags": [],
+  "ignored_sections": [
+   "Similar jobs",
+   "Other open jobs by this client",
+   "Footer"
+  ]
+ }
+}

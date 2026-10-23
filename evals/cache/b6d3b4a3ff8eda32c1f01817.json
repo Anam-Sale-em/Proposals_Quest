@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has strong n8n and workflow automation experience which covers the core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation matches the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $450 is reasonable for migrating six straightforward workflows.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear 3-step plan: rebuild the Zaps in n8n, test them, and hand over a short documentation.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involves n8n webhooks, Google Sheets, and Slack alerts which matches the workflow migration tasks."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It uses overlapping technical skills like webhooks and APIs, but applies them to inventory sync rather than general workflow migration."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "It uses related API integration skills but involves a different tool and domain."
+   }
+  ]
+ }
+}

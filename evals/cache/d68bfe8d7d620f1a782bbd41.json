@@ -1,0 +1,100 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "goal": "Two-way sync of contacts between HubSpot and our PostgreSQL users table, ensuring new signups appear in HubSpot within 5 minutes and changes to lifecycle stage in HubSpot are written back to PostgreSQL, with conflict handling and a deployment README.",
+  "plan": [
+   {
+    "step": "Kickoff and API credential setup for HubSpot and PostgreSQL",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "PostgreSQL",
+     "HubSpot API"
+    ]
+   },
+   {
+    "step": "Implement signup listener to push new PostgreSQL users to HubSpot within 5 minutes",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "PostgreSQL",
+     "HubSpot API",
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Implement HubSpot webhook or polling to write lifecycle stage changes back to PostgreSQL",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "PostgreSQL",
+     "HubSpot API",
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Implement last-update-wins conflict resolution and conflict logging, plus server deployment and README",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "PostgreSQL"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Core sync logic for new signups and HubSpot lifecycle stage write-backs",
+    "budget_share": "$500"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Conflict resolution, audit logging, server deployment script, and README",
+    "budget_share": "$300"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and API credential setup for HubSpot and PostgreSQL",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement signup listener to push new PostgreSQL users to HubSpot within 5 minutes",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement HubSpot webhook or polling to write lifecycle stage changes back to PostgreSQL",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement last-update-wins conflict resolution and conflict logging, plus server deployment and README",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Fixed budget of $800 may be tight for complex two-way sync edge cases and rate limits.",
+    "mitigation": "Focus scope strictly on the user table, new signups, and lifecycle stage changes as outlined."
+   },
+   {
+    "risk": "Clock skew between servers could impact the most-recent-update-wins conflict resolution.",
+    "mitigation": "Use server-side timestamps from the database or HubSpot API audit fields rather than local generation times."
+   }
+  ],
+  "questions": [
+   "What server environment should the script run on?",
+   "How many contacts are currently in the PostgreSQL users table and HubSpot?"
+  ],
+  "assumptions": [
+   "The client will provide sandbox or API access to both HubSpot and PostgreSQL.",
+   "The budget of $800 covers the complete development, testing, and deployment README."
+  ]
+ }
+}

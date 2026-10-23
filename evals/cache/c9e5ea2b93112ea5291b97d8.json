@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hi, I can help you build a reliable two-way contact sync between your PostgreSQL users table and HubSpot using Python, REST APIs, and Webhooks. My goal is to keep your sales team and database aligned seamlessly. Here is my plan: \n\n1. Kickoff and API authentication setup for HubSpot and PostgreSQL.\n2. Implement one-way signup sync from PostgreSQL to HubSpot for fast appearance.\n3. Implement write-back sync for HubSpot lifecycle stage changes to PostgreSQL.\n\nDifferent domain, same core work: in Shopify to PostgreSQL inventory sync I used Python, PostgreSQL, Webhooks, and REST APIs to sync stock every 15 minutes, with no oversold orders in the first month. \n\nWhat specific hosting environment or server OS will the synchronization script be deployed to? \n\nLet's discuss the full plan in chat.",
+  "screening_answers": []
+ }
+}

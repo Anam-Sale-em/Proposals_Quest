@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The freelancer's skills are in software development and automation, not graphic design.",
+  "work_type_yes": false,
+  "work_type_reason": "Logo design is not one of the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget is adequate for a basic logo design task.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be derived directly from the post.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "This is a lead intake workflow automation."
+   },
+   {
+    "project_id": "P2",
+    "label": "not_relevant",
+    "reason": "This is a backend inventory sync service."
+   },
+   {
+    "project_id": "P3",
+    "label": "not_relevant",
+    "reason": "This is an LLM-based support inbox triage tool."
+   }
+  ]
+ }
+}

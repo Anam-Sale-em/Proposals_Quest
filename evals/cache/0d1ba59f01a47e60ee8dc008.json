@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python, Shopify API, and Google Sheets API skills.",
+  "work_type_yes": true,
+  "work_type_reason": "This is a data sync script, which matches the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed price budget of $250-$750 is reasonable for a simple daily data sync script.",
+  "clear_yes": true,
+  "clear_reason": "A concrete 3-step plan can be written: authenticate with Shopify and Google Sheets APIs, fetch previous day's orders with rate limit handling, and append missing rows to the sheet.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "P1 is an n8n lead intake workflow rather than a Python Shopify orders script."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "P2 uses Python, Shopify API, and webhooks/syncing, but deals with inventory and PostgreSQL instead of orders and Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "label": "not_relevant",
+    "reason": "P3 is an LLM email triage script using Gmail and Airtable."
+   }
+  ]
+ }
+}

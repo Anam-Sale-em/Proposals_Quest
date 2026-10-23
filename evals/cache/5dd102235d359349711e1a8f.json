@@ -1,0 +1,105 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an n8n workflow that triggers on new responses from two Typeform forms, checks the Google Sheet for existing rows with the same email to skip duplicates, adds a new row with name, email, company, form name and timestamp, posts a message to a Slack channel with a link to the row, and emails if any step fails.",
+  "plan": [
+   {
+    "step": "Kickoff and connection setup for Typeform, Google Sheets, Slack, and error handling",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Typeform",
+     "Google Sheets",
+     "Slack",
+     "Gmail"
+    ]
+   },
+   {
+    "step": "Configure Typeform webhooks to trigger the n8n workflow for both forms",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Typeform"
+    ]
+   },
+   {
+    "step": "Implement duplicate check logic by email against the Google Sheet and add new row if unique",
+    "tools": [
+     "n8n",
+     "Google Sheets API"
+    ],
+    "suggested_tools": [
+     "Google Sheets"
+    ]
+   },
+   {
+    "step": "Configure Slack notification message with a link to the added row and set up error email alerts",
+    "tools": [
+     "n8n",
+     "Slack API"
+    ],
+    "suggested_tools": [
+     "Slack",
+     "Gmail"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Workflow Setup and Duplicate Logic",
+    "deliverable": "Configured n8n triggers for both Typeform forms and duplicate checking logic against Google Sheets.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2: Notifications and Error Handling",
+    "deliverable": "Completed Slack notifications with row links and error email alerts, fully tested.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and connection setup for Typeform, Google Sheets, Slack, and error handling",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Configure Typeform webhooks to trigger the n8n workflow for both forms",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement duplicate check logic by email against the Google Sheet and add new row if unique",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Configure Slack notification message with a link to the added row and set up error email alerts",
+    "project_id": "P1",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Typeform payload structure might change or differ between the two forms.",
+    "mitigation": "Map and normalize the data fields early during the workflow setup phase."
+   },
+   {
+    "risk": "Self-hosted n8n instance might have network or webhook accessibility issues.",
+    "mitigation": "Verify webhook URLs and access permissions on the self-hosted n8n instance prior to testing."
+   }
+  ],
+  "questions": [
+   "What email service or node do you prefer for failure notifications?",
+   "Are there specific formatting rules for the Slack message besides including a link to the row?"
+  ],
+  "assumptions": [
+   "The client's self-hosted n8n instance is fully accessible and running.",
+   "Google Sheet access permissions and credentials for n8n are already configured or ready to be shared."
+  ]
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "text": "Your goal is to build a Python script that runs once a day, pulls the previous day's orders from your Shopify store through the API, and adds them to a Google Sheet including order number, date, customer email, items, total, and fulfilment status, while skipping duplicate orders and writing a run log.\n\nHere is my initial plan:\n1. Kickoff and requirements verification for Shopify and Google Sheets integration parameters.\n2. Develop the Python script to fetch previous day orders from Shopify API and append them to Google Sheets with duplicate checking.\n\nDifferent domain, same core work: in Shopify to PostgreSQL inventory sync I used Python, Shopify API, Webhooks, PostgreSQL, and REST APIs to achieve stock synced every 15 minutes, with no oversold orders in the first month.\n\nWhere will the Python script be hosted to run daily?\n\nReady to discuss the full plan for the call.",
+  "screening_answers": []
+ }
+}

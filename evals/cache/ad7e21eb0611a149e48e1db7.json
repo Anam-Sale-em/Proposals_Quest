@@ -1,0 +1,108 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "goal": "Automate the daily Airtable digest to Slack using n8n or Make, listing yesterday's new orders, their total value, and any order marked urgent, posting at 8:00 in #ops and skipping weekends.",
+  "plan": [
+   {
+    "step": "Kickoff and access review to connect Airtable and Slack accounts with n8n",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Airtable",
+     "Slack"
+    ]
+   },
+   {
+    "step": "Build the scheduled trigger for 8:00 AM, configured to skip weekends",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Create the query logic to filter yesterday's new orders from Airtable, calculate total value, and isolate urgent orders",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Airtable"
+    ]
+   },
+   {
+    "step": "Format the message summary and set up the Slack integration to post into the #ops channel",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Slack"
+    ]
+   },
+   {
+    "step": "Test the workflow end-to-end and hand over the completed n8n automation",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Workflow Setup & Filtering",
+    "deliverable": "Configured n8n schedule, Airtable data filter for yesterday's orders, and weekend skip logic.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2: Slack Integration & Testing",
+    "deliverable": "Formatted summary message posting to #ops with order totals and urgent flags, fully tested.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and access review to connect Airtable and Slack accounts with n8n",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build the scheduled trigger for 8:00 AM, configured to skip weekends",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Create the query logic to filter yesterday's new orders from Airtable, calculate total value, and isolate urgent orders",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Format the message summary and set up the Slack integration to post into the #ops channel",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Test the workflow end-to-end and hand over the completed n8n automation",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Airtable view or table schema changes could break the filter logic.",
+    "mitigation": "Use robust field names and explicit filter parameters in the n8n Airtable node."
+   },
+   {
+    "risk": "Timezone discrepancies between the server running n8n and the operations team.",
+    "mitigation": "Explicitly define the timezone in the n8n schedule trigger to ensure it posts exactly at 8:00 AM local time."
+   }
+  ],
+  "questions": [
+   "What is the exact name of the table and fields in Airtable that store the order date, order value, and urgent status?",
+   "Should the workflow use n8n Cloud or a self-hosted instance?"
+  ],
+  "assumptions": [
+   "The client prefers n8n over Make as stated in the description.",
+   "The client will provide access credentials for Airtable and Slack.",
+   "Budget is paid hourly at $30-$50 per hour."
+  ]
+ }
+}

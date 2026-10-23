@@ -1,0 +1,93 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "goal": "Connect a few tools using automation",
+  "plan": [
+   {
+    "step": "Kickoff and requirements gathering to identify the tools that need to be connected.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Design the workflow architecture and data mapping between the identified tools.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Build and test the automation workflow and API integrations.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python",
+     "REST APIs"
+    ]
+   },
+   {
+    "step": "Final review, deployment, and handover of the automated system.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Discovery and Design",
+    "deliverable": "Architecture plan and confirmed tool list",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Build and Delivery",
+    "deliverable": "Working automation workflow",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements gathering to identify the tools that need to be connected.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Design the workflow architecture and data mapping between the identified tools.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build and test the automation workflow and API integrations.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Final review, deployment, and handover of the automated system.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The stated budget of $5 is extremely low for custom automation work.",
+    "mitigation": "Discuss the scope and adjust the budget to reflect the actual requirements during the initial consultation."
+   },
+   {
+    "risk": "Tool details are not specified in the job post, leading to unknown integration complexity.",
+    "mitigation": "Require a complete list of tools and desired triggers/actions before starting implementation."
+   }
+  ],
+  "questions": [
+   "What specific tools and applications do you need to connect?",
+   "What is the expected trigger and desired outcome for the automation?"
+  ],
+  "assumptions": [
+   "The client has admin access to the tools that need to be connected.",
+   "The budget will be renegotiated after the exact scope and tools are revealed."
+  ]
+ }
+}

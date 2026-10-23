@@ -1,0 +1,39 @@
+{
+ "step": "extract",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "title": "Automation help needed",
+  "description": "Need someone good with automation to connect a few of our tools. Will share the details with the right person.",
+  "budget": {
+   "kind": "fixed",
+   "amount_usd": 5.0,
+   "min_usd": null,
+   "max_usd": null,
+   "approximate": false,
+   "raw_text": "$5.00"
+  },
+  "skills": [
+   "Automation",
+   "API Integration"
+  ],
+  "screening_questions": [],
+  "explicit_requirements": [],
+  "client_tools": [],
+  "client": {
+   "payment_verified": true,
+   "rating": null,
+   "reviews": null,
+   "jobs_posted": 3,
+   "hire_rate_pct": 67.0,
+   "total_spent_usd": 300.0,
+   "total_spent_approximate": false,
+   "hires": 2,
+   "active_hires": 0
+  },
+  "instructions": [],
+  "red_flags": [],
+  "ignored_sections": []
+ }
+}

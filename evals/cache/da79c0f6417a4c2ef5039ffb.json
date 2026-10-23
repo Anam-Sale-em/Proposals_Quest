@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "text": "Hi, I can help you migrate your 6 workflows from Zapier to self-hosted n8n. Your goal is to move your form to Google Sheets, Sheets to Slack alerts, Stripe payment to an email receipt, and three small Gmail filters over to n8n, test them, and get a short documentation.\n\nMy plan:\n1. Audit existing Zapier workflows and map triggers and actions to n8n nodes.\n2. Rebuild the 6 workflows in self-hosted n8n including form, Google Sheets, Slack, Stripe, and Gmail integrations.\n3. Test each migrated workflow with you and verify correct data flow.\n\nI did nearly this for a lead intake automation client: lead entry dropped from about 2 hours a week to under 10 minutes.\n\nDo we have admin access to the self-hosted n8n instance and all relevant third-party accounts?\n\nLet's chat about the full plan.",
+  "screening_answers": []
+ }
+}

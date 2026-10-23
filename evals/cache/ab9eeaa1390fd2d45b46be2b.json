@@ -1,0 +1,17 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, and Slack API.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation is a core deliverable for the freelancer.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget is reasonable for a quick debugging and enhancement task in n8n.",
+  "clear_yes": true,
+  "clear_reason": "A concrete 3-step plan can be formed: diagnose the 429 rate limit, implement batching or rate limiting with retries in n8n, and add the Slack notification node.",
+  "project_labels": []
+ }
+}

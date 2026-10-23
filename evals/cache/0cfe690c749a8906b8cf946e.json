@@ -1,0 +1,20 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "Webhooks",
+   "Google Sheets API",
+   "Slack API"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a client type: Lead entry dropped from about 2 hours a week to under 10 minutes using n8n, Webhooks, Google Sheets API, and Slack API.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

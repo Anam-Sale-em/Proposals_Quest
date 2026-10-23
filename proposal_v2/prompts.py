@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
+from .config import load_config
 from .contracts import Brief, JobPost, Profile, Project
 
 UNTRUSTED = (
@@ -31,6 +32,10 @@ def budget_words(b) -> str:
     if b.kind == "hourly":
         rate = f"{m(b.min_usd)}–{m(b.max_usd)}" if b.min_usd and b.max_usd and b.min_usd != b.max_usd else m(b.max_usd or b.amount_usd or b.min_usd or 0)
         return f"hourly rate of {rate} per hour (paid per hour worked, not a total)"
+    floor = load_config()["budget"]["placeholder_floor_usd"]
+    top = b.max_usd if b.kind == "fixed_range" else b.amount_usd
+    if b.kind in ("fixed", "fixed_range") and top is not None and top < floor:
+        return f"{m(top)} fixed, which is a placeholder, not a real budget (treat the budget as not stated)"
     if b.kind == "fixed_range":
         return f"fixed price, total {m(b.min_usd or 0)}–{m(b.max_usd or 0)}"
     if b.kind == "fixed":
@@ -84,7 +89,12 @@ Answer yes or no with a one-line reason each:
 - work_type_yes: is this a kind of deliverable they do (compare with their work types)? A logo for an automation freelancer is no.
 - realistic_yes: is the scope realistic for the stated budget and timeline? An hourly rate is paid per hour, so judge whether the rate suits the skill level, not whether it covers the whole scope. A missing or placeholder budget counts as yes (assumed).
 - clear_yes: could a concrete 3-step plan be written from the post alone?
-Label every project: "similar" (done nearly this before), "same_skills" (different domain, same core skills) or "not_relevant", with a one-line reason. Be strict: "similar" needs the same kind of deliverable.
+For every project, answer four facts (yes or no; anything the post doesn't say is no), with a one-line reason:
+- same_kind_of_work: is it the same kind of deliverable the post asks for? For a vague post, compare with the kind of work it describes (connecting tools is automation or integration work).
+- same_platform: was it built around the post's main platform, usually the system the data comes from (Shopify, HubSpot, Typeform and so on)? Generic tools like Python, APIs or Google Sheets don't count as the main platform.
+- same_records: did it handle the same kind of records (orders, contacts, leads, inventory, emails)?
+- shares_core_skills: does it use the core skills the post needs?
+Set label to your best guess too; code decides the final label from the four facts.
 Never give scores or ratings."""
     user = (f"Freelancer profile: {_profile_block(profile)}\n\nProjects:\n"
             f"{json.dumps([_project_json(p) for p in projects], ensure_ascii=False, indent=1)}\n\n{_job_block(job)}")

@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n and Airtable, which are the required tools.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation is one of the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is a placeholder/standard scale and appropriate for the skill level.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: set up a scheduled trigger in n8n for 8 AM skipping weekends, fetch records from Airtable filtered by date, and format/send the summary to Slack.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involves n8n workflow creation and sending Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It uses overlapping automation and API concepts in a different context."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "It involves scheduled processing and writing to Airtable."
+   }
+  ]
+ }
+}

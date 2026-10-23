@@ -1,0 +1,104 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "goal": "Connect a few tools using automation",
+  "plan": [
+   {
+    "step": "Kickoff and discovery call to identify the specific tools and workflows to connect",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python",
+     "Zapier"
+    ]
+   },
+   {
+    "step": "Design the automation architecture and map out the data flow between platforms",
+    "tools": [],
+    "suggested_tools": [
+     "Lucidchart",
+     "Miro"
+    ]
+   },
+   {
+    "step": "Build and test the requested integrations and automated workflows",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python",
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Final review, deployment, and handover of the working automation",
+    "tools": [],
+    "suggested_tools": [
+     "Slack",
+     "Google Drive"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Discovery and Architecture",
+    "deliverable": "Integration blueprint and workflow map",
+    "budget_share": "30%"
+   },
+   {
+    "name": "Build and Testing",
+    "deliverable": "Functional automation deployed in a staging environment",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Handover and Launch",
+    "deliverable": "Fully operational automation in production with documentation",
+    "budget_share": "20%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and discovery call to identify the specific tools and workflows to connect",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Design the automation architecture and map out the data flow between platforms",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build and test the requested integrations and automated workflows",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Final review, deployment, and handover of the working automation",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The budget is not stated or treated as a placeholder, which may lead to misaligned financial expectations.",
+    "mitigation": "Discuss specific project scope and agree on a realistic fixed price or hourly rate during the initial consultation."
+   },
+   {
+    "risk": "Tool details are not specified in the job post, making the exact technical complexity unknown.",
+    "mitigation": "Require a detailed list of tools and API documentation access during the discovery phase before starting development."
+   }
+  ],
+  "questions": [
+   "What specific tools and software applications do you need connected?",
+   "What are the main triggers and actions you want the automation to perform?",
+   "Do you have existing API keys and developer access ready for the tools involved?"
+  ],
+  "assumptions": [
+   "The client has administrative access to all tools that need to be integrated.",
+   "Standard REST APIs or webhook support are available for the tools mentioned.",
+   "The client will provide timely feedback during the testing phase."
+  ]
+ }
+}

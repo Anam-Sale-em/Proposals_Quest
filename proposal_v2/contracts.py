@@ -80,9 +80,14 @@ class Extraction(BaseModel):
 
 
 class ProjectJudgement(BaseModel):
+    """The model answers four facts per project; code turns them into the label (proof_label in decision.py)."""
     project_id: str
-    label: ProofLabel
-    reason: str
+    same_kind_of_work: Optional[bool] = None  # same kind of deliverable as the post asks for
+    same_platform: Optional[bool] = None  # built around the post's main platform (usually where the data comes from)
+    same_records: Optional[bool] = None  # handled the same kind of records (orders, contacts, leads, inventory...)
+    shares_core_skills: Optional[bool] = None  # uses the core skills the post needs
+    label: ProofLabel = "not_relevant"
+    reason: str = ""
 
 
 class Assessment(BaseModel):

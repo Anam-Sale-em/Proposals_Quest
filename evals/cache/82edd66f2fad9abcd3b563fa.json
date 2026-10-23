@@ -1,0 +1,94 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Connect a few of their tools using automation",
+  "plan": [
+   {
+    "step": "Kickoff and discovery call to identify the tools that need to be connected and map out the required workflows.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python"
+    ]
+   },
+   {
+    "step": "Design the automation architecture and webhook or API integration strategy based on the identified tools.",
+    "tools": [],
+    "suggested_tools": [
+     "REST APIs",
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Build and configure the integration scripts or automation workflows.",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "n8n"
+    ]
+   },
+   {
+    "step": "Test the connected tools thoroughly and deliver the final solution for client review.",
+    "tools": [],
+    "suggested_tools": [
+     "Python"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Discovery and Architecture",
+    "deliverable": "Completed tool mapping and integration plan",
+    "budget_share": "30%"
+   },
+   {
+    "name": "Implementation and Testing",
+    "deliverable": "Working automation connected to all required tools",
+    "budget_share": "70%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and discovery call to identify the tools that need to be connected and map out the required workflows.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Design the automation architecture and webhook or API integration strategy based on the identified tools.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build and configure the integration scripts or automation workflows.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Test the connected tools thoroughly and deliver the final solution for client review.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The budget is not stated, which may lead to misaligned expectations regarding project scope.",
+    "mitigation": "Clarify the actual project scope and budget expectations during the initial discovery discussion before starting work."
+   },
+   {
+    "risk": "Tool details are not specified in the job post, so the complexity and required API access are currently unknown.",
+    "mitigation": "Request a complete list of tools and API documentation access requirements prior to finalizing the milestone plan."
+   }
+  ],
+  "questions": [
+   "What specific tools do you need to connect?",
+   "What is the desired frequency or trigger for the automation workflows?"
+  ],
+  "assumptions": [
+   "The budget of $5 is a placeholder as stated in the job post, and a proper budget will be agreed upon.",
+   "The client will provide necessary API credentials and tool access for the integration work."
+  ]
+ }
+}

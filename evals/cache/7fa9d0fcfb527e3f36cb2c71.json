@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL, which are needed for this integration.",
+  "work_type_yes": true,
+  "work_type_reason": "This is a data sync script and API integration project, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $800 is reasonable for a scoped two-way sync script.",
+  "clear_yes": true,
+  "clear_reason": "The requirements are specific enough to write a concrete 3-step implementation plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles leads and uses Google Sheets/Slack instead of HubSpot and PostgreSQL."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data sync using Python and PostgreSQL, but uses Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is a Python data sync job, but uses Gmail and Airtable instead of HubSpot and PostgreSQL."
+   }
+  ]
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, JavaScript, and API integration skills needed for the core work.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation is one of the freelancer's listed primary work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is standard and appropriate for an n8n automation project.",
+  "clear_yes": true,
+  "clear_reason": "The post provides exact trigger sources, destinations, duplicate check rules, and notification requirements to draft a 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It is an n8n lead intake workflow involving form webhooks, duplicate checking, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It uses overlapping technical skills like webhooks and APIs, but is built in Python for inventory management rather than n8n lead intake."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "It involves automation logic and data routing, but handles email triage with an LLM rather than form submissions."
+   }
+  ]
+ }
+}

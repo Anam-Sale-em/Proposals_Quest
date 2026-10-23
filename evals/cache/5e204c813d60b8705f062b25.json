@@ -1,0 +1,97 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Pull the previous day's orders from the Shopify store through the API and add them to a Google Sheet with specific details while skipping duplicates and writing a log.",
+  "plan": [
+   {
+    "step": "Kickoff and API credential setup for Shopify and Google Sheets.",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "Shopify API",
+     "Google Sheets API"
+    ]
+   },
+   {
+    "step": "Develop Python script to query Shopify orders from the previous day.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Shopify API"
+    ]
+   },
+   {
+    "step": "Implement duplicate checking against existing Google Sheet records and append new orders.",
+    "tools": [],
+    "suggested_tools": [
+     "Google Sheets API"
+    ]
+   },
+   {
+    "step": "Add logging mechanism and handle API rate limits and scheduling.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "REST APIs"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Core Python script connecting to Shopify API and Google Sheets API.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Duplicate filtering, logging, scheduling guidance, and final testing.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and API credential setup for Shopify and Google Sheets.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Develop Python script to query Shopify orders from the previous day.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement duplicate checking against existing Google Sheet records and append new orders.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Add logging mechanism and handle API rate limits and scheduling.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Shopify API rate limits during high order volume days.",
+    "mitigation": "Implement exponential backoff and retry logic in the Python script."
+   },
+   {
+    "risk": "Duplicate entries due to timezone discrepancies between Shopify and Google Sheets.",
+    "mitigation": "Normalize all order dates to UTC before performing duplicate checks."
+   }
+  ],
+  "questions": [
+   "What specific hosting environment or server will be used to run the daily scheduled script?",
+   "Should the Google Sheet be structured with predefined column headers before running the script?"
+  ],
+  "assumptions": [
+   "The client will provide API access credentials for both Shopify and Google Cloud / Google Sheets.",
+   "The budget falls within the $250 to $750 range stated in the post."
+  ]
+ }
+}

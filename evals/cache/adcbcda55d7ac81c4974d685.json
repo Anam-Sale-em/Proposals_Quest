@@ -1,0 +1,22 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "tools_named": [
+   "HubSpot",
+   "PostgreSQL",
+   "Shopify",
+   "Python",
+   "Webhooks",
+   "REST APIs"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "Different domain, same core work: in Shopify to PostgreSQL inventory sync I used Python, PostgreSQL, Webhooks, and REST APIs to reconcile counts and log changes, resulting in stock synced every 15 minutes, with no oversold orders in the first month.",
+    "maps_to": "P2"
+   }
+  ]
+ }
+}

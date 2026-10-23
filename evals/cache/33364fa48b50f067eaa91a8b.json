@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, JavaScript, and API integration skills which match the core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is an n8n workflow automation, which matches the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $25-$40 is reasonable for an n8n automation task.",
+  "clear_yes": true,
+  "clear_reason": "The job post provides clear steps: trigger on Typeform, check for duplicates in Google Sheets, add row, post to Slack, and handle failures.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involved building an n8n workflow with form webhooks, duplicate checks, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It uses Python and webhooks for data synchronization rather than an n8n form-to-sheet workflow."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "It involves workflow automation and API integrations, but uses Python and Gmail instead of n8n and Typeform."
+   }
+  ]
+ }
+}

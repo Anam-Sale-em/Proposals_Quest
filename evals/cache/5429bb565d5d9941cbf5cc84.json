@@ -1,0 +1,104 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "goal": "Automate the daily Airtable digest of yesterday's new orders, their total value, and urgent orders, posting to Slack at 8:00 while skipping weekends, using n8n or Make.",
+  "plan": [
+   {
+    "step": "Kickoff and requirement alignment on Airtable base structure and Slack channel format.",
+    "tools": [],
+    "suggested_tools": [
+     "Slack",
+     "Airtable"
+    ]
+   },
+   {
+    "step": "Build the scheduled n8n workflow to trigger at 8:00 AM on weekdays.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure Airtable data retrieval and filtering logic for yesterday's orders, total values, and urgent flags.",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Set up the Slack integration to format and post the daily digest to the #ops channel.",
+    "tools": [
+     "Slack"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Testing and handoff of the automated workflow.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Workflow Development and Airtable/Slack Integration",
+    "deliverable": "Functional n8n workflow that fetches, filters, and posts the daily digest.",
+    "budget_share": "Hourly tracked time"
+   },
+   {
+    "name": "Testing and Deployment",
+    "deliverable": "Fully tested automation running on schedule skipping weekends.",
+    "budget_share": "Hourly tracked time"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirement alignment on Airtable base structure and Slack channel format.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build the scheduled n8n workflow to trigger at 8:00 AM on weekdays.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure Airtable data retrieval and filtering logic for yesterday's orders, total values, and urgent flags.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Set up the Slack integration to format and post the daily digest to the #ops channel.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Testing and handoff of the automated workflow.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Timezone discrepancies between the server running n8n, Airtable records, and the client's local time for the 8:00 AM delivery.",
+    "mitigation": "Configure explicit timezone settings in the n8n schedule trigger."
+   },
+   {
+    "risk": "Changes in Airtable schema or field names could break the filter logic.",
+    "mitigation": "Confirm exact field names and types during kickoff."
+   }
+  ],
+  "questions": [
+   "What timezone should the 8:00 AM schedule run in?",
+   "Do you already have an n8n instance hosted, or do you need help setting one up?"
+  ],
+  "assumptions": [
+   "The client has admin access to Airtable and Slack to authorize the n8n integrations.",
+   "The budget is hourly between $30\u2013$50 per hour as stated."
+  ]
+ }
+}

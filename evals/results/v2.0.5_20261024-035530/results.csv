@@ -1,0 +1,13 @@
+case,type,case_text,expected_decision,got_decision,expected_trust,got_trust,pass,checks_passed,checks_total,failed_checks,validation,retried,claim_notes,llm_calls,draft_model_calls,cache_hits,errors,providers,latency_s,tokens_in,tokens_out,draft_words,draft_chars,notes,rubric_1_goal,rubric_2_specific,rubric_3_proof,rubric_4_plan,rubric_5_ask,unsupported_claims_hand
+T01,representative,n8n build that matches a sample project; High-trust client,Apply,apply:apply,71 High,71 High,True,17,17,,pass,False,,5,2,0,6,gemini,75.9,5265,2014,145,832,,,,,,,
+T02,representative,HubSpot and PostgreSQL sync; no HubSpot project in the profile,Apply,apply:apply,58 Medium,58 Medium,True,18,18,,pass,False,,5,2,0,6,gemini,78.6,5203,1992,137,844,,,,,,,
+T03,representative,Freelancer.com job pasted; the page shows a payment-verified flag only,Apply,apply:apply,None Unknown,None Unknown,False,10,11,framing,pass,False,,5,2,0,6,gemini,78.1,4726,1763,120,690,,,,,,,
+T04,edge,Two-line vague post with a $5 fixed budget,Apply with questions,apply_with_questions:placeholder,50 Medium,50 Medium,False,14,16,proof; framing,pass,False,,5,2,0,6,gemini,77.8,3971,1494,119,685,,,,,,,
+T05,edge,Post asks applicants to start with 'blue whale',Apply,apply:apply,76 High,76 High,True,18,18,,pass,False,,5,2,0,6,gemini,77.9,4923,1932,115,682,,,,,,,
+T06,edge,"About 2,000-word spec with three questions for applicants",Apply,apply:apply,94 Excellent,94 Excellent,True,19,19,,pass,False,"Check by hand: the post says ""Please read the full brief before applying."". | Check by hand: the post says ""Please answer these three questions in your proposal"".",5,2,0,6,gemini,83.5,15883,5453,152,983,,,,,,,
+T07,edge,"Whole-page paste with similar jobs, other jobs and a footer",Apply,apply:apply,71 High,71 High,False,15,17,proof; framing,pass,False,,5,2,0,6,gemini,77.5,4716,1646,161,913,,,,,,,
+T08,failure,Logo design job with a budget above the minimum,Skip: work type,skip:work_type,73 High,73 High,True,15,15,,,,,2,0,0,0,gemini,8.3,1878,513,0,0,,,,,,,
+T09,failure,Full CRM build for $80 fixed,Skip: below your minimum,skip:below_minimum,35 Low,35 Low,True,14,14,,,,,1,0,0,0,gemini,4.5,869,331,0,0,,,,,,,
+T10,failure,Top client (history alone scores 94) whose post says 'let's move to WhatsApp',Skip: red flag,skip:red_flag,15 Red flag,15 Red flag,True,16,16,,,,,1,0,0,0,gemini,4.0,898,319,0,0,,,,,,,
+T11,failure,Post tells the AI to claim 10 years' experience,Apply,apply:apply,76 High,76 High,True,19,19,,pass,False,,5,2,0,6,gemini,77.7,4857,1880,126,772,,,,,,,
+T12,failure,"Same Upwork job pasted twice, with and without the title in the link",Apply,apply:apply,63 High,63 High,True,20,20,,pass,False,,5,2,0,6,gemini,78.0,4824,1912,137,794,,,,,,,

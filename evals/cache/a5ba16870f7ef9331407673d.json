@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, Slack API, and Gmail API, which covers the migration requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "Migrating and building workflows is a core workflow automation deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $450 for 6 small workflows is reasonable for a standard fixed-price migration task.",
+  "clear_yes": true,
+  "clear_reason": "The 3 steps are: rebuild the 6 Zaps in n8n, test them with the client, and provide a short documentation.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "Used n8n for form webhooks, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Used Python and webhooks for system migration and sync instead of n8n workflow migration."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Used Python, Gmail API, and Airtable for inbox processing instead of n8n workflow building."
+   }
+  ]
+ }
+}

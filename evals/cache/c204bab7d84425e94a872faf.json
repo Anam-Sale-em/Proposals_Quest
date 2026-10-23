@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "text": "Your goal is a two-way sync of contacts between HubSpot and your PostgreSQL users table so new signups appear in HubSpot within 5 minutes, edits to lifecycle stage in HubSpot write back to PostgreSQL, recent updates win conflicts with logging, and it runs on your server with a short README. My plan: 1. Kickoff and requirement alignment on database schema and HubSpot properties. 2. Develop the two-way sync script in Python or Node to handle new signups and lifecycle stage updates. I did nearly this for an e-commerce client: Stock synced every 15 minutes, with no oversold orders in the first month. What hosting environment or server OS will the script be deployed on? Let's discuss the full plan in chat.",
+  "screening_answers": []
+ }
+}

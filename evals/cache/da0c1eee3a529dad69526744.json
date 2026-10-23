@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and APIs required for Shopify and Google Sheets.",
+  "work_type_yes": true,
+  "work_type_reason": "This is a standard data sync script and API integration deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250-$750 is reasonable for a straightforward daily sync script.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: authenticate with Shopify and Google Sheets APIs, write the sync logic with duplicate checking and rate limit handling, and set up daily scheduling.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "Involves syncing data into Google Sheets with duplicate checking."
+   },
+   {
+    "project_id": "P2",
+    "label": "similar",
+    "reason": "Uses Python and the Shopify API for data synchronization."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Uses Python for API tasks, though a different domain and service."
+   }
+  ]
+ }
+}

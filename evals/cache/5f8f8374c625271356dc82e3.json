@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Airtable, and Slack.",
+  "work_type_yes": true,
+  "work_type_reason": "The task is a workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is a fair market price for n8n automation work.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: schedule daily trigger, fetch Airtable records filtered by yesterday, and post the summary to Slack.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "Uses n8n and Slack for data routing, similar to posting digests."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Uses different core platforms (Python/PostgreSQL) but involves recurring data syncs."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Involves Airtable and scheduled runs, but focuses on an LLM email triage rather than an n8n workflow."
+   }
+  ]
+ }
+}

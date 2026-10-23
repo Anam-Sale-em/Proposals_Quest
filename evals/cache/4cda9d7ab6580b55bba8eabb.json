@@ -1,0 +1,17 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires logo design and Adobe Illustrator, which are not in the freelancer's skill set.",
+  "work_type_yes": false,
+  "work_type_reason": "Logo design is a graphic design task, whereas the freelancer specializes in workflow automation and integrations.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder since the core skills do not match anyway.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly asks for a modern minimal logo, brand mark, and three portfolio samples.",
+  "project_labels": []
+ }
+}

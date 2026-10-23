@@ -181,3 +181,16 @@ def test_budget_goes_to_the_model_in_plain_words():
     assert budget_words(Budget(kind="hourly", min_usd=40, max_usd=150)) == "hourly rate of $40–$150 per hour (paid per hour worked, not a total)"
     assert budget_words(Budget(kind="fixed_range", min_usd=250, max_usd=750)) == "fixed price, total $250–$750"
     assert budget_words(Budget(kind="none")) == "not stated"
+
+
+def test_proof_label_comes_from_the_facts():
+    from proposal_v2.contracts import ProjectJudgement as J
+    from proposal_v2.decision import proof_label
+    # T03: Shopify orders export vs Shopify inventory sync -> same platform -> similar
+    assert proof_label(J(project_id="P2", same_kind_of_work=True, same_platform=True, same_records=False, shares_core_skills=True)) == "similar"
+    # T02: HubSpot contacts vs Shopify inventory -> same technique only -> same_skills
+    assert proof_label(J(project_id="P2", same_kind_of_work=True, same_platform=False, same_records=False, shares_core_skills=True)) == "same_skills"
+    # T04: vague "connect a few tools" -> same kind of work, nothing more known -> same_skills
+    assert proof_label(J(project_id="P1", same_kind_of_work=True, same_platform=False, same_records=False, shares_core_skills=False)) == "same_skills"
+    assert proof_label(J(project_id="P3", same_kind_of_work=False, same_platform=False, same_records=False, shares_core_skills=False)) == "not_relevant"
+    assert proof_label(J(project_id="P1", label="similar")) == "similar"  # no facts: the model's label stands

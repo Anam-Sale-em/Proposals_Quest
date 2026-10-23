@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "text": "Hello. I read the full brief before applying and am ready to build your automated lead routing system in n8n and PostgreSQL. My plan starts with the kickoff, PostgreSQL schema design, and Milestone 1 setup covering multi-source intake, validation, deduplication, and Google Sheets mirroring. Then, I will implement enrichment provider integration with rate limiting, advanced routing rules, working hours check, and Slack notification and claiming workflows. I did nearly this for a lead intake automation with n8n: lead entry dropped from about 2 hours a week to under 10 minutes. How would you like to handle access to the staging PostgreSQL database and self-hosted n8n instance for kickoff? For the full plan: I will proceed to build error handling with exponential backoff, dead-letter tables, replay mechanisms, daily digest generation, and comprehensive logging, followed by documentation, architecture diagrams, testing with the 50 test leads, and the recorded handover call.",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I would use atomic database transactions and row-level locking using SELECT FOR UPDATE within PostgreSQL to safely increment and read the round-robin pointer."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I would implement a robust fallback parser and route unparseable emails directly into a dedicated review queue table during Milestone 1."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "Concurrent lead arrivals causing race conditions in the round-robin pointer is a risk, and I would mitigate it using atomic database transactions and row-level locking in PostgreSQL right from Milestone 1."
+   }
+  ]
+ }
+}

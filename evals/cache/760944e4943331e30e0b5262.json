@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Airtable, and Slack APIs which cover the core tech stack.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation is one of the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly budget aligns well with the complexity of building an n8n scheduling workflow.",
+  "clear_yes": true,
+  "clear_reason": "The steps are: 1. Set up an n8n cron trigger for 8 AM weekdays, 2. Fetch yesterday's orders from Airtable with a filter, 3. Format the summary and post it to Slack.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets records, and posting digests/alerts to Slack."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Uses Python and webhooks for data sync, which shares core skills but different systems."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Involves Airtable automation, but uses Python and Gmail instead of an n8n scheduler."
+   }
+  ]
+ }
+}

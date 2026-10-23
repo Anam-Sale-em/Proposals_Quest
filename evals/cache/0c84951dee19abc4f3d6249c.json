@@ -1,0 +1,110 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "goal": "Summarize partnership requests in the Partners Gmail label with an AI model and add them to Airtable with sender, company, request type, a 2-sentence summary, and a priority flag, leaving low-confidence items for human review.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements review",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "Gmail API"
+    ]
+   },
+   {
+    "step": "Set up Gmail integration to read labeled messages",
+    "tools": [
+     "Gmail API"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Configure AI summary and extraction logic",
+    "tools": [
+     "OpenAI API"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Build Airtable synchronization and review workflow",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Testing and deployment",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Gmail integration and AI extraction setup",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Airtable sync, confidence review flow, and final testing",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements review",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Set up Gmail integration to read labeled messages",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure AI summary and extraction logic",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build Airtable synchronization and review workflow",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Testing and deployment",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "AI model may occasionally output incorrect confidence flags or summaries.",
+    "mitigation": "Implement robust schema validation and ensure low-confidence items are clearly routed for human review."
+   },
+   {
+    "risk": "Changes to Gmail API or Airtable API limits might disrupt lead capture.",
+    "mitigation": "Handle rate limits and pagination gracefully within the integration script."
+   }
+  ],
+  "questions": [
+   "What specific fields are required in the Airtable base besides sender, company, request type, summary, and priority flag?",
+   "What criteria defines a low-confidence classification that requires human review?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials for both Gmail and Airtable APIs.",
+   "Python will be used as the implementation language based on the job post skills."
+  ]
+ }
+}

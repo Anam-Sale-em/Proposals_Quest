@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, and Slack API which covers the required tech stack.",
+  "work_type_yes": true,
+  "work_type_reason": "Debugging and fixing workflow automation is a standard part of their work types.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $250 for fixing an API rate limit and adding retries in an existing n8n workflow is reasonable scope for the budget.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: reproduce the rate limit issue, implement batching or retry logic in n8n, and add a Slack error notification.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involved an n8n workflow integrating Google Sheets and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It used Python and webhooks for data sync rather than n8n for Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "label": "not_relevant",
+    "reason": "It focused on LLM inbox triage rather than workflow debugging."
+   }
+  ]
+ }
+}

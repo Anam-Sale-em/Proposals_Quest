@@ -1,0 +1,20 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "tools_named": [
+   "Gmail",
+   "Airtable",
+   "Gmail API",
+   "AI model"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a small support team: About 300 emails a week sorted into 6 categories; low-confidence ones go to a person.",
+    "maps_to": "P3"
+   }
+  ]
+ }
+}

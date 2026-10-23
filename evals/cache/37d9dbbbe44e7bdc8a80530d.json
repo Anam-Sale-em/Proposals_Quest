@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hello. I want to build your n8n lead routing system so that your sales reps receive clean leads quickly and zero leads go missing from your shared inbox or weekend queues. My plan starts by setting up the PostgreSQL schema for leads, touchpoints, assignments, and dead-letter queues, alongside intake workflows for your website forms and chat webhooks. Next, I will build Google Drive CSV monitoring for webinar registrations and email parsing for partner referrals with duplicate handling. I did nearly this for a lead intake automation with n8n: lead entry dropped from about 2 hours a week to under 10 minutes. What specific enrichment provider are you using and what is the exact JSON structure of their API response? Please review my full plan in our chat.",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I would use a PostgreSQL-backed pointer combined with database transaction locking or an atomic increment so that concurrent lead insertions each receive a distinct sequential index without race conditions."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I would use flexible text extraction patterns in JavaScript inside n8n to target common fields like email and company name, sending any email missing mandatory details or failing validation to a review queue table."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "The unstructured partner referral emails represent the biggest risk due to varying formats. I would reduce this in Milestone 1 by building flexible parsing rules and establishing an intuitive review queue workflow early."
+   }
+  ]
+ }
+}

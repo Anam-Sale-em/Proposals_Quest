@@ -185,7 +185,7 @@
         "client": {
           "payment_verified": true,
           "rating": null,
-          "reviews": 0,
+          "reviews": null,
           "jobs_posted": 3,
           "hire_rate_pct": 67,
           "total_spent_usd": 300,
@@ -455,7 +455,7 @@
         "client": {
           "payment_verified": true,
           "rating": null,
-          "reviews": 0,
+          "reviews": null,
           "jobs_posted": 2,
           "hire_rate_pct": 0,
           "total_spent_usd": 0,

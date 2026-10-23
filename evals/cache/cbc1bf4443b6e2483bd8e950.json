@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The project requires n8n, PostgreSQL, Google Sheets, Slack, and REST APIs, all of which match the freelancer's listed skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a comprehensive workflow automation and data sync system using n8n and databases, which fits the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $3,500 for a well-scoped 3-milestone n8n automation project is realistic and fair.",
+  "clear_yes": true,
+  "clear_reason": "The post provides exceptionally detailed specifications, functional requirements, and milestone breakdowns to write a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "P1 involves n8n intake, webhooks, duplicate checking, Google Sheets, and Slack alerts, which directly matches the core ingestion and notification requirements of this job."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "P2 uses Python and PostgreSQL for webhooks and scheduled syncing, whereas this job is primarily an n8n and PostgreSQL routing system."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "P3 deals with inbox triage and unstructured email handling using Gemini and Airtable, whereas this job focuses on n8n lead routing and enrichment."
+   }
+  ]
+ }
+}

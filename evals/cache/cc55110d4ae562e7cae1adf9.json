@@ -1,0 +1,94 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Connect a few tools using automation",
+  "plan": [
+   {
+    "step": "Kickoff and requirements gathering to identify the specific tools that need connection",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python",
+     "REST APIs"
+    ]
+   },
+   {
+    "step": "Design the automation workflow architecture based on the shared details",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Build and test the API integrations and data sync scripts",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python",
+     "JavaScript"
+    ]
+   },
+   {
+    "step": "Final review, deployment, and handover to the client",
+    "tools": [],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Discovery and Design",
+    "deliverable": "Reviewed tool details and finalized automation workflow architecture plan",
+    "budget_share": "30%"
+   },
+   {
+    "name": "Build and Delivery",
+    "deliverable": "Fully tested and working automation connecting the tools",
+    "budget_share": "70%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements gathering to identify the specific tools that need connection",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Design the automation workflow architecture based on the shared details",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build and test the API integrations and data sync scripts",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Final review, deployment, and handover to the client",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The budget is not stated and placeholder value is provided, which may misalign with project scope",
+    "mitigation": "Discuss scope and finalize a realistic budget once tool details are shared"
+   },
+   {
+    "risk": "Tool details are not specified in the job post",
+    "mitigation": "Review the required tools during the initial kickoff discussion before starting the build"
+   }
+  ],
+  "questions": [
+   "What specific tools and applications need to be connected?",
+   "What is the expected workflow or data flow between these tools?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials and documentation for the tools that need to be connected",
+   "The $5 budget listed in the post is purely a placeholder as stated"
+  ]
+ }
+}

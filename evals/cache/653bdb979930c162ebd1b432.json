@@ -1,0 +1,10 @@
+{
+ "step": "proposal_retry",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "text": "Your goal is to build an n8n workflow that triggers on responses from two Typeform forms, checks your Google Sheet for existing emails to skip duplicates, adds a new row, posts an alert to the #sales Slack channel, and emails you if any step fails. Here is how I plan to approach this: 1. Kick off with a requirements review to verify your Typeform, Google Sheets, and Slack access on your self-hosted n8n instance. 2. Build the Typeform trigger nodes for both forms and map the incoming response data. 3. Implement the duplicate check logic by querying the Google Sheet for existing emails before inserting new rows. I did nearly this for a client: Lead entry dropped from about 2 hours a week to under 10 minutes. What email service should be used for the failure notification emails? Let's get started on your n8n automation. Review the full plan in my response and let me know when you are ready to begin.",
+  "screening_answers": []
+ }
+}

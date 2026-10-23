@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "text": "My goal is to connect your tools using automation. To get started, I have a few questions for you: What specific tools and software applications do you need connected? What are the main triggers and actions you want the automation to perform? Do you have existing API keys and developer access ready for the tools involved? Here is how I would do it: I will start with a discovery call, design the architecture, build and test using n8n and Python, and then handle deployment. Managing unspecified tool details is new for me, so here is how I would de-risk it: I will require a detailed list of tools and API documentation access during the discovery phase before starting development.",
+  "screening_answers": []
+ }
+}

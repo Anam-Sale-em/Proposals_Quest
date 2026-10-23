@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "text": "Your goal is to migrate 6 workflows from Zapier to self-hosted n8n, including a form to Google Sheets, Sheets to Slack alerts, a Stripe payment to an email receipt, and three small Gmail filters. My plan to achieve this: 1. Audit existing Zapier workflows and map them to n8n logic. 2. Rebuild form to Google Sheets and Sheets to Slack alerts workflows in n8n. 3. Rebuild Stripe payment, email receipt, and the three Gmail filters in n8n. I did nearly this for a lead intake automation client: Lead entry dropped from about 2 hours a week to under 10 minutes. What is the exact structure and trigger type for the form and the three Gmail filters? Let's discuss the full plan in chat.",
+  "screening_answers": []
+ }
+}

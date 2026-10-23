@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets API, Slack API, and JavaScript skills matching the job requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a workflow automation, which matches the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate fits the skill level for an n8n automation project.",
+  "clear_yes": true,
+  "clear_reason": "The requirements are specific enough to outline a 3-step plan for the n8n workflow integration.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is an n8n lead intake automation involving forms, Google Sheets, Slack, and duplicate checking."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It is a Python inventory sync script using Shopify and PostgreSQL, which does not match the platform or records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It is an LLM support inbox triage job using Gmail and Airtable, which is a different kind of work."
+   }
+  ]
+ }
+}

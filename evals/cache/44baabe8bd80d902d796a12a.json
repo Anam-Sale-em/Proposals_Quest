@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Airtable, and Slack integration skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Building daily scheduled digest automations fits workflow automation.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is standard for n8n integration work.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: schedule n8n trigger for 8 AM excluding weekends, fetch yesterday's orders from Airtable with filters, and post the formatted summary to Slack.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses n8n and Slack for notifications, dealing with records, but different primary source platform."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different tools and scheduled data syncing approach."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Uses Python and Gmail/Airtable instead of n8n and Slack digests."
+   }
+  ]
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Gmail API, and Airtable, matching the required skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is an LLM-powered automation script, which is a core work type for the freelancer.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is hourly, which aligns with the stated skill level and scope.",
+  "clear_yes": true,
+  "clear_reason": "The job post outlines a concrete workflow of reading emails, summarizing with AI, and storing them in Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P3",
+    "label": "similar",
+    "reason": "It involves reading Gmail messages, processing them with an AI API, and writing the structured data to Airtable."
+   }
+  ]
+ }
+}

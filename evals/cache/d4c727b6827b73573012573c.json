@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires graphic design and illustration skills which are not listed on the profile.",
+  "work_type_yes": false,
+  "work_type_reason": "Designing a logo is a graphic design deliverable, whereas the freelancer focuses on workflow automation and integrations.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $300 is treated as acceptable due to the placeholder rule, though the scope is out of domain.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: 1. Request coffee brand concepts, 2. Design logo and brand mark, 3. Deliver final asset files.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "Lead intake automation is completely unrelated to logo design."
+   },
+   {
+    "project_id": "P2",
+    "label": "not_relevant",
+    "reason": "Inventory synchronization in Python is unrelated to brand identity."
+   },
+   {
+    "project_id": "P3",
+    "label": "not_relevant",
+    "reason": "Inbox triage with LLMs has no relevance to creating a coffee brand logo."
+   }
+  ]
+ }
+}

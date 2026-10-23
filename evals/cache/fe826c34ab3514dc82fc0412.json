@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The project requires n8n, PostgreSQL, Google Sheets, and REST APIs, which match the freelancer's core skill set.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a comprehensive workflow automation and data sync system, which aligns directly with the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed price of $3,500 and detailed requirements are well-scoped for an experienced n8n and database automation developer.",
+  "clear_yes": true,
+  "clear_reason": "The job post provides an exceptionally detailed specification, allowing a concrete 3-step plan based on the stated milestones.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "Involves building an n8n workflow for lead intake, deduplication, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Uses PostgreSQL and webhooks for data syncing, though applied to inventory rather than leads."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Uses database storage and API integrations for triage, though applied to support emails instead of lead routing."
+   }
+  ]
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, JavaScript, and Google Sheets/Slack API skills which cover the required tech stack.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is an n8n workflow for lead intake automation, matching the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is an hourly rate within a reasonable range for this kind of automation work.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clearly defined: set up Typeform triggers, check Google Sheets for duplicate emails, add the new row, and post a Slack alert.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It is an almost identical lead intake automation built in n8n featuring webhooks, Google Sheets, Slack, and duplicate checking."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Uses different tools and domain logic for inventory synchronization."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Applies automation and API integrations to a different domain."
+   }
+  ]
+ }
+}

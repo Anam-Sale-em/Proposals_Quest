@@ -1,0 +1,109 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "goal": "Automate a daily morning Airtable digest to Slack listing yesterday's new orders, their total value, and any urgent orders, posting at 8:00 in #ops while skipping weekends using n8n or Make.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements review to confirm Airtable base structure and Slack channel access.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Airtable",
+     "Slack"
+    ]
+   },
+   {
+    "step": "Build the n8n workflow with a scheduled trigger to run at 8:00 AM, skipping weekends.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure Airtable data retrieval to filter yesterday's new orders, calculate total value, and check for urgent status.",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Format the digest message and set up the Slack integration to post into the #ops channel.",
+    "tools": [
+     "Slack"
+    ],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Test the workflow end-to-end and deliver the final n8n solution.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Phase 1: Workflow Setup and Airtable Integration",
+    "deliverable": "Configured n8n scheduled trigger and Airtable data filter for yesterday's orders.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Phase 2: Slack Formatting and Testing",
+    "deliverable": "Working Slack digest posting at 8:00 AM to #ops with total values and urgent flags.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements review to confirm Airtable base structure and Slack channel access.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build the n8n workflow with a scheduled trigger to run at 8:00 AM, skipping weekends.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure Airtable data retrieval to filter yesterday's new orders, calculate total value, and check for urgent status.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Format the digest message and set up the Slack integration to post into the #ops channel.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Test the workflow end-to-end and deliver the final n8n solution.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Airtable field names or view filters might not match the query logic expected by the n8n node.",
+    "mitigation": "Review the Airtable schema during kickoff to ensure correct field mapping."
+   },
+   {
+    "risk": "Timezone differences could cause the digest to trigger at the wrong local time.",
+    "mitigation": "Explicitly configure the timezone in the n8n schedule trigger."
+   }
+  ],
+  "questions": [
+   "What is the exact timezone for the 8:00 AM schedule?",
+   "Are the order values stored in a specific currency format or number field in Airtable?"
+  ],
+  "assumptions": [
+   "The client has admin access to set up n8n and Slack/Airtable API credentials.",
+   "The total budget is governed by an hourly rate of $30\u2013$50 per hour with an estimated timeframe of a few hours."
+  ]
+ }
+}

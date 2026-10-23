@@ -100,3 +100,16 @@ def decide(trust: TrustResult, gate: str, gate_text: str, fit: FitResult) -> Dec
                  "Low": "a weak", "Unknown": "an unknown"}[trust.band if trust.band in TABLE["High"] else "Unknown"]
     return Decision(decision="apply", code="apply", budget_gate=gate, fit=fit, card_note=note,
                     reason=f"Apply: {fit.band.lower()} fit and {band_word} client.")
+
+
+def proof_label(j) -> str:
+    """similar: same kind of work around the same main platform or the same kind of records.
+    same_skills: same kind of work, or the same core skills, otherwise. Facts left blank keep the model's label."""
+    facts = (j.same_kind_of_work, j.same_platform, j.same_records, j.shares_core_skills)
+    if all(f is None for f in facts):
+        return j.label
+    if j.same_kind_of_work and (j.same_platform or j.same_records):
+        return "similar"
+    if j.same_kind_of_work or j.shares_core_skills:
+        return "same_skills"
+    return "not_relevant"

@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL, which covers the core backend and database requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The task is an API integration and data sync script, which matches the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The $800 fixed budget is realistic for a focused two-way sync script.",
+  "clear_yes": true,
+  "clear_reason": "The post lists specific requirements including database updates, HubSpot API interactions, and conflict handling.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "P1 is a lead intake automation using n8n and Google Sheets, not a database-to-CRM sync."
+   },
+   {
+    "project_id": "P2",
+    "label": "similar",
+    "reason": "P2 involves webhook-driven data synchronization between an external platform and PostgreSQL using Python."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "P3 uses Python and external APIs to sync data, but involves email triage rather than CRM integration."
+   }
+  ]
+ }
+}

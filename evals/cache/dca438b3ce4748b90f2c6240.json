@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python and Airtable experience, and can use Gemini or OpenAI equivalents for AI summarization.",
+  "work_type_yes": true,
+  "work_type_reason": "This is an LLM-powered automation task, which matches the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is an hourly rate which is appropriate for the skill level required.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly defines reading emails, summarizing with AI, and saving to Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "Lead intake via form webhooks is different from email parsing and AI summarization."
+   },
+   {
+    "project_id": "P2",
+    "label": "not_relevant",
+    "reason": "Shopify inventory sync is unrelated to email processing."
+   },
+   {
+    "project_id": "P3",
+    "label": "similar",
+    "reason": "Reads Gmail messages, processes them with an LLM, and writes to Airtable, which matches the job deliverable."
+   }
+  ]
+ }
+}

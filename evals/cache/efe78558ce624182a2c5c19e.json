@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hello, I can help you migrate your 6 workflows to your self-hosted n8n. Your goal is to move from Zapier, test the setups with your team, and receive a short documentation.\n\nMy plan is:\n1. Audit your existing Zapier workflows and map triggers and actions for the 6 Zaps.\n2. Rebuild the workflows in n8n covering form inputs, Google Sheets, Slack alerts, Stripe payment events, email receipts, and Gmail filters.\n3. Test all 6 rebuilt n8n workflows with your team.\n\nI did nearly this for a lead intake automation client: Lead entry dropped from about 2 hours a week to under 10 minutes.\n\nDo you have admin access ready for your self-hosted n8n instance?\n\nLet me know if you would like to discuss the full plan.",
+  "screening_answers": []
+ }
+}

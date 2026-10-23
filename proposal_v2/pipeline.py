@@ -14,7 +14,7 @@ from . import prompts
 from .config import load_config
 from .contracts import (Assessment, Brief, ClaimLists, CVImport, Decision, Extraction, JobPost, Profile, Project,
                         ProposalDraft, ProposalRecord, ProposalVersion, now_iso)
-from .decision import budget_gate, decide, fit_result, pre_decision
+from .decision import proof_label, budget_gate, decide, fit_result, pre_decision
 from .links import LinkError, ParsedLink, parse_link, title_match
 from .llm import LLM
 from .policy import apply_policy
@@ -35,6 +35,15 @@ def _call(d) -> str:
     if d.code == "unchecked":
         return "Fit check skipped"
     return {"apply": "Apply", "apply_with_questions": "Apply with questions", "skip": "Skip"}[d.decision]
+
+
+def _tags_in_project(tags: list[str], project: Project) -> int:
+    """How many of the post's skill tags the project mentions in its own words (title, problem, what was done, skills).
+    A vague post like "Automation · API Integration" is matched on what the project was, not on alias lookups."""
+    import re
+
+    text = "\n".join([project.title, project.problem, project.what_i_did, " ".join(project.skills)]).lower()
+    return sum(1 for t in tags if t.strip() and re.search(r"(?<![a-z0-9])" + re.escape(t.strip().lower()) + r"s?(?![a-z0-9])", text))
 
 
 class PipelineError(Exception):
@@ -133,6 +142,12 @@ class Pipeline:
             projects = self.projects()
             system, user = prompts.assessment(rec.job, profile, projects)
             rec.assessment = self.llm.call("assess", "light", system, user, Assessment, load_config()["models"]["temperature_extract"])
+            for j in rec.assessment.project_labels:  # the label comes from the facts, by rule
+                j.label = proof_label(j)
+            if gate in ("placeholder", "none_stated") and not rec.assessment.realistic_yes:
+                # The rule, not the model, decides this: a placeholder or missing budget says nothing about scope.
+                rec.assessment.realistic_yes = True
+                rec.assessment.realistic_reason = "No real budget to judge against (missing or a placeholder), so assumed realistic; ask what they'll pay."
             proof = any(l.label in ("similar", "same_skills") for l in rec.assessment.project_labels
                         if any(p.id == l.project_id for p in projects))
             have = profile.skills + [s for p in projects for s in p.skills]
@@ -154,11 +169,16 @@ class Pipeline:
                 if n > best_n:
                     best, best_n = p.id, n
             return (best, "same_skills") if best else (None, "plan_only")
-        ids = {p.id for p in self.projects()}
+        projects = {p.id: p for p in self.projects()}
         for label in ("similar", "same_skills"):
-            for l in rec.assessment.project_labels:
-                if l.label == label and l.project_id in ids:
-                    return l.project_id, label
+            cands = [l for l in rec.assessment.project_labels if l.label == label and l.project_id in projects]
+            if cands:
+                # Ties: the same kind of work first, then platform, records, then skill-tag overlap with the post.
+                best = max(cands, key=lambda l: (bool(l.same_kind_of_work), bool(l.same_platform), bool(l.same_records),
+                                                 _tags_in_project(rec.job.skills, projects[l.project_id]),
+                                                 overlap(rec.job.skills, projects[l.project_id].skills)[0],
+                                                 -rec.assessment.project_labels.index(l)))
+                return best.project_id, label
         return None, "plan_only"
 
     def override(self, rec: ProposalRecord, reason: str = "") -> ProposalRecord:

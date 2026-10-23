@@ -1,0 +1,109 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "goal": "We get partnership requests by email. We want each new email in our \"Partners\" Gmail label summarized by an AI model and added to Airtable: sender, company, request type, a 2-sentence summary and a priority flag. A person on our team reviews anything marked low confidence.",
+  "plan": [
+   {
+    "step": "Kickoff and requirement review for Gmail integration and Airtable schema",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "Gmail API"
+    ]
+   },
+   {
+    "step": "Develop script to read emails from the Partners Gmail label and parse fields",
+    "tools": [
+     "Python",
+     "Gmail API"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Integrate AI model to generate summaries, request types, and priority flags",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "OpenAI API",
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Store processed lead data into Airtable and handle low-confidence review flows",
+    "tools": [
+     "Python",
+     "Airtable"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Testing, deployment, and final handover",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Gmail Reader and AI Integration",
+    "deliverable": "Working script that reads labeled emails and generates AI summaries and priority flags",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2: Airtable Sync and Review Workflow",
+    "deliverable": "Fully deployed automation writing data to Airtable with low-confidence routing",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirement review for Gmail integration and Airtable schema",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Develop script to read emails from the Partners Gmail label and parse fields",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Integrate AI model to generate summaries, request types, and priority flags",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Store processed lead data into Airtable and handle low-confidence review flows",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Testing, deployment, and final handover",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Budget is specified as an hourly rate without a fixed total or estimated hours.",
+    "mitigation": "Establish a weekly hour cap and provide regular progress reports to stay within expected bounds."
+   },
+   {
+    "risk": "Potential discrepancies between requested OpenAI API and prior Gemini experience.",
+    "mitigation": "Utilize adaptable Python code structures that can interface seamlessly with either LLM API."
+   }
+  ],
+  "questions": [
+   "What specific fields are required in the Airtable base schema?",
+   "What criteria defines a low-confidence classification that requires human review?"
+  ],
+  "assumptions": [
+   "The client has existing Gmail and Airtable accounts with necessary API access permissions.",
+   "The hourly rate of $35\u2013$55 per hour applies to all development and testing time."
+  ]
+ }
+}

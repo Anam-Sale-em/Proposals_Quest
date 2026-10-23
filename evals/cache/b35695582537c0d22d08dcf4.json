@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python, Gmail API, and Airtable skills, and while they listed Gemini API instead of OpenAI API, the core integration skills easily transfer.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is an LLM-powered data sync workflow, which matches their core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is reasonable for an automation developer with these skills.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: 1. Set up Gmail API watcher for the Partners label, 2. Integrate an AI model to summarize and extract fields, 3. Push the parsed data into Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "Different systems and core logic (lead intake webhooks to sheets)."
+   },
+   {
+    "project_id": "P2",
+    "label": "not_relevant",
+    "reason": "Different systems and core logic (Shopify inventory sync to PostgreSQL)."
+   },
+   {
+    "project_id": "P3",
+    "label": "similar",
+    "reason": "Involves reading Gmail messages, processing them with an LLM, and writing the structured output to Airtable."
+   }
+  ]
+ }
+}

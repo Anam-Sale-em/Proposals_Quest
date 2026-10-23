@@ -1,0 +1,88 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "goal": "Fix the n8n workflow so the full file lands every night, with retries and a Slack message if it still fails.",
+  "plan": [
+   {
+    "step": "Kickoff and review the current n8n workflow and error logs",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Modify the workflow to handle rate limits and batching for the 5,000 rows",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Implement retry logic and error notification via Slack",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Slack"
+    ]
+   },
+   {
+    "step": "Test the updated workflow with the nightly data load and deliver",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Audit and Fix Implementation",
+    "deliverable": "Updated n8n workflow addressing the 429 rate limit error with batching and retries.",
+    "budget_share": "100%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and review the current n8n workflow and error logs",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Modify the workflow to handle rate limits and batching for the 5,000 rows",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement retry logic and error notification via Slack",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Test the updated workflow with the nightly data load and deliver",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Google Sheets API quota limits may continue to trigger 429 errors if batch sizes are not properly optimized.",
+    "mitigation": "Implement explicit wait nodes or chunking mechanisms within n8n to respect rate limits."
+   },
+   {
+    "risk": "Fixed price of $250 for troubleshooting and testing a recurrent batch failure.",
+    "mitigation": "Clearly scope the fix strictly to the batching, retry, and Slack alerting logic."
+   }
+  ],
+  "questions": [
+   "What is the current structure of the n8n workflow handling the CSV import?",
+   "Do you already have a Slack webhook or credentials set up for the alert notifications?"
+  ],
+  "assumptions": [
+   "Access to the n8n instance will be provided.",
+   "The CSV source file structure remains consistent."
+  ]
+ }
+}

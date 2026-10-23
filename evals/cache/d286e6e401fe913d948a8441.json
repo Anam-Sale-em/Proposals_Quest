@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "text": "Hello, I can help you automate your demo requests so you no longer have to copy responses manually or deal with duplicates. Your goal is to build an n8n workflow that triggers on new responses from two Typeform forms, checks your Google Sheet for an existing row with the same email to skip duplicates, adds a new row, posts a message to a Slack channel with a link, and emails you if any step fails.\n\nHere is my initial plan:\n1. Kickoff and connection setup for Typeform, Google Sheets, Slack, and error handling.\n2. Build workflow triggers for both Typeform forms.\n3. Implement duplicate check logic by email against the Google Sheet.\n4. Configure row insertion and Slack alert message with row link.\n5. Set up error handler to email upon failure and perform end-to-end testing.\n\nI did nearly this for a website form lead intake: Lead entry dropped from about 2 hours a week to under 10 minutes.\n\nWhat email service or node would you prefer for the failure notification emails?\n\nLet's get started on this automation.",
+  "screening_answers": []
+ }
+}

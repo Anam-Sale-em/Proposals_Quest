@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The project requires n8n, PostgreSQL, Google Sheets, Slack, and API integration, all of which match the freelancer's listed skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a comprehensive workflow automation and data integration system, which matches the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 for a 1 to 3 month timeline aligns well with a complex multi-step n8n and PostgreSQL automation project.",
+  "clear_yes": true,
+  "clear_reason": "The post provides exceptionally detailed specifications across intake, validation, routing rules, storage, and testing, allowing a concrete 3-step plan to be written.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involved building an n8n workflow for lead intake, duplicate checking, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It used PostgreSQL, webhooks, and Python/APIs for data synchronization rather than n8n lead routing."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "It involved processing incoming unstructured messages with an API and storing them in Airtable."
+   }
+  ]
+ }
+}

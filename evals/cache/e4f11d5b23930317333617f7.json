@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Gmail API, and Airtable.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation and LLM integrations match the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate fits the skill level and the budget is placeholder/hourly.",
+  "clear_yes": true,
+  "clear_reason": "The steps to read Gmail, use an AI model, and write to Airtable are clear.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves lead capture and workflow automation but uses different platforms."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves backend automation with Python but handles inventory records instead of leads."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It reads Gmail, uses an LLM, writes to Airtable, and handles inbox records."
+   }
+  ]
+ }
+}

@@ -1,0 +1,94 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "goal": "Fix our n8n workflow so the Google Sheets node stops failing on large batches of 5,000 rows with 429 Too Many Requests errors, ensuring the full file lands every night with retries and a Slack message if it still fails.",
+  "plan": [
+   {
+    "step": "Review the existing n8n workflow and analyze the Google Sheets node failure logs.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Redesign the data insertion logic to batch requests or implement rate limiting to avoid 429 Too Many Requests errors.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "JavaScript"
+    ]
+   },
+   {
+    "step": "Add error handling with automated retries and a fallback Slack notification alert for final failures.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Slack API"
+    ]
+   },
+   {
+    "step": "Test the updated workflow with the full 5,000 row dataset and verify successful completion.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Google Sheets API"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Audit and Redesign",
+    "deliverable": "Updated n8n workflow structure addressing rate limits and batching.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Testing and Deployment",
+    "deliverable": "Fully tested workflow running end-to-end with retries and Slack alerts.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Review the existing n8n workflow and analyze the Google Sheets node failure logs.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Redesign the data insertion logic to batch requests or implement rate limiting to avoid 429 Too Many Requests errors.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Add error handling with automated retries and a fallback Slack notification alert for final failures.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Test the updated workflow with the full 5,000 row dataset and verify successful completion.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Google Sheets API strict quota limits might still trigger 429 errors even with smaller batches.",
+    "mitigation": "Implement exponential backoff retry logic and chunk data into smaller, timed batch arrays within n8n."
+   },
+   {
+    "risk": "The fixed budget of $250 might be tight if the underlying workflow requires a major restructure.",
+    "mitigation": "Focus exclusively on fixing the batching, rate-limiting, and error-handling nodes without altering unrelated parts of the workflow."
+   }
+  ],
+  "questions": [
+   "What specific chunk size or batch interval is currently being used in the failing Google Sheets node?",
+   "Do you already have a Slack webhook or channel set up for the error alerts?"
+  ],
+  "assumptions": [
+   "The client has provided access to the n8n instance and the target Google Sheet.",
+   "The CSV source format and structure remain consistent."
+  ]
+ }
+}

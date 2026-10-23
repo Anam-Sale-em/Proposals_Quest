@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets API, and Slack API skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow debugging and integration updates match the freelancer's workflow automation focus.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed price budget is reasonable for a targeted n8n workflow bug fix.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly specifies fixing a rate limit error, adding retries, and setting up a Slack alert.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "Used n8n, Google Sheets API, and Slack API for lead intake automation."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Involves API integrations and backend error handling, but for Shopify to PostgreSQL inventory sync."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Uses API integrations and automation logic, but focuses on Gmail and Gemini API."
+   }
+  ]
+ }
+}

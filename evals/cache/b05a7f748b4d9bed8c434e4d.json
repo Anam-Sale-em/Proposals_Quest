@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hi. Your goal is to build an n8n workflow that triggers on new responses from two Typeform forms, checks the Google Sheet for existing rows with the same email to skip duplicates, adds a new row with name, email, company, form name and timestamp, posts a message to a Slack channel with a link to the row, and emails if any step fails.\n\nHere is how I plan to do it:\n1. Kickoff and connection setup for Typeform, Google Sheets, Slack, and error handling.\n2. Configure Typeform webhooks to trigger the n8n workflow for both forms.\n3. Implement duplicate check logic by email against the Google Sheet and add new row if unique.\n\nI did nearly this for a lead intake automation: Lead entry dropped from about 2 hours a week to under 10 minutes.\n\nWhat email service or node do you prefer for failure notifications?\n\nIf this sounds good, let me know and we can start with the full plan.",
+  "screening_answers": []
+ }
+}

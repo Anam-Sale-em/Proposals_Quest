@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "text": "Your goal is to summarize partnership requests in your Partners Gmail label using an AI model and add them to Airtable with sender, company, request type, a summary, and a priority flag, leaving low-confidence items for human review.\n\nHere is how I plan to get this done:\n1. Run a kickoff and requirements review for the Gmail and Airtable integration.\n2. Develop the Gmail API integration to read messages from the Partners label.\n\nI did nearly this for a small support team: About 300 emails a week sorted into 6 categories; low-confidence ones go to a person.\n\nWhat specific fields or table structure do you currently have set up in Airtable?\n\nLet's discuss the full plan over a quick chat.",
+  "screening_answers": []
+ }
+}

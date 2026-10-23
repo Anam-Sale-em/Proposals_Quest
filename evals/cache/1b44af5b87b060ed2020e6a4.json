@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL, which are requested for the HubSpot API integration.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is a data sync script, matching the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is acceptable for a focused contact sync script.",
+  "clear_yes": true,
+  "clear_reason": "The three-step plan is: 1. Set up the Python service to listen for signups and push to HubSpot, 2. Implement the webhook for HubSpot changes to update PostgreSQL, 3. Add conflict resolution with logging and write the README.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "not_relevant",
+    "reason": "Lead intake automation with n8n is a different type of integration workflow."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Involves Python, PostgreSQL, and webhooks/syncing, but uses Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "label": "not_relevant",
+    "reason": "Support inbox triage uses Gemini and Gmail API, which is not relevant to HubSpot contact syncing."
+   }
+  ]
+ }
+}

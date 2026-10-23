@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets, Slack, and APIs required for the workflows.",
+  "work_type_yes": true,
+  "work_type_reason": "Migrating workflows and building automations is a core service offered.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $450 is reasonable for migrating six standard workflows.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: recreate the 6 workflows in n8n, conduct joint testing, and deliver documentation.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "Involves webhooks, Google Sheets, and Slack alerts just like the lead intake automation."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "Uses Python and backend skills rather than workflow migration."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "Involves different integrations and LLM triage."
+   }
+  ]
+ }
+}

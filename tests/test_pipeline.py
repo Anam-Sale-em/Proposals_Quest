@@ -143,3 +143,39 @@ def test_left_out_sections_must_be_in_the_paste(pipe):
     rec = pipe.extract(j["link"], j["job_details"])
     left = next(e["text"] for e in rec.events if e["type"] == "ignored_sections")
     assert "Similar jobs" in left and "Other open jobs by this client" in left and "footer" not in left
+
+
+def test_placeholder_budget_is_never_judged_unrealistic(pipe):
+    """T04 ($5 fixed): even if the model says the scope is unrealistic, a placeholder budget counts as realistic."""
+    real_call = pipe.llm.call
+
+    def call(step, *a, **k):
+        out = real_call(step, *a, **k)
+        if step == "assess":
+            out.realistic_yes, out.realistic_reason = False, "$5 is far too low"
+        return out
+
+    pipe.llm.call = call
+    j = _job("T04")
+    rec = pipe.decide(pipe.extract(j["link"], j["job_details"]))
+    assert rec.decision.budget_gate == "placeholder" and rec.assessment.realistic_yes
+    assert rec.decision.decision == "apply_with_questions" and rec.decision.code == "placeholder"
+
+
+def test_vague_post_ties_go_to_the_project_that_is_that_kind_of_work(pipe):
+    """T04 ("Automation · API Integration", no details): if every project ties on the facts, P1 (an automation)
+    wins over P2, whose only link is the alias "REST APIs" ~ "API Integration"."""
+    from proposal_v2.contracts import ProjectJudgement as J
+    real_call = pipe.llm.call
+
+    def call(step, *a, **k):
+        out = real_call(step, *a, **k)
+        if step == "assess":
+            out.project_labels = [J(project_id=i, same_kind_of_work=True, same_platform=False, same_records=False,
+                                    shares_core_skills=True) for i in ("P2", "P3", "P1")]
+        return out
+
+    pipe.llm.call = call
+    j = _job("T04")
+    rec = pipe.decide(pipe.extract(j["link"], j["job_details"]))
+    assert (rec.chosen_proof, rec.framing) == ("P1", "same_skills")

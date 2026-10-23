@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "blue whale. Your goal is to automate the daily summary of yesterday's new orders from Airtable to Slack using n8n.\n\nMy plan for the new workflow:\n1. Kickoff and requirement alignment on Airtable schema and Slack channel format.\n2. Build and configure the n8n scheduled workflow to run at 8:00 on weekdays.\n\nI did nearly this for a lead intake automation with n8n client: lead entry dropped from about 2 hours a week to under 10 minutes.\n\nWhat is the exact field name and table structure for orders in Airtable?\n\nLet's discuss the full plan on a quick chat.",
+  "screening_answers": []
+ }
+}

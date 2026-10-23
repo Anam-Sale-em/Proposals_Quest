@@ -1,0 +1,98 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.5",
+ "response": {
+  "goal": "Migrate 6 workflows from Zapier to self-hosted n8n, including a form to Google Sheets, Sheets to Slack alerts, a Stripe payment to an email receipt, and three small Gmail filters, test with the client, and provide a short documentation.",
+  "plan": [
+   {
+    "step": "Audit existing Zapier workflows and map triggers and actions to n8n nodes",
+    "tools": [
+     "Zapier",
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Rebuild the 6 workflows in self-hosted n8n including form, Google Sheets, Slack, Stripe, and Gmail integrations",
+    "tools": [
+     "n8n",
+     "Google Sheets",
+     "Slack"
+    ],
+    "suggested_tools": [
+     "Stripe",
+     "Gmail"
+    ]
+   },
+   {
+    "step": "Test each migrated workflow with the client and verify correct data flow",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Hand over a short documentation detailing the n8n workflows",
+    "tools": [],
+    "suggested_tools": [
+     "Notion",
+     "Markdown"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Workflow Migration and Implementation",
+    "deliverable": "All 6 workflows rebuilt in self-hosted n8n",
+    "budget_share": "70%"
+   },
+   {
+    "name": "Milestone 2: Testing and Documentation Handover",
+    "deliverable": "Workflows tested with the client and short documentation delivered",
+    "budget_share": "30%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Audit existing Zapier workflows and map triggers and actions to n8n nodes",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Rebuild the 6 workflows in self-hosted n8n including form, Google Sheets, Slack, Stripe, and Gmail integrations",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Test each migrated workflow with the client and verify correct data flow",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Hand over a short documentation detailing the n8n workflows",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Self-hosted n8n environment access or permission issues during setup",
+    "mitigation": "Verify server access and credentials before starting the migration process"
+   },
+   {
+    "risk": "Differences in how Zapier and n8n handle specific edge cases or payloads for Stripe and Gmail",
+    "mitigation": "Review existing Zapier history and thoroughly test each node during the testing phase"
+   }
+  ],
+  "questions": [
+   "Do we have admin access to the self-hosted n8n instance and all relevant third-party accounts (Stripe, Gmail, Slack, Google Sheets)?",
+   "Are there any specific error handling or notification rules required for failed executions?"
+  ],
+  "assumptions": [
+   "The client will provide credentials and access to the self-hosted n8n instance and connected applications",
+   "The total budget is $450 fixed price"
+  ]
+ }
+}

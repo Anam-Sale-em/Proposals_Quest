@@ -1,0 +1,111 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.4",
+ "response": {
+  "goal": "Build an automated lead routing system in n8n that intakes leads from four sources, deduplicates and enriches them, applies region and enterprise routing rules, notifies sales reps in Slack, mirrors data to Google Sheets, stores everything in PostgreSQL, handles errors with a dead-letter queue, and provides logging and comprehensive documentation.",
+  "plan": [
+   {
+    "step": "Kickoff, PostgreSQL schema design, and Milestone 1 setup covering multi-source intake (webhooks, Google Drive CSVs, inbox email parsing), validation, deduplication, and Google Sheets mirroring.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Google Sheets API",
+     "Webhooks"
+    ],
+    "suggested_tools": [
+     "Docker"
+    ]
+   },
+   {
+    "step": "Implement enrichment provider integration with rate limiting, advanced routing rules (enterprise, region, and persistent database round-robin), working hours check, and Slack notification/claiming workflows.",
+    "tools": [
+     "n8n",
+     "Slack API",
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "REST APIs"
+    ]
+   },
+   {
+    "step": "Build error handling with exponential backoff, dead-letter tables, replay mechanisms, daily digest generation, and comprehensive logging.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Slack API"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Finalize documentation, write the README, create architecture diagrams, conduct end-to-end testing with the 50 test leads, and execute the recorded handover call.",
+    "tools": [
+     "n8n",
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "Git"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Intake from all four sources, validation, duplicate handling, PostgreSQL storage, and the Google Sheet mirror.",
+    "budget_share": "$1,200"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Enrichment, routing rules, Slack notifications, claiming, and reassignment.",
+    "budget_share": "$1,400"
+   },
+   {
+    "name": "Milestone 3",
+    "deliverable": "Error handling, dead-letter replay, the daily digest, logging, documentation, and handover.",
+    "budget_share": "$900"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff, PostgreSQL schema design, and Milestone 1 setup covering multi-source intake (webhooks, Google Drive CSVs, inbox email parsing), validation, deduplication, and Google Sheets mirroring.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Implement enrichment provider integration with rate limiting, advanced routing rules (enterprise, region, and persistent database round-robin), working hours check, and Slack notification/claiming workflows.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Build error handling with exponential backoff, dead-letter tables, replay mechanisms, daily digest generation, and comprehensive logging.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Finalize documentation, write the README, create architecture diagrams, conduct end-to-end testing with the 50 test leads, and execute the recorded handover call.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Concurrent lead arrivals in the exact same second causing race conditions and unfairness in the PostgreSQL round-robin pointer.",
+    "mitigation": "Use atomic database transactions and row-level locking (SELECT FOR UPDATE) within PostgreSQL to safely increment and read the round-robin pointer."
+   },
+   {
+    "risk": "Unstructured partner referral emails leading to high parsing failures and data loss.",
+    "mitigation": "Implement a robust fallback parser and route unparseable emails directly into a dedicated review queue table during Milestone 1."
+   }
+  ],
+  "questions": [
+   "What specific email parsing or AI extraction tool or service do you prefer to use within n8n for reading the unstructured partner referral emails?",
+   "What is the exact name and schema of the enrichment provider's API endpoint that we will be integrating with?",
+   "Should the Slack interactive 'Claim' button trigger via an incoming webhook endpoint or an interactive component URL configured in the Slack app settings?"
+  ],
+  "assumptions": [
+   "The client will provide valid API documentation and test credentials for the enrichment provider before Milestone 2 begins.",
+   "The staging PostgreSQL database and self-hosted n8n instance are fully accessible and configured with correct permissions prior to kickoff."
+  ]
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "step": "extract",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "title": "Weekly PDF sales report from Google Sheets",
+  "description": "Every Monday we build a sales report by hand from our Google Sheet. We want it automated: pull last week's numbers, build a 2-page PDF with a chart, and email it to 4 managers.\n\nTo speed things up, let's move to WhatsApp. Message me on WhatsApp before applying and I'll share the full details and a test sheet there.",
+  "budget": {
+   "kind": "fixed",
+   "amount_usd": 600.0,
+   "min_usd": null,
+   "max_usd": null,
+   "approximate": false,
+   "raw_text": "$600.00"
+  },
+  "skills": [
+   "Google Sheets",
+   "Python",
+   "Automation"
+  ],
+  "screening_questions": [],
+  "explicit_requirements": [],
+  "client_tools": [],
+  "client": {
+   "payment_verified": true,
+   "rating": 4.9,
+   "reviews": 20,
+   "jobs_posted": 31,
+   "hire_rate_pct": 80.0,
+   "total_spent_usd": 60000.0,
+   "total_spent_approximate": false,
+   "hires": 25,
+   "active_hires": 2
+  },
+  "instructions": [
+   {
+    "text": "Message me on WhatsApp before applying and I'll share the full details and a test sheet there.",
+    "kind": "off_platform",
+    "check": "other",
+    "value": ""
+   }
+  ],
+  "red_flags": [
+   {
+    "kind": "off_platform",
+    "evidence": "To speed things up, let's move to WhatsApp. Message me on WhatsApp before applying and I'll share the full details and a test sheet there."
+   }
+  ],
+  "ignored_sections": [
+   "Similar jobs",
+   "Other open jobs by this client"
+  ]
+ }
+}

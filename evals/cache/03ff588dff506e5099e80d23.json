@@ -1,0 +1,33 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.3",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has the core automation skills needed for connecting tools.",
+  "work_type_yes": true,
+  "work_type_reason": "The task asks for workflow automation, which matches the freelancer's listed work types.",
+  "realistic_yes": false,
+  "realistic_reason": "A fixed budget of $5 is unrealistically low for any professional automation project.",
+  "clear_yes": false,
+  "clear_reason": "The job post contains no specific details about the tools or workflow to build a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "label": "similar",
+    "reason": "It involves webhooks and tool integration using n8n, directly matching general automation tasks."
+   },
+   {
+    "project_id": "P2",
+    "label": "same_skills",
+    "reason": "It uses Python and APIs, applying the same technical stack to a different data syncing domain."
+   },
+   {
+    "project_id": "P3",
+    "label": "same_skills",
+    "reason": "It utilizes Python and API integrations, applying core skills to a different service domain."
+   }
+  ]
+ }
+}
