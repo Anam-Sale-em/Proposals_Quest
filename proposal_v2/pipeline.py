@@ -24,7 +24,7 @@ from .trust import score_client
 from .validators import failures_for_retry, validate
 
 
-SENT_LOG_HEADER = ["Date sent", "Job", "Link", "v2's call", "You overrode it", "Client trust", "Proof", "Minutes, paste to sent",
+SENT_LOG_HEADER = ["Date sent", "Job", "Link", "v2's call", "You overrode it", "Client trust", "Proof", "Minutes, job added to sent",
                    "Share edited before send", "Outcome"]
 
 

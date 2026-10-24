@@ -22,7 +22,7 @@ Open the link Streamlit prints and enter your passphrase. Then set your minimum 
 
 ### Sent log
 
-My jobs → **Download sent log (CSV)** gives every sent proposal with its decision, client trust, proof, minutes from paste to sent, the share of the draft you edited and the outcome. It opens in Excel or Google Sheets. On the live link, download it now and then: the app's files reset when it restarts.
+My jobs → **Download sent log (CSV)** gives every sent proposal with its decision, client trust, proof, minutes from adding the job to sending it, the share of the draft you edited and the outcome. It opens in Excel or Google Sheets. On the live link, download it now and then: the app's files reset when it restarts.
 
 ### Live link (Streamlit Community Cloud, free)
 

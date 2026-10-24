@@ -707,7 +707,7 @@ def screen_draft() -> None:
     if v.framing == "plan_only":
         asks = [r for r in rec.job.explicit_requirements
                 if any(w in r.lower() for w in ("share", "portfolio", "example", "sample", "built", "past work", "previous work", "link"))]
-        ask = f" The client asked: _{asks[0]}_" if asks else ""
+        ask = (f" Heads-up: the client asked for this, and the draft doesn't cover it: \"{asks[0].strip().rstrip('.')}\"." if asks else "")
         choice = rec.proof_choice or "auto"
         if not projects:
             st.warning(f"**No past work is cited.** Your Projects library is empty, so this draft is a plan only.{ask} "
@@ -716,8 +716,8 @@ def screen_draft() -> None:
             st.info(f"**No past work is cited**, as you chose. This draft is a plan only.{ask}")
         elif choice == "auto":
             st.info(f"**No relevant project found.** v2 checked your {len(projects)} project{'s' if len(projects) != 1 else ''} "
-                    f"and none is close enough to this job, so it didn't add one. The draft is a plan only.{ask} "
-                    "If one of them still fits, pick it in **Proof** above and click **Rewrite with this proof**.")
+                    f"and none is close enough to this job, so the draft is a plan only.{ask} "
+                    "If one of your projects still fits, pick it in **Proof** above and click **Rewrite with this proof**.")
         else:
             st.warning(f"**No past work is cited.** No project was picked, so this draft is a plan only.{ask} "
                        "Pick one in **Proof** above and click **Rewrite with this proof**.")
@@ -772,7 +772,12 @@ def screen_draft() -> None:
                 st.rerun()
     else:
         o = rec.outcome
-        st.success(f"Sent {o.sent_at[:10]} · {o.minutes_paste_to_sent} min from paste to sent")
+        from datetime import date
+        d0 = date.fromisoformat(o.sent_at[:10])
+        sent_on = f"{d0.day} {d0:%b %Y}"
+        m = o.minutes_paste_to_sent
+        took = "" if m is None else f" · {'under a minute' if m < 1 else f'{round(m)} min'} from adding the job to sending it"
+        st.success(f"Sent on {sent_on}{took}")
         if Pipeline.still_waiting(rec):
             st.info("Still waiting? Record what happened:")
         cols = st.columns(4)
