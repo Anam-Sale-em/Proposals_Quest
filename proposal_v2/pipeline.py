@@ -178,6 +178,17 @@ class Pipeline:
         self.storage.put_proposal(rec)
         return rec
 
+    def recheck(self, rec: ProposalRecord) -> ProposalRecord:
+        """Runs the fit check again on a saved job with the current settings and projects (after adding a skill
+        or a project, or when the check was skipped). Drafts are kept; the old decision is logged."""
+        if rec.status == "sent":
+            raise PipelineError("This job is already marked as sent, so its check stays as it was.")
+        old = rec.decision.decision if rec.decision else None
+        rec.events.append({"at": now_iso(), "type": "fit_rechecked", "from": old,
+                           "from_code": rec.decision.code if rec.decision else None})
+        rec.assessment = None
+        return self.decide(rec, check=True)
+
     def suggested_proof(self, rec: ProposalRecord) -> tuple[Optional[str], str]:
         if not rec.assessment:
             # No assessment (fit check skipped): pick the project with the most skill overlap, and frame it

@@ -113,7 +113,7 @@ def matched_keywords(job: JobPost, keywords: list[str]) -> list[str]:
 def fetch_by_link(url: str) -> JobPost:
     m = re.search(r"freelancer\.[a-z.]+/projects/([^?#]+)", url)
     if not m:
-        raise FetchError("v2 can only fetch Freelancer.com project links. For other platforms, paste the job text with its link.")
+        raise FetchError("This isn't a Freelancer.com project link. Open the project, click Share (top right), then Copy link and paste it here. For other platforms, use Paste a job.")
     seo = m.group(1).strip("/")
     num = re.search(r"(\d{5,})$", seo)
     if num:

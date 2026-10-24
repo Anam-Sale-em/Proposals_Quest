@@ -155,7 +155,7 @@ It took him about **10 minutes** to open the app, pick a job he liked and get a 
 | "It decides nothing; the fit check runs once you pick a job" read as jargon | Rewritten: "Find new Freelancer.com jobs by keyword. Pick one, and v2 checks it and writes the proposal" (#68) |
 | The Upwork post said "Confirm your fixed price and timeline", and the draft confirmed "$400–$600 and 5–7 days" for him | v2 never commits to a price or timeline: it uses the freelancer's own note, or writes "[your price and timeline]" with a reminder to fill it in (#67) |
 | The Solution Brief showed "131.65 – 131.65–394.95" (dollar signs read as maths) | Fixed (#68) |
-| He asked what "client history" is and where to get it | Both the paste form and the confirm screen now say it's the **About the client** box on the right side of the job's page, with an Open job button right there (#69) |
+| He asked what "client history" is and where to get it | Both the paste form and the confirm screen now say it's the **About the client** section of the job's page (below the skills on Upwork, on the right on Freelancer.com), with an Open job button right there (#69) |
 | The post asked "Share one AI or API integration you've built"; he had none to share | Handled as designed: the draft warns that no past work is cited and names the unanswered request (F3) |
 | His storefront draft said "as I usually focus on editing" | Checked: editing is in his own skills, so the claim is grounded, not invented |
 

@@ -131,7 +131,8 @@ ss.setdefault("pending", None)
 # =========================================================================== sidebar
 with st.sidebar:
     st.markdown(BRAND, unsafe_allow_html=True)
-    ws = st.radio("Workspace", ["My workspace", "Sample workspace"], key="workspace",
+    ws = st.radio("Workspace", ["My workspace", "Sample workspace"], key="workspace", horizontal=True,
+                  format_func=lambda w: "Mine" if w == "My workspace" else "Sample",
                   help="Your data and the sample data are kept apart.")
     is_sample = ws == "Sample workspace"
     uid = "sample" if is_sample else "me"
@@ -143,7 +144,10 @@ with st.sidebar:
     opening = "nav_to" in ss  # "Open" on a job in My jobs: show that job, not a blank form
     if opening:
         ss.page = ss.pop("nav_to")
-    page = st.radio("Go to", ["New job", "My jobs", "Projects", "Settings"], key="page")
+    NAV_ICONS = {"New job": ":material/add_circle:", "My jobs": ":material/work_history:",
+                 "Projects": ":material/folder_open:", "Settings": ":material/tune:"}
+    page = st.radio("Menu", ["New job", "My jobs", "Projects", "Settings"], key="page",
+                    format_func=lambda p: f"{NAV_ICONS[p]}&nbsp;&nbsp;{p}")
     # Coming back to New job from another page starts a fresh form.
     if page == "New job" and ss.get("last_page", "New job") != "New job" and not opening:
         ss.screen, ss.pending, ss.duplicate = "new", None, None
@@ -219,45 +223,16 @@ LINK_STATUS = {
 }
 
 
-SETTING_NAMES = {"work_types": "Work types", "skills": "Skills", "min_hourly_usd": "Minimum hourly rate",
-                 "min_fixed_usd": "Minimum fixed price", "trust_cutoffs": "Trust levels"}
-
-
-def _setting_value(key: str, v) -> str:
-    if v in (None, "", [], {}):
-        return "not set"
-    if key in ("min_hourly_usd", "min_fixed_usd"):
-        return f"${v:,.0f}" + ("/hr" if key == "min_hourly_usd" else "")
-    if key == "trust_cutoffs":
-        return ", ".join(f"{k.capitalize()} {x:g}" for k, x in v.items())
-    if isinstance(v, list):
-        return ", ".join(v)
-    return str(v)
-
-
-def settings_line(e: dict) -> str:
-    """One readable line per settings change, e.g. "24 Oct, 20:17 · You: Minimum hourly rate $20/hr → $25/hr"."""
-    from datetime import datetime
-
-    changes = e.get("changes") or {}
-    if not isinstance(changes, dict):
-        changes = {k: {} for k in changes}
-    parts = []
-    for key, ch in changes.items():
-        if key not in SETTING_NAMES:  # search terms and old fields aren't settings any more
-            continue
-        if ch and "to" in ch:
-            parts.append(f"{SETTING_NAMES[key]}: {_setting_value(key, ch.get('from'))} → {_setting_value(key, ch.get('to'))}")
-        else:
-            parts.append(SETTING_NAMES[key])
-    if not parts:
-        return ""
-    try:
-        when = datetime.fromisoformat(e["at"]).strftime("%d %b, %H:%M UTC")
-    except Exception:
-        when = e.get("at", "")
-    who = "Sample data loaded" if e.get("by") == "sample data" else "You"
-    return f"**{when}** · {who}  \n" + "  \n".join(parts)
+def recheck_button(rec: ProposalRecord, label: str) -> None:
+    """Runs the fit check again with today's settings and projects. Not offered once a job is sent."""
+    if rec.status == "sent":
+        return
+    if st.button(label, key=f"recheck_{rec.job_key}",
+                 help="Uses your current skills, work types, rates and projects. Your drafts stay."):
+        r = run(pipe.recheck, rec)
+        if r:
+            ss.flash_ok = f"Checked again: {decision_label(r.decision)}."
+            go("card", r.job_key)
 
 
 def md(text: str, where=st) -> None:
@@ -279,10 +254,10 @@ profile = pipe.profile()
 if not is_sample and (profile.min_hourly_usd is None or profile.min_fixed_usd is None) and page in ("New job", "My jobs"):
     st.title("Welcome")
     st.write("Set your minimum rates first. v2 skips jobs below them. Adding past projects is optional and can wait until a proposal needs proof.")
-    with st.form("onboard"):
+    with st.form("onboard", enter_to_submit=False):
         h = st.number_input("Minimum hourly rate (USD)", min_value=0.0, value=30.0, step=5.0)
         f = st.number_input("Minimum fixed price (USD)", min_value=0.0, value=200.0, step=50.0)
-        wt = st.text_input("Kinds of work you do (comma-separated)", placeholder="e.g. logo design, brand identity")
+        wt = st.text_input("Kinds of work you do (comma-separated)", placeholder="e.g. workflow automation, AI chatbots, mobile apps", help="What you deliver, not the tools: v2 skips jobs that aren't one of these. Tools go under skills.")
         sk = st.text_input("Your skills (comma-separated)", placeholder="e.g. Figma, Illustrator")
         if st.form_submit_button("Save and start"):
             profile.min_hourly_usd, profile.min_fixed_usd = h, f
@@ -328,8 +303,10 @@ def screen_new() -> None:
         st.info(ss.pop("flash_new"))
     # Stored outside the widget, because Streamlit drops a widget's value once it leaves the page.
     ss.fit_choice = st.checkbox("Check if this job is a good fit first", value=ss.get("fit_choice", True), key="check_fit",
-                help="Checks the client, the budget and the fit, then recommends Apply, Apply with questions or Skip. "
-                     "Untick it to go straight to the draft; red flags and a low budget still show as warnings.")
+                help="Checks the client, the budget and the fit, then recommends **Apply**, **Apply with questions** "
+                     "(worth applying, but the post is vague or the budget looks unreal, so the proposal leads with questions) "
+                     "or **Skip**. Untick it to go straight to the draft; red flags and a low budget still show as warnings. "
+                     "You can run the check later from the job.")
     tab_paste, tab_link, tab_kw = st.tabs(["Paste a job (any platform)", "Freelancer.com link", "Freelancer.com search"])
 
     with tab_paste:
@@ -343,13 +320,15 @@ def screen_new() -> None:
                 post, box = split_client_box(j["id"], j["job_details"])
                 ss.f_link, ss.f_details, ss.f_client = j["link"], post, box
                 st.rerun()
-        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr")
+        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr",
+                             help="Use the job's own link: open the job, click Share (top right of the job), then Copy link. "
+                                  "A search or feed page link won't work.")
         details = st.text_area("Job details *", key="f_details", height=220,
                                help="The whole job post. If you copy the whole page, v2 keeps only the main post and its own client box.")
         client = st.text_area("Client history (optional)", key="f_client", height=90,
                               help="Without it, client trust shows Unknown and you can still go ahead.")
-        st.caption("Where to find it: on the job's page, the **About the client** box on the right side "
-                   "(payment verified, rating, reviews, total spent, hires). Copy that box here if your paste above doesn't include it.")
+        st.caption("Where to find it: the **About the client** section of the job's page. On Upwork it's below the skills "
+                   "and \"Activity on this job\"; on Freelancer.com it's on the right side. Copy it here if your paste above doesn't include it.")
         if st.button("Check job", type="primary"):
             try:
                 rec = run(pipe.extract, link, details, client)
@@ -368,7 +347,8 @@ def screen_new() -> None:
             st.info("Sample workspace: try a saved sample Freelancer.com job, or paste a real link to fetch it live.")
             use_sample = st.button("Use the sample Freelancer.com job")
         flink = st.text_input("Freelancer.com project link",
-                              placeholder="https://www.freelancer.com/projects/automation/...")
+                              placeholder="https://www.freelancer.com/projects/automation/...",
+                              help="Open the project, click Share (top right), then Copy link. A search page link won't work.")
         if st.button("Fetch job") or use_sample:
             try:
                 job = sample_fetched_job() if use_sample else run(fetch_by_link, flink)
@@ -462,7 +442,8 @@ def screen_confirm() -> None:
 
     st.subheader("Client history")
     on_freelancer = job.platform == "freelancer"
-    st.caption("Find it on the job's page: the **About the client** box on the right side. "
+    where = {"upwork": "below the skills and \"Activity on this job\"", "freelancer": "on the right side"}.get(job.platform, "")
+    st.caption(f"Find it in the **About the client** section of the job's page{(', ' + where) if where else ''}. "
                "Copy what it shows into the fields below; leave the rest blank.")
     link_or_note(job.link)
     pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
@@ -550,6 +531,8 @@ def screen_card() -> None:
     st.title(rec.job.title)
     if ss.get("flash"):
         st.warning(ss.pop("flash"))
+    if ss.get("flash_ok"):
+        st.success(ss.pop("flash_ok"))
     tone = "unchecked" if d.code == "unchecked" else d.decision
     word = decision_label(d) + (" (your override)" if d.overridden else "")
     chips = [trust_chip(rec.trust), chip(f"Budget: {rec.job.budget.raw_text or 'not stated'}")]
@@ -565,6 +548,7 @@ def screen_card() -> None:
             if st.button("Write proposal" if not rec.versions else "Open draft", type="primary"):
                 if rec.versions or run(pipe.write, rec):
                     go("draft")
+    recheck_button(rec, "Check the fit now" if d.code == "unchecked" else "Check the fit again")
     if d.decision == "skip" and not d.overridden:
         with st.expander("Override this Skip"):
             why = st.text_input("Why? (optional, logged)")
@@ -604,6 +588,7 @@ def screen_draft() -> None:
     if rec.decision.code == "unchecked" and rec.decision.card_note:
         st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
     st.caption(f"{summary_line(rec)} · Draft {v.n}")
+    recheck_button(rec, "Check the fit now" if rec.decision.code == "unchecked" else "Check the fit again")
 
     projects = pipe.projects()
     labels = {l.project_id: l.label for l in (rec.assessment.project_labels if rec.assessment else [])}
@@ -748,18 +733,24 @@ def next_project_id(ids: set[str]) -> str:
 
 
 def project_form(p: Project | None, key: str, on_save=None) -> None:
-    with st.form(f"proj_{key}"):
+    with st.form(f"proj_{key}", enter_to_submit=False):
         title = st.text_input("Title *", p.title if p else "")
-        problem = st.text_area("Problem", p.problem if p else "")
-        did = st.text_area("What I did", p.what_i_did if p else "")
-        skills = st.text_input("Skills (comma-separated)", ", ".join(p.skills) if p else "")
-        result = st.text_input("Result (verifiable numbers only)", p.result if p else "")
-        link = st.text_input("Link", (p.link or "") if p else "")
-        roles = ["solo", "led", "contributed"]
-        role = st.selectbox("Role", roles, index=roles.index(p.role) if p else 0)
+        problem = st.text_area("Problem *", p.problem if p else "", placeholder="What was going wrong for the client, in one or two lines")
+        did = st.text_area("What I did *", p.what_i_did if p else "", placeholder="What you built or changed, and with what")
+        skills = st.text_input("Skills *", ", ".join(p.skills) if p else "", placeholder="Comma-separated, e.g. n8n, Python, Slack API")
+        result = st.text_input("Result (optional)", p.result if p else "",
+                               placeholder="e.g. cut manual entry from 2 hours a week to 10 minutes",
+                               help="Only numbers and outcomes you can back up. Leave it empty rather than guess.")
+        link = st.text_input("Link (optional)", (p.link or "") if p else "")
+        roles = {"solo": "I did it on my own", "led": "I led it", "contributed": "I was part of a team"}
+        role = st.selectbox("Your role *", list(roles), index=list(roles).index(p.role) if p else None,
+                            format_func=roles.get, placeholder="Choose your role",
+                            help="Sent to the draft with the project, so it can describe your part accurately.")
         if st.form_submit_button("Save"):
-            if not title.strip():
-                st.error("Add a title.")
+            missing = [n for n, v in (("Title", title), ("Problem", problem), ("What I did", did), ("Skills", skills),
+                                      ("Your role", role or "")) if not v.strip()]
+            if missing:
+                st.error("Fill in " + ", ".join(missing) + ". v2 uses them to match this project to jobs and to write honest proof.")
                 return
             ids = {x.id for x in pipe.projects()}
             pid = p.id if p and p.id in ids else next_project_id(ids)
@@ -775,12 +766,12 @@ def page_settings() -> None:
     st.title("Settings")
     p = pipe.profile()
     cfg = load_config()["trust"]
-    with st.form("settings"):
+    with st.form("settings", enter_to_submit=False):
         st.subheader("Minimum rates")
         h = st.number_input("Minimum hourly rate (USD)", min_value=0.0, value=float(p.min_hourly_usd or 0))
         f = st.number_input("Minimum fixed price (USD)", min_value=0.0, value=float(p.min_fixed_usd or 0))
         st.subheader("Your work")
-        wt = st.text_input("Kinds of work you do", ", ".join(p.work_types))
+        wt = st.text_input("Kinds of work you do", ", ".join(p.work_types), placeholder="e.g. workflow automation, AI chatbots, mobile apps", help="What you deliver, not the tools: v2 skips jobs that aren't one of these. Tools go under skills.")
         sk = st.text_input("Skills", ", ".join(p.skills))
         st.subheader("Client score cut-offs")
         st.caption("A score at or above the number gets the band. Below Low is a red flag.")
@@ -796,13 +787,7 @@ def page_settings() -> None:
             p.skills = [x.strip() for x in sk.split(",") if x.strip()]
             p.trust_cutoffs = {"excellent": ex, "high": hi, "medium": me, "low": lo}
             storage().put_profile(uid, p)
-            st.success("Saved. Every change is logged.")
-    lines = [ln for ln in (settings_line(e) for e in reversed(storage().settings_log(uid)[-30:])) if ln][:20]
-    if lines:
-        with st.expander("Settings history"):
-            st.caption("Every change to your rates, skills and trust levels, newest first.")
-            for ln in lines:
-                md(ln)
+            st.success("Saved.")
     with st.expander("Delete all data in this workspace"):
         st.caption("Removes your jobs, drafts, projects and settings from this app. Download your sent log from My jobs first if you want to keep it.")
         if st.checkbox("I understand this can't be undone") and st.button("Delete everything"):

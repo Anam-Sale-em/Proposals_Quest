@@ -187,7 +187,7 @@ Every screen shows why: the reason for the decision, the trust score and how man
   - The search tab explained in plain words.
   - Price and timeline are never confirmed for you (one draft had confirmed "$400–$600, 5–7 days" on his behalf).
   - Dollar amounts in the Solution Brief fixed.
-  - Both input screens now say where client history comes from (the **About the client** box on the right of the job's page), with an Open job button beside it.
+  - Both input screens now say where client history comes from (the **About the client** section of the job's page), with an Open job button beside it.
 
 ## 8. First two weeks after launch
 

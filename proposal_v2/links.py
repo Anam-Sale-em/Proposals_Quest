@@ -48,6 +48,10 @@ def normalized_url(url: str) -> str:
     return f"{host}{path}"
 
 
+NOT_A_JOB = ("This looks like a search or profile page, not a job posting. Open the job, then use its Share button "
+             "(top right of the job) → Copy link, and paste that link here.")
+
+
 def parse_link(url: str) -> ParsedLink:
     """Step 1 of the link check. Raises LinkError with a user-facing message."""
     url = (url or "").strip()
@@ -65,52 +69,52 @@ def parse_link(url: str) -> ParsedLink:
     if platform == "upwork":
         m = re.search(r"~0[0-9a-z]+", path, re.I)
         if not m:
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         job_id = m.group(0).lower()
         slug = ""
         sm = re.search(r"/([^/]+)_~0", path)
         if sm:
             slug = sm.group(1)
         if re.search(r"/(freelancers|o/profiles|agencies)/", lower):
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         return ParsedLink(url, platform, host, path, f"upwork:{job_id}", _tokens(slug))
 
     if platform == "freelancer":
         if re.search(r"/(u|search|jobs|freelancers)(/|$)", lower) and not lower.startswith("/projects/"):
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         if not lower.startswith("/projects/"):
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         parts = [p for p in path.split("/") if p]
         slug = parts[-1] if len(parts) >= 2 else ""
         num = re.search(r"(\d{5,})", slug)
         key = num.group(1) if num else slug.lower()
         if not key:
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         return ParsedLink(url, platform, host, path, f"freelancer:{key}", _tokens(re.sub(r"\d{5,}", "", slug)))
 
     if platform == "guru":
         m = re.search(r"/(\d{4,})(?:/|$|[^0-9])", path)
         if "/freelancers" in lower or "/d/jobs" in lower and not m:
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         if not m:
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         parts = [p for p in path.split("/") if p and not p.isdigit()]
         slug = parts[-1] if parts and parts[-1] not in {"work", "detail", "jobs"} else ""
         return ParsedLink(url, platform, host, path, f"guru:{m.group(1)}", _tokens(slug))
 
     if platform == "peopleperhour":
         if "/freelance-jobs" not in lower:
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         parts = [p for p in path.split("/") if p]
         last = parts[-1] if parts else ""
         m = re.search(r"-(\d{4,})$", last)
         if not m:
-            raise LinkError("This looks like a search or profile page, not a job posting.")
+            raise LinkError(NOT_A_JOB)
         return ParsedLink(url, platform, host, path, f"peopleperhour:{m.group(1)}", _tokens(last[: m.start()]))
 
     # fiverr and anything else supported: normalized URL; no title words to check
     if re.search(r"/(search|categories)(/|$)", lower):
-        raise LinkError("This looks like a search or profile page, not a job posting.")
+        raise LinkError(NOT_A_JOB)
     return ParsedLink(url, platform, host, path, f"{platform}:{normalized_url(url)}", [])
 
 

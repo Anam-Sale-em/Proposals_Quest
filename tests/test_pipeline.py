@@ -229,3 +229,18 @@ def test_notes_reach_the_prompt_only_when_written():
     assert "freelancer_notes" not in prompts._job_block(job)  # unchanged prompts for every job without notes
     job.user_notes = "Mention I can start Monday"
     assert "Mention I can start Monday" in prompts._job_block(job)
+
+
+def test_recheck_runs_the_fit_check_on_a_saved_job(pipe):
+    from proposal_v2.pipeline import PipelineError
+    j = _job("T08")  # logo job: written without the check first
+    rec = pipe.decide(pipe.extract(j["link"], j["job_details"]), check=False)
+    assert rec.decision.code == "unchecked"
+    rec = pipe.recheck(rec)
+    assert rec.decision.code == "work_type" and rec.events[-1]["type"] != "fit_check_skipped"
+    assert any(e["type"] == "fit_rechecked" and e["from_code"] == "unchecked" for e in rec.events)
+    j = _job("T01")
+    sent = pipe.write(pipe.decide(pipe.extract(j["link"], j["job_details"])))
+    sent, _ = pipe.mark_sent(sent, sent.latest().text)
+    with pytest.raises(PipelineError):
+        pipe.recheck(sent)

@@ -40,7 +40,7 @@ def test_closed_job_and_errors(monkeypatch):
     monkeypatch.setattr(requests, "get", lambda url, params, timeout: Resp(429, {}))
     with pytest.raises(FetchError, match="rate-limiting"):
         search_jobs(["shopify"], [], None)
-    with pytest.raises(FetchError, match="only fetch Freelancer.com"):
+    with pytest.raises(FetchError, match="Freelancer.com project link"):
         fetch_by_link("https://www.upwork.com/jobs/~01abc")
 
 

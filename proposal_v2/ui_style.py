@@ -53,37 +53,64 @@ header[data-testid="stHeader"] { background: transparent; }
 [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: var(--ink-soft) !important; }
 hr { border-color: var(--line) !important; }
 
-/* Sidebar: a calm deep-harbor panel */
+/* Sidebar: a slim deep-harbor panel */
 [data-testid="stSidebar"] { background: var(--harbor-deep); border-right: none; }
+section[data-testid="stSidebar"] { width: 276px !important; min-width: 276px !important; }
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"], [data-testid="stSidebar"] [data-testid="stElementContainer"],
+[data-testid="stSidebar"] [data-testid="stRadio"], [data-testid="stSidebar"] [data-testid="stRadio"] > div,
+[data-testid="stSidebar"] .stButton { width: 100% !important; max-width: 100% !important; }
+[data-testid="stSidebarHeader"] { height: 2.4rem; padding: .6rem 1rem 0; }
+[data-testid="stSidebarUserContent"] { padding: .2rem 1.1rem 1.5rem !important; }
 [data-testid="stSidebar"] * { color: #DCE7ED; }
 [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
-  color: #93ABBA !important; font-size: .82rem; font-weight: 600; letter-spacing: .01em;
+  color: #8FA7B6 !important; font-size: .78rem; font-weight: 600; letter-spacing: .02em;
 }
-[data-testid="stSidebar"] svg { fill: #93ABBA; }
-.brand { display: flex; align-items: center; gap: .7rem; margin: .2rem 0 1.6rem; }
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] { margin-bottom: .35rem; }
+[data-testid="stSidebar"] svg { fill: #8FA7B6; }
+.brand { display: flex; align-items: center; gap: .65rem; margin: 0 0 1.4rem; padding-bottom: 1.1rem;
+         border-bottom: 1px solid rgba(255, 255, 255, .08); }
 .brand .mark {
-  width: 38px; height: 38px; border-radius: 11px; background: var(--mint); color: var(--harbor-deep) !important;
-  display: grid; place-items: center; font-weight: 800; font-size: 1.15rem;
+  width: 34px; height: 34px; border-radius: 10px; background: var(--mint); color: var(--harbor-deep) !important;
+  display: grid; place-items: center; font-weight: 800; font-size: 1.05rem; flex: none;
 }
-.brand .name { font-weight: 800; font-size: 1.08rem; color: #FFFFFF !important; line-height: 1.15; }
-.brand .sub { font-size: .82rem; color: #93ABBA !important; }
+.brand .name { font-weight: 800; font-size: 1rem; color: #FFFFFF !important; line-height: 1.2; white-space: nowrap; }
+.brand .sub { font-size: .78rem; color: #8FA7B6 !important; white-space: nowrap; }
 
-/* Sidebar radios become a menu: full-width rows, the chosen one highlighted */
-[data-testid="stSidebar"] [data-testid="stRadioGroup"] { gap: 2px; width: 100%; align-items: stretch; }
-[data-testid="stSidebar"] [data-testid="stRadioGroup"] > div { width: 100%; }
-[data-testid="stSidebar"] [data-testid="stRadioOption"] {
-  display: flex; width: 100%; box-sizing: border-box; padding: .55rem .8rem; border-radius: 10px; margin: 0; cursor: pointer;
+/* Workspace: a two-way switch */
+.st-key-workspace [data-testid="stRadioGroup"] {
+  display: grid !important; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px;
+  background: rgba(0, 0, 0, .22); border-radius: 10px; width: 100%;
 }
-[data-testid="stSidebar"] [data-testid="stRadioOption"] > div > div:first-child:not([data-testid]) { display: none !important; }
-[data-testid="stSidebar"] [data-testid="stRadioOption"]:hover { background: rgba(255, 255, 255, .06); }
-[data-testid="stSidebar"] [data-testid="stRadioOption"][data-selected="true"] {
-  background: rgba(127, 209, 185, .16); box-shadow: inset 3px 0 0 var(--mint);
+.st-key-workspace [data-testid="stRadioOption"] {
+  justify-content: center; padding: .38rem .5rem !important; border-radius: 8px; margin: 0 !important; cursor: pointer;
 }
-[data-testid="stSidebar"] [data-testid="stRadioOption"][data-selected="true"] p { color: #FFFFFF !important; font-weight: 700; }
+.st-key-workspace [data-testid="stRadioOption"] > div > div:first-child:not([data-testid]) { display: none !important; }
+.st-key-workspace [data-testid="stRadioOption"] p { font-size: .88rem; font-weight: 600; color: #A9BDC9 !important; }
+.st-key-workspace [data-testid="stRadioOption"][data-selected="true"] { background: rgba(255, 255, 255, .14); }
+.st-key-workspace [data-testid="stRadioOption"][data-selected="true"] p { color: #FFFFFF !important; }
+
+/* Menu: full-width rows with icons, the current page highlighted */
+.st-key-page { margin-top: .4rem; }
+.st-key-page [data-testid="stRadioGroup"] { display: flex !important; flex-direction: column; align-items: stretch; gap: 2px; width: 100%; }
+.st-key-page [data-testid="stRadioGroup"] > div, .st-key-page [data-testid="stRadioOption"] { width: 100% !important; }
+.st-key-page [data-testid="stRadioOption"] {
+  display: flex; box-sizing: border-box; padding: .5rem .7rem !important; border-radius: 9px; margin: 0 !important; cursor: pointer;
+}
+.st-key-page [data-testid="stRadioOption"] > div { width: 100%; }
+.st-key-page [data-testid="stRadioOption"] > div > div:first-child:not([data-testid]) { display: none !important; }
+.st-key-page [data-testid="stRadioOption"] p { font-size: .95rem; font-weight: 500; display: flex; align-items: center; }
+.st-key-page [data-testid="stRadioOption"] [data-testid="stIconMaterial"] { font-size: 1.15rem; color: #8FA7B6 !important; }
+.st-key-page [data-testid="stRadioOption"]:hover { background: rgba(255, 255, 255, .06); }
+.st-key-page [data-testid="stRadioOption"][data-selected="true"] { background: rgba(127, 209, 185, .15); }
+.st-key-page [data-testid="stRadioOption"][data-selected="true"] p { color: #FFFFFF !important; font-weight: 700; }
+.st-key-page [data-testid="stRadioOption"][data-selected="true"] [data-testid="stIconMaterial"] { color: var(--mint) !important; }
+
 [data-testid="stSidebar"] .stButton button {
-  background: rgba(255, 255, 255, .08) !important; border: 1px solid rgba(255, 255, 255, .16) !important; color: #FFFFFF !important;
+  width: 100%; background: rgba(255, 255, 255, .07) !important; border: 1px solid rgba(255, 255, 255, .14) !important;
+  color: #FFFFFF !important; border-radius: 9px !important; padding: .42rem .8rem !important; font-size: .9rem;
 }
-[data-testid="stSidebar"] .stButton button:hover { background: rgba(255, 255, 255, .14) !important; }
+[data-testid="stSidebar"] .stButton button:hover { background: rgba(255, 255, 255, .13) !important; }
+[data-testid="stSidebar"] [data-testid="stAlert"] { padding: .5rem .7rem; font-size: .88rem; }
 
 /* Tabs as a soft segmented control */
 .stTabs [role="tablist"] { background: var(--paper); padding: 4px; border-radius: 12px; gap: 4px; border: none; }
