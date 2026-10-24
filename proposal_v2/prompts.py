@@ -65,6 +65,14 @@ def _project_json(p: Project) -> dict:
     return d
 
 
+def _extras_block(extras) -> str:
+    """Extra projects the freelancer picked; added only when there are any, so single-project prompts stay the same."""
+    if not extras:
+        return ""
+    return ("\nAlso cite these past projects, each as its own project; never merge their facts or results: "
+            + json.dumps([_project_json(x) for x in extras], ensure_ascii=False))
+
+
 # --------------------------------------------------------------------------- extraction
 def extraction(link: str, platform: str, job_details: str, client_box: str = "") -> tuple[str, str]:
     system = f"""You extract structured fields from one freelance job post. {UNTRUSTED}
@@ -112,7 +120,7 @@ Never give scores or ratings."""
 
 
 # --------------------------------------------------------------------------- brief
-def brief(job: JobPost, profile: Profile, project: Optional[Project], framing: str) -> tuple[str, str]:
+def brief(job: JobPost, profile: Profile, project: Optional[Project], framing: str, extras=()) -> tuple[str, str]:
     system = f"""You write a Solution Brief that plans this exact job. {UNTRUSTED}
 Sections:
 1. goal: the client's outcome in their own terms; no facts that aren't in the post.
@@ -125,7 +133,7 @@ Sections:
 Framing: {framing}. With plan_only there is no project: every proof_map entry is a gap.
 Only use facts from the post and the project. Steps fit any freelancer's work, not only code."""
     proj = json.dumps(_project_json(project), ensure_ascii=False) if project else "none (plan only)"
-    user = f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}\n\n{_job_block(job)}"
+    user = f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}{_extras_block(extras)}\n\n{_job_block(job)}"
     return system, user
 
 
@@ -149,7 +157,7 @@ def asks_for_price(job: JobPost) -> bool:
 
 
 def proposal(job: JobPost, profile: Profile, project: Optional[Project], framing: str, brief_obj: Brief,
-             mode: str, max_words: int, failures: Optional[list[str]] = None, previous: str = "") -> tuple[str, str]:
+             mode: str, max_words: int, failures: Optional[list[str]] = None, previous: str = "", extras=()) -> tuple[str, str]:
     fmt = PLATFORM_FORMAT.get(job.platform, "a proposal message")
     if mode == "questions_first":
         shape = (f"Write {fmt} that leads with questions: the goal as you understand it, 2-3 scoping questions "
@@ -176,7 +184,7 @@ Answer every screening question in screening_answers, briefly and with the same 
         system += (f"\nThe post asks you to confirm a price, rate or timeline. Never commit to one yourself: use the figure from the "
                    f"freelancer's notes if they give one, otherwise write exactly {PRICE_PLACEHOLDER} where it belongs.")
     proj = json.dumps(_project_json(project), ensure_ascii=False) if project else "none (plan only)"
-    user = (f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}\n\n"
+    user = (f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}{_extras_block(extras)}\n\n"
             f"Solution Brief:\n{brief_obj.model_dump_json(indent=1)}\n\n{_job_block(job)}")
     if failures:
         user += ("\n\nYour last draft broke these rules. Fix every one and change nothing else:\n- " + "\n- ".join(failures)
@@ -184,18 +192,19 @@ Answer every screening question in screening_answers, briefly and with the same 
     return system, user
 
 
-def revise(job: JobPost, profile: Profile, project: Optional[Project], current: str, answers: list, comment: str) -> tuple[str, str]:
+def revise(job: JobPost, profile: Profile, project: Optional[Project], current: str, answers: list, comment: str,
+           extras=()) -> tuple[str, str]:
     system = f"""You revise a freelance proposal. Change only what the comment asks; keep every other sentence exactly as it is. {UNTRUSTED}
 {GROUNDING}"""
     proj = json.dumps(_project_json(project), ensure_ascii=False) if project else "none (plan only)"
     user = (f"Comment: {comment}\n\nCurrent proposal:\n{current}\n\nCurrent screening answers:\n"
             f"{json.dumps([a.model_dump() for a in answers], ensure_ascii=False)}\n\n"
-            f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}\n\n{_job_block(job)}")
+            f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}{_extras_block(extras)}\n\n{_job_block(job)}")
     return system, user
 
 
 # --------------------------------------------------------------------------- claim lists
-def claim_lists(text: str, answers: list, project: Optional[Project], notes: str = "") -> tuple[str, str]:
+def claim_lists(text: str, answers: list, project: Optional[Project], notes: str = "", extras=()) -> tuple[str, str]:
     system = """You audit a freelance proposal. List:
 - tools_named: every tool, product, platform, language or skill the proposal and answers name (including the client's own tools).
 - experience_sentences: every sentence that claims past work or experience ("I've built", "I used", "in a past project", "experience with"). For each, maps_to is the project id it describes, "profile" when it only restates the freelancer's general skills, or "none" when it matches neither. Leave out sentences that say the work is new for the freelancer, and sentences that only describe what they will do.
@@ -203,6 +212,9 @@ Copy sentences exactly. Don't judge them; just list them."""
     pid = project.id if project else "none (plan only)"
     user = (f"Chosen project id: {pid}\nChosen project: {project.model_dump_json() if project else 'none'}\n\n"
             f"Proposal:\n{text}\n\nScreening answers:\n{json.dumps([a.model_dump() for a in answers], ensure_ascii=False)}")
+    if extras:
+        user += ("\n\nOther chosen projects (maps_to their id when a sentence describes one of them): "
+                 + json.dumps([x.model_dump(exclude={"can_name_client"}) for x in extras], ensure_ascii=False))
     if notes.strip():
         user += f"\n\nFreelancer's own notes (maps_to \"notes\" for a sentence that only restates them):\n{notes.strip()}"
     return system, user

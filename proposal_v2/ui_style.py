@@ -177,6 +177,13 @@ section[data-testid="stSidebar"] { width: 276px !important; min-width: 276px !im
 }
 .sample-banner b { color: #6B4A0E; }
 
+/* The "working" line: easy to spot while v2 calls the model */
+[data-testid="stSpinner"] {
+  background: #E9F2F6; border: 1px solid #CFE0E8; border-radius: 12px; padding: .7rem 1rem; margin: .4rem 0 .8rem;
+  width: 100% !important;
+}
+[data-testid="stSpinner"] p, [data-testid="stSpinner"] div { color: var(--harbor-deep) !important; font-weight: 600; }
+
 .quiet-ok { color: var(--apply); font-weight: 600; font-size: .92rem; margin: .2rem 0 .6rem; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

@@ -159,10 +159,17 @@ with st.sidebar:
 pipe = Pipeline(storage(), llm(), uid)
 
 
+WORKING = {"recheck": "Checking the fit again…", "decide": "Checking the fit…", "extract": "Reading the job…",
+           "write": "Writing your proposal… this takes about a minute", "revise": "Revising the draft…",
+           "override": "Getting the job ready to write…", "fetch_by_link": "Fetching the job from Freelancer.com…",
+           "search_jobs": "Searching Freelancer.com…", "sample_search": "Searching the sample jobs…",
+           "propose_projects": "Reading your CV…", "mark_sent": "Saving…"}
+
+
 def run(action, *args, **kwargs):
-    """Runs a pipeline action and shows plain errors instead of stack traces."""
+    """Runs a pipeline action with a visible "working" line and a timer, and shows plain errors instead of stack traces."""
     try:
-        with st.spinner("Working on it..."):
+        with st.spinner(WORKING.get(getattr(action, "__name__", ""), "Working on it…"), show_time=True):
             return action(*args, **kwargs)
     except DuplicateJob:
         raise
@@ -230,9 +237,19 @@ def recheck_button(rec: ProposalRecord, label: str) -> None:
     if st.button(label, key=f"recheck_{rec.job_key}",
                  help="Uses your current skills, work types, rates and projects. Your drafts stay."):
         r = run(pipe.recheck, rec)
-        if r:
-            ss.flash_ok = f"Checked again: {decision_label(r.decision)}."
-            go("card", r.job_key)
+        if r:  # stay on this screen and show the new result here
+            ss.rechecked = r.job_key
+            st.rerun()
+
+
+def recheck_result(rec: ProposalRecord) -> None:
+    """After "Check the fit again", the new decision and its reason, shown on the screen the user is on."""
+    if ss.get("rechecked") != rec.job_key or not rec.decision:
+        return
+    ss.rechecked = None
+    d = rec.decision
+    msg = f"**Checked again: {decision_label(d)}.** {d.reason}"
+    (st.warning if d.decision == "skip" else st.success)(msg.replace("$", "\\$"))
 
 
 def md(text: str, where=st) -> None:
@@ -442,6 +459,26 @@ def screen_confirm() -> None:
                          placeholder="e.g. I can start Monday · mention I've built 3 Shopify apps · ask about their CRM",
                          help="Your own words. v2 works them into the proposal and treats them as true, so only write what is.")
 
+    st.subheader("Proof")
+    my_projects = pipe.projects()
+    proof_modes = {"auto": "Let v2 pick the best match", "manual": "I'll choose", "none": "No past project for this job"}
+    if not my_projects:
+        st.caption("You have no projects yet, so this draft will be a plan without past work. "
+                   "Add your work under **Projects** to cite it.")
+        proof_mode, proof_pick = "none", []
+    else:
+        proof_mode = st.radio("Which past work should the proposal cite?", list(proof_modes), horizontal=True,
+                              index=list(proof_modes).index(rec.proof_choice), format_func=proof_modes.get,
+                              key=f"proofmode_{rec.job_key}")
+        proof_pick = []
+        if proof_mode == "manual":
+            names = {p.id: p.title for p in my_projects}
+            proof_pick = st.multiselect("Projects to cite (up to 3; the first is the main one)", list(names),
+                                        default=[i for i in rec.manual_proof if i in names], format_func=names.get,
+                                        max_selections=3, key=f"proofpick_{rec.job_key}")
+        elif proof_mode == "auto":
+            st.caption("v2 picks the closest project after the fit check, or the one sharing the most skills if you skip it.")
+
     st.subheader("Client history")
     on_freelancer = job.platform == "freelancer"
     where = {"upwork": "below the skills and \"Activity on this job\"", "freelancer": "on the right side"}.get(job.platform, "")
@@ -519,6 +556,10 @@ def screen_confirm() -> None:
         job.skills = [s.strip() for s in skills.split(",") if s.strip()]
         job.screening_questions = [q.strip() for q in questions.splitlines() if q.strip()]
         job.user_notes = notes.strip()
+        if proof_mode == "manual" and not proof_pick:
+            st.error("Pick at least one project, or choose another option under Proof.")
+            return
+        rec.proof_choice, rec.manual_proof = proof_mode, proof_pick
         as_int = lambda k: None if vals.get(k) is None else int(vals[k])  # noqa: E731
         rec.client = ClientProfile(payment_verified=pv_opts[pv], rating=vals.get("rating"), reviews=as_int("reviews"),
                                    jobs_posted=as_int("jobs_posted"), hire_rate_pct=vals.get("hire_rate_pct"),
@@ -550,8 +591,7 @@ def screen_card() -> None:
     st.title(rec.job.title)
     if ss.get("flash"):
         st.warning(ss.pop("flash"))
-    if ss.get("flash_ok"):
-        st.success(ss.pop("flash_ok"))
+    recheck_result(rec)
     tone = "unchecked" if d.code == "unchecked" else d.decision
     word = decision_label(d) + (" (your override)" if d.overridden else "")
     chips = [trust_chip(rec.trust), chip(f"Budget: {rec.job.budget.raw_text or 'not stated'}")]
@@ -607,16 +647,21 @@ def screen_draft() -> None:
     if rec.decision.code == "unchecked" and rec.decision.card_note:
         st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
     st.caption(f"{summary_line(rec)} · Draft {v.n}")
+    recheck_result(rec)
     recheck_button(rec, "Check the fit now" if rec.decision.code == "unchecked" else "Check the fit again")
 
     projects = pipe.projects()
     labels = {l.project_id: l.label for l in (rec.assessment.project_labels if rec.assessment else [])}
-    options = [None] + [p.id for p in projects]
-    name = {None: "Plan only (no past project)"} | {p.id: f"{p.title} ({labels.get(p.id, 'not assessed').replace('_', '-')})" for p in projects}
-    c1, c2 = st.columns([3, 1])
-    choice = c1.selectbox("Proof", options, index=options.index(v.project_id) if v.project_id in options else 0, format_func=lambda x: name[x])
-    if choice != v.project_id and c2.button("Rewrite with this proof"):
-        if run(pipe.write, rec, choice):
+    nice = {"similar": " · close match", "same_skills": " · same skills", "not_relevant": " · different work"}
+    pname = {p.id: f"{p.title}{nice.get(labels.get(p.id), '')}" for p in projects}
+    cited = [i for i in [v.project_id, *v.extra_project_ids] if i in pname]
+    picked = st.multiselect("Proof: past projects to cite (up to 3; the first is the main one)", list(pname), default=cited,
+                            format_func=lambda x: pname[x], max_selections=3, placeholder="None: plan only (no past project)",
+                            key=f"proof_{rec.job_key}_{v.n}")
+    if projects and any(p.id not in labels for p in projects):
+        st.caption("Projects added after the fit check aren't rated yet. **Check the fit again** rates them.")
+    if picked != cited and st.button("Rewrite with this proof", type="primary"):
+        if run(pipe.write, rec, picked[0] if picked else None, "", picked[1:]):
             st.rerun()
     if st.button("+ Add project"):
         ss.nav_to = "Projects"

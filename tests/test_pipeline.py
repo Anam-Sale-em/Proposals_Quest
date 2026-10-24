@@ -244,3 +244,46 @@ def test_recheck_runs_the_fit_check_on_a_saved_job(pipe):
     sent, _ = pipe.mark_sent(sent, sent.latest().text)
     with pytest.raises(PipelineError):
         pipe.recheck(sent)
+
+
+def test_several_projects_can_be_cited(pipe):
+    """Up to 3 projects: the first is the main proof, the others are cited alongside; the claim check accepts all three."""
+    j = _job("T01")
+    rec = pipe.write(pipe.decide(pipe.extract(j["link"], j["job_details"])), "P1", "", ["P3", "P2"])
+    v = rec.latest()
+    assert v.project_id == "P1" and v.extra_project_ids == ["P3", "P2"] and rec.extra_proof == ["P3", "P2"]
+    p1, p3 = pipe.project("P1"), pipe.project("P3")
+    job = JobPost(job_key="k", platform="upwork", link="l", title="t", description="d")
+    text = "In my support inbox project, about 300 emails a week are sorted."
+    claims = ClaimLists(experience_sentences=[ExperienceClaim(sentence=text, maps_to="P3")])
+    assert validate(text, [], job, p1, Profile(), claims, extras=(p3,)).ok
+    assert not validate(text, [], job, p1, Profile(), claims).ok  # P3 not chosen: not allowed
+
+
+def test_single_project_prompts_are_unchanged():
+    from proposal_v2 import prompts
+    from proposal_v2.sample import sample_profile
+    profile, projects = sample_profile()
+    job = JobPost(job_key="k", platform="upwork", link="l", title="t", description="d")
+    assert prompts.brief(job, profile, projects[0], "similar") == prompts.brief(job, profile, projects[0], "similar", [])
+    assert "Also cite these past projects" in prompts.brief(job, profile, projects[0], "similar", [projects[1]])[1]
+
+
+def test_confirm_screen_proof_choice_is_respected(pipe):
+    j = _job("T01")
+    # No past project: v2 must not pick one, even though P1 is a close match
+    rec = pipe.extract(j["link"], j["job_details"])
+    rec.proof_choice = "none"
+    rec = pipe.write(pipe.decide(rec))
+    assert rec.latest().project_id is None and rec.latest().framing == "plan_only"
+    # My own pick: P3 then P2, framed cautiously unless the check called the main one similar
+    j = _job("T02")
+    rec = pipe.extract(j["link"], j["job_details"])
+    rec.proof_choice, rec.manual_proof = "manual", ["P3", "P2"]
+    rec = pipe.write(pipe.decide(rec))
+    v = rec.latest()
+    assert (v.project_id, v.extra_project_ids) == ("P3", ["P2"])
+    # Let v2 pick: the usual best match
+    j = _job("T03")
+    rec = pipe.write(pipe.decide(pipe.extract(j["link"], j["job_details"])))
+    assert rec.latest().project_id == "P2"

@@ -140,7 +140,7 @@ class Pipeline:
             rec.decision = Decision(decision="apply", code="unchecked", budget_gate=gate,
                                     reason="Not checked: you chose to write the proposal without the fit check.",
                                     card_note="; ".join(warnings) or None)
-            rec.chosen_proof, rec.framing = self.suggested_proof(rec)
+            self._pick_proof(rec)
             rec.events.append({"at": now_iso(), "type": "fit_check_skipped"})
             rec.status = "decided"
             self.storage.put_proposal(rec)
@@ -172,7 +172,7 @@ class Pipeline:
             have = profile.skills + [s for p in projects for s in p.skills]
             fit = fit_result(rec.assessment, proof, overlap_text(rec.job.skills, have))
             d = decide(rec.trust, gate, gate_text, fit)
-            rec.chosen_proof, rec.framing = self.suggested_proof(rec)
+            self._pick_proof(rec)
         rec.decision = d
         rec.status = "skipped" if d.decision == "skip" else "decided"
         self.storage.put_proposal(rec)
@@ -188,6 +188,23 @@ class Pipeline:
                            "from_code": rec.decision.code if rec.decision else None})
         rec.assessment = None
         return self.decide(rec, check=True)
+
+    def _pick_proof(self, rec: ProposalRecord) -> None:
+        """Honours the confirm screen's choice: v2 picks, the user's own projects, or no project at all."""
+        ids = {p.id for p in self.projects()}
+        if rec.proof_choice == "none":
+            rec.chosen_proof, rec.framing, rec.extra_proof = None, "plan_only", []
+            return
+        if rec.proof_choice == "manual":
+            picked = [i for i in rec.manual_proof if i in ids][:3]
+            if picked:
+                label = next((l.label for l in (rec.assessment.project_labels if rec.assessment else [])
+                              if l.project_id == picked[0]), None)
+                rec.chosen_proof, rec.extra_proof = picked[0], picked[1:]
+                rec.framing = "similar" if label == "similar" else "same_skills"  # unrated: the cautious framing
+                return
+        rec.chosen_proof, rec.framing = self.suggested_proof(rec)
+        rec.extra_proof = []
 
     def suggested_proof(self, rec: ProposalRecord) -> tuple[Optional[str], str]:
         if not rec.assessment:
@@ -222,42 +239,51 @@ class Pipeline:
             # Skipped before the assessment ran (red flag or below minimum): assess now, so proof can be suggested.
             system, user = prompts.assessment(rec.job, self.profile(), self.projects())
             rec.assessment = self.llm.call("assess", "light", system, user, Assessment, 0.0)
-            rec.chosen_proof, rec.framing = self.suggested_proof(rec)
+            self._pick_proof(rec)
         self.storage.put_proposal(rec)
         return rec
 
     # ------------------------------------------------------------------ write
-    def write(self, rec: ProposalRecord, project_id: Optional[str] = "auto", comment: str = "") -> ProposalRecord:
+    def write(self, rec: ProposalRecord, project_id: Optional[str] = "auto", comment: str = "",
+              extra_ids: Optional[list[str]] = None) -> ProposalRecord:
         """Solution Brief, then the proposal, then the claim check with one retry."""
         profile = self.profile()
         if project_id == "auto":
             project_id, framing = rec.chosen_proof, rec.framing or "plan_only"
-            if project_id is None and rec.assessment:
+            if project_id is None and rec.assessment and rec.proof_choice == "auto":
                 project_id, framing = self.suggested_proof(rec)
         else:
             label = next((l.label for l in (rec.assessment.project_labels if rec.assessment else []) if l.project_id == project_id), None)
             framing = "plan_only" if project_id is None else ("similar" if label == "similar" else "same_skills")
+            rec.proof_choice = "manual" if project_id else "none"  # the user's own pick from now on
+            rec.manual_proof = [i for i in [project_id, *(extra_ids or [])] if i]
         project = self.project(project_id)
         if project is None:
             project_id, framing = None, "plan_only"
+        if extra_ids is None:
+            extra_ids = rec.extra_proof if project_id == rec.chosen_proof else []
+        extras = [x for x in (self.project(i) for i in extra_ids[:2] if i and i != project_id) if x] if project else []
         cfg = load_config()
         temp = cfg["models"]["temperature_draft"]
-        system, user = prompts.brief(rec.job, profile, project, framing)
+        system, user = prompts.brief(rec.job, profile, project, framing, extras)
         rec.brief = self.llm.call("brief", "draft", system, user, Brief, temp)
         mode = "questions_first" if rec.decision and rec.decision.decision == "apply_with_questions" else "full"
         max_words = cfg["length"]["questions_first_max_words" if mode == "questions_first" else "proposal_max_words"]
 
-        system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words)
+        system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words, extras=extras)
         draft = self.llm.call("proposal", "draft", system, user, ProposalDraft, temp)
-        report = self._check(draft, rec.job, project, profile, mode)
+        report = self._check(draft, rec.job, project, profile, mode, extras)
         if not report.ok:
             fails = failures_for_retry(report)
-            system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words, fails, draft.text)
+            system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words, fails, draft.text,
+                                            extras=extras)
             draft = self.llm.call("proposal_retry", "draft", system, user, ProposalDraft, temp)
-            report = self._check(draft, rec.job, project, profile, mode)
+            report = self._check(draft, rec.job, project, profile, mode, extras)
             report.retried = True
         rec.chosen_proof, rec.framing = project_id, framing
+        rec.extra_proof = [x.id for x in extras]
         rec.versions.append(ProposalVersion(n=len(rec.versions) + 1, framing=framing, project_id=project_id, mode=mode,
+                                            extra_project_ids=[x.id for x in extras],
                                             text=draft.text, screening_answers=draft.screening_answers,
                                             validation=report, comment=comment))
         rec.status = "drafted"
@@ -271,19 +297,21 @@ class Pipeline:
             raise PipelineError("Write a draft first.")
         profile = self.profile()
         project = self.project(v.project_id)
-        system, user = prompts.revise(rec.job, profile, project, current_text or v.text, v.screening_answers, comment)
+        extras = [x for x in (self.project(i) for i in v.extra_project_ids) if x]
+        system, user = prompts.revise(rec.job, profile, project, current_text or v.text, v.screening_answers, comment, extras)
         draft = self.llm.call("revise", "draft", system, user, ProposalDraft, load_config()["models"]["temperature_draft"])
-        report = self._check(draft, rec.job, project, profile, v.mode)
+        report = self._check(draft, rec.job, project, profile, v.mode, extras)
         rec.versions.append(ProposalVersion(n=len(rec.versions) + 1, framing=v.framing, project_id=v.project_id, mode=v.mode,
+                                            extra_project_ids=v.extra_project_ids,
                                             text=draft.text, screening_answers=draft.screening_answers,
                                             validation=report, comment=comment))
         self.storage.put_proposal(rec)
         return rec
 
-    def _check(self, draft: ProposalDraft, job: JobPost, project: Optional[Project], profile: Profile, mode: str):
-        system, user = prompts.claim_lists(draft.text, draft.screening_answers, project, job.user_notes)
+    def _check(self, draft: ProposalDraft, job: JobPost, project: Optional[Project], profile: Profile, mode: str, extras=()):
+        system, user = prompts.claim_lists(draft.text, draft.screening_answers, project, job.user_notes, extras)
         claims = self.llm.call("claims", "light", system, user, ClaimLists, 0.0)
-        return validate(draft.text, draft.screening_answers, job, project, profile, claims, mode)
+        return validate(draft.text, draft.screening_answers, job, project, profile, claims, mode, tuple(extras))
 
     # ------------------------------------------------------------------ send and outcomes
     def mark_sent(self, rec: ProposalRecord, sent_text: str) -> tuple[ProposalRecord, str]:

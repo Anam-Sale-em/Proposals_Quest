@@ -88,6 +88,7 @@ def validate(
     profile: Profile,
     claims: ClaimLists,
     mode: str = "full",
+    extras: tuple = (),
 ) -> ValidationReport:
     cfg = load_config()["length"]
     full_text = text + "\n" + "\n".join(a.answer for a in screening)
@@ -106,6 +107,8 @@ def validate(
 
     # Pass 1: numbers come only from the chosen project's result or the post.
     allowed_nums = number_values(job_text(job)) | number_values(project.result if project else "")
+    for x in extras:
+        allowed_nums |= number_values(x.result)
     allowed_nums |= number_values(" ".join(i.value for i in job.allowed_instructions))
     for shown, value in _draft_numbers(full_text):
         if value not in allowed_nums:
@@ -115,7 +118,9 @@ def validate(
 
     # Pass 2: names. Tools or skills must be the user's, the chosen project's, or the client's own.
     allowed_names = norm_set(profile.skills) | norm_set(project.skills if project else []) | norm_set(job.skills) | norm_set(job.client_tools)
-    jt, pt = job_text(job), project_text(project)
+    for x in extras:
+        allowed_names |= norm_set(x.skills)
+    jt, pt = job_text(job), "\n".join([project_text(project), *(project_text(x) for x in extras)])
     for name in claims.tools_named:
         if is_generic(name) or norm(name) in allowed_names or mentioned_in(name, jt) or mentioned_in(name, pt):
             continue
@@ -124,11 +129,12 @@ def validate(
 
     # Pass 3: experience. Every past-work sentence maps to the chosen project or the profile.
     chosen_id = project.id if project else None
+    chosen_ids = {i for i in [chosen_id, *(x.id for x in extras)] if i}
     for c in claims.experience_sentences:
         if NEW_WORK.search(c.sentence) or not PAST_CLAIM.search(c.sentence):
             continue
         target_id = (c.maps_to or "none").strip()
-        ok = (chosen_id is not None and target_id == chosen_id) or target_id == "profile" \
+        ok = target_id in chosen_ids or target_id == "profile" \
             or (target_id == "notes" and bool(job.user_notes.strip()))
         if target_id in ("profile", "notes"):
             # A profile claim can't carry numbers or tools the profile doesn't have.

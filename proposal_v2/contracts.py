@@ -290,6 +290,7 @@ class ProposalVersion(BaseModel):
     created_at: str = Field(default_factory=now_iso)
     framing: Framing
     project_id: Optional[str] = None
+    extra_project_ids: list[str] = Field(default_factory=list)
     mode: Literal["full", "questions_first"] = "full"
     text: str
     screening_answers: list[ScreeningAnswer] = Field(default_factory=list)
@@ -321,6 +322,9 @@ class ProposalRecord(BaseModel):
     decision: Optional[Decision] = None
     brief: Optional[Brief] = None
     chosen_proof: Optional[str] = None  # project id, or None for plan only
+    extra_proof: list[str] = Field(default_factory=list)  # up to 2 more projects cited alongside the main one
+    proof_choice: Literal["auto", "manual", "none"] = "auto"  # set on the confirm screen
+    manual_proof: list[str] = Field(default_factory=list)  # the projects the user picked, main one first
     framing: Optional[Framing] = None
     versions: list[ProposalVersion] = Field(default_factory=list)
     outcome: Outcome = Field(default_factory=Outcome)
