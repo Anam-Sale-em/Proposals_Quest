@@ -252,6 +252,34 @@ def recheck_result(rec: ProposalRecord) -> None:
     (st.warning if d.decision == "skip" else st.success)(msg.replace("$", "\\$"))
 
 
+def enter_moves_to_next_field(button_label: str) -> None:
+    """In the form with this submit button, Enter moves to the next field, and Enter in the last field saves the form."""
+    import streamlit.components.v1 as components
+
+    components.html("""<script>
+    const doc = window.parent.document;
+    function wire() {
+      doc.querySelectorAll('[data-testid="stForm"]').forEach(form => {
+        const btn = form.querySelector('[data-testid="stFormSubmitButton"] button');
+        if (!btn || btn.innerText.trim() !== %r) return;
+        if (form.dataset.enterWired) return;
+        form.dataset.enterWired = '1';
+        form.addEventListener('keydown', e => {
+          if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+          const inputs = [...form.querySelectorAll('input')].filter(i => i.type !== 'hidden' && !i.disabled && i.offsetParent);
+          const i = inputs.indexOf(e.target);
+          if (i < 0) return;
+          e.preventDefault(); e.stopPropagation();
+          if (i < inputs.length - 1) { inputs[i + 1].focus(); inputs[i + 1].select && inputs[i + 1].select(); }
+          else { e.target.blur(); const b = form.querySelector('[data-testid="stFormSubmitButton"] button'); setTimeout(() => b && b.click(), 50); }
+        }, true);
+      });
+    }
+    new MutationObserver(wire).observe(doc.body, {childList: true, subtree: true});
+    wire();
+    </script>""" % button_label, height=0)
+
+
 def md(text: str, where=st) -> None:
     """Markdown with dollar signs kept literal (Streamlit reads $...$ as maths)."""
     where.markdown(text.replace("$", "\\$"))
@@ -276,12 +304,13 @@ if not is_sample and (profile.min_hourly_usd is None or profile.min_fixed_usd is
         f = st.number_input("Minimum fixed price (USD)", min_value=0.0, value=200.0, step=50.0)
         wt = st.text_input("Kinds of work you do (comma-separated)", placeholder="e.g. workflow automation, AI chatbots, mobile apps", help="What you deliver, not the tools: v2 skips jobs that aren't one of these. Tools go under skills.")
         sk = st.text_input("Your skills (comma-separated)", placeholder="e.g. Figma, Illustrator")
-        if st.form_submit_button("Save and start"):
+        if st.form_submit_button("Save and start", type="primary"):
             profile.min_hourly_usd, profile.min_fixed_usd = h, f
             profile.work_types = [x.strip() for x in wt.split(",") if x.strip()]
             profile.skills = [x.strip() for x in sk.split(",") if x.strip()]
             storage().put_profile(uid, profile)
             st.rerun()
+    enter_moves_to_next_field("Save and start")
     st.stop()
 if is_sample and not storage().get_profile(uid):
     st.info("The sample workspace is empty. Click **Load sample data** in the sidebar.")
@@ -589,6 +618,13 @@ def screen_card() -> None:
         go("new")
     d = rec.decision
     st.title(rec.job.title)
+    action = ss.pop("card_action", None)
+    if action and action[0] == rec.job_key:  # long work runs here, at the top, so the spinner is in view
+        r = run(pipe.override, rec, action[2]) if action[1] == "override" else rec
+        if r and run(pipe.write, r):
+            go("draft")
+        rec = current()
+        d = rec.decision
     if ss.get("flash"):
         st.warning(ss.pop("flash"))
     recheck_result(rec)
@@ -605,16 +641,17 @@ def screen_card() -> None:
     with c2:
         if d.decision != "skip" or d.overridden:
             if st.button("Write proposal" if not rec.versions else "Open draft", type="primary"):
-                if rec.versions or run(pipe.write, rec):
+                if rec.versions:
                     go("draft")
+                ss.card_action = (rec.job_key, "write", "")
+                st.rerun()
     recheck_button(rec, "Check the fit now" if d.code == "unchecked" else "Check the fit again")
     if d.decision == "skip" and not d.overridden:
         with st.expander("Override this Skip"):
             why = st.text_input("Why? (optional, logged)")
             if st.button("Override and write anyway"):
-                r = run(pipe.override, rec, why)
-                if r and run(pipe.write, r):
-                    go("draft")
+                ss.card_action = (rec.job_key, "override", why)
+                st.rerun()
     with st.expander("Details"):
         t = rec.trust
         md(f"**Client trust:** {t.score if t.score is not None else '—'} · {t.band} ({t.coverage})")
@@ -670,14 +707,24 @@ def screen_draft() -> None:
     if v.framing == "plan_only":
         asks = [r for r in rec.job.explicit_requirements
                 if any(w in r.lower() for w in ("share", "portfolio", "example", "sample", "built", "past work", "previous work", "link"))]
-        why = "Your Projects library is empty" if not projects else "No project was picked as proof"
-        msg = f"**No past work is cited.** {why}, so this draft has no proof"
-        msg += f" and doesn't answer the client's request: _{asks[0]}_" if asks else ""
-        st.warning(msg + ". Add your work under **Projects** (+ Add project), then pick it in **Proof** above and click **Rewrite with this proof**.")
+        ask = f" The client asked: _{asks[0]}_" if asks else ""
+        choice = rec.proof_choice or "auto"
+        if not projects:
+            st.warning(f"**No past work is cited.** Your Projects library is empty, so this draft is a plan only.{ask} "
+                       "Add your work under **Projects** (+ Add project), then pick it in **Proof** above and click **Rewrite with this proof**.")
+        elif choice == "none":
+            st.info(f"**No past work is cited**, as you chose. This draft is a plan only.{ask}")
+        elif choice == "auto":
+            st.info(f"**No relevant project found.** v2 checked your {len(projects)} project{'s' if len(projects) != 1 else ''} "
+                    f"and none is close enough to this job, so it didn't add one. The draft is a plan only.{ask} "
+                    "If one of them still fits, pick it in **Proof** above and click **Rewrite with this proof**.")
+        else:
+            st.warning(f"**No past work is cited.** No project was picked, so this draft is a plan only.{ask} "
+                       "Pick one in **Proof** above and click **Rewrite with this proof**.")
     val = v.validation
     if val.ok and v.framing != "plan_only":
         st.markdown('<div class="quiet-ok">✓ Checked against your projects and the post</div>', unsafe_allow_html=True)
-    else:
+    elif not val.ok:
         st.warning("⚠️ Check before sending. These lines may claim something your Projects or the post don't back up:")
     for note in val.notes:
         st.markdown(f"- {note}")

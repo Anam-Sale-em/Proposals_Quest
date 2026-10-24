@@ -109,6 +109,7 @@ def test_skip_override_and_duplicate(env):
     assert any(">Skip<" in m.value and "WhatsApp" in m.value for m in at.markdown), [e.value for e in at.error]
     _btn(at, "Override and write anyway").click().run()
     assert not at.exception, at.exception
+    assert any("Draft 1" in c.value for c in at.caption), [w.value for w in at.warning]  # lands on the draft
     _btn(at, "+ New job", at.sidebar).click().run()
     _paste(at, "T10")
     assert any("already have this job" in w.value for w in at.warning)
