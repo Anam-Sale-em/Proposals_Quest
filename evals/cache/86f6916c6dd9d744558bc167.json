@@ -21,7 +21,7 @@
   ],
   "screening_questions": [],
   "explicit_requirements": [
-   "fix it so the full file lands every night, with retries and a Slack message if it still fails"
+   "Fix the n8n workflow so the full file lands every night with retries and a Slack message if it still fails"
   ],
   "client_tools": [],
   "client": {
@@ -38,9 +38,21 @@
   "instructions": [],
   "red_flags": [],
   "ignored_sections": [
+   "Skip to main content",
+   "Find work",
+   "Deliver work",
+   "Manage finances",
+   "Messages",
+   "Search for jobs",
+   "Back to search results",
+   "Activity on this job",
    "Other open jobs by this client",
    "Similar jobs",
-   "Navigation and footer links"
+   "About",
+   "Help",
+   "Terms of service",
+   "Privacy policy",
+   "Cookie settings"
   ]
  }
 }

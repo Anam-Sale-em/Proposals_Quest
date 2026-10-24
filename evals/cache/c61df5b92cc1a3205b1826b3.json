@@ -1,0 +1,110 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an n8n-based lead routing system that takes in leads from four automatic sources, cleans and validates them, merges duplicates, enriches them, assigns them to the right reps using clear rules, notifies reps in Slack, stores every lead in PostgreSQL with a Google Sheet mirror, handles errors without losing leads, and includes complete documentation for handover.",
+  "plan": [
+   {
+    "step": "Set up PostgreSQL schema and configure n8n workflows for intake across all four sources, validation, normalization, duplicate handling, and storage with a Google Sheet mirror.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Google Sheets API",
+     "Webhooks"
+    ],
+    "suggested_tools": [
+     "Docker"
+    ]
+   },
+   {
+    "step": "Implement enrichment provider integration with rate limiting, complex routing rules, round-robin pointer in PostgreSQL, and Slack notifications with claim and reassignment logic.",
+    "tools": [
+     "n8n",
+     "Slack API",
+     "REST APIs"
+    ],
+    "suggested_tools": [
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Build robust error handling, dead-letter table with replay functionality, daily digests, comprehensive audit logging, architecture diagrams, and documentation.",
+    "tools": [
+     "n8n",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Conduct staging testing with test leads, run acceptance criteria checks, refine settings management, and perform the final handover call.",
+    "tools": [
+     "n8n",
+     "Slack API",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Intake from all four sources, validation, duplicate handling, and PostgreSQL storage, with the Google Sheet mirror.",
+    "budget_share": "$1,200"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Enrichment, routing rules, Slack notifications, claiming, and reassignment.",
+    "budget_share": "$1,400"
+   },
+   {
+    "name": "Milestone 3",
+    "deliverable": "Error handling, dead-letter replay, the daily digest, logging, documentation, and handover.",
+    "budget_share": "$900"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Set up PostgreSQL schema and configure n8n workflows for intake across all four sources, validation, normalization, duplicate handling, and storage with a Google Sheet mirror.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement enrichment provider integration with rate limiting, complex routing rules, round-robin pointer in PostgreSQL, and Slack notifications with claim and reassignment logic.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build robust error handling, dead-letter table with replay functionality, daily digests, comprehensive audit logging, architecture diagrams, and documentation.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Conduct staging testing with test leads, run acceptance criteria checks, refine settings management, and perform the final handover call.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Partner referral emails arrive in varying, unstructured formats which could cause frequent failures and require manual review queues.",
+    "mitigation": "Incorporate flexible parsing logic in Milestone 1 and route any unparseable emails directly to a dedicated review queue instead of dropping them."
+   },
+   {
+    "risk": "Simultaneous leads arriving in the same second could cause race conditions or unfairness in the round-robin assignment pointer.",
+    "mitigation": "Store and update the round-robin pointer directly in PostgreSQL using transactional locking or atomic update queries to maintain correct order."
+   }
+  ],
+  "questions": [
+   "What specific enrichment provider API is being used, and what is the exact endpoint specification and payload structure?",
+   "Can you share examples of the unformatted partner referral emails so we can design the initial parsing patterns accurately?",
+   "What are the precise working hours for each region's reps to factor into the time-sensitive Slack escalation logic?"
+  ],
+  "assumptions": [
+   "The client will provide timely access to the staging PostgreSQL database and n8n instance.",
+   "Sample files and the country-to-region table will be made available during kickoff as stated in the post.",
+   "The client's enrichment API documentation will be provided upon project start."
+  ]
+ }
+}

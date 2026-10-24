@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "My goal is to connect your tools using automation. To scope this properly, what specific tools and software do you need to connect? What is the expected volume of data or transactions processed by this automation? What is your target timeline for completing this project? I did nearly this for a client: Lead entry dropped from about 2 hours a week to under 10 minutes.",
+  "screening_answers": []
+ }
+}

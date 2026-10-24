@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The project requires n8n, PostgreSQL, Google Sheets, Slack, and API integration, all of which are in the freelancer's listed skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a comprehensive workflow automation and data sync system built in n8n, matching the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The $3,500 fixed price across three milestones and clear scope specifications align well with the freelancer's expertise.",
+  "clear_yes": true,
+  "clear_reason": "The post provides detailed specifications for intake, routing, storage, and milestones, allowing a concrete 3-step implementation plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves lead intake automation, deduplication, Google Sheets, and Slack alerts using n8n."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles data sync and reconciliation into PostgreSQL using webhooks and backend logic."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It processes incoming unstructured communication items, categorizes/parses them, and stores them in structured databases."
+   }
+  ]
+ }
+}

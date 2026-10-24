@@ -5,13 +5,13 @@
  "prompt_version": "v2.0.6",
  "response": {
   "skills_yes": true,
-  "skills_reason": "The freelancer has n8n, Google Sheets API, and webhook/API skills which match the requirements.",
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, Webhooks, and Slack API which match the job requirements.",
   "work_type_yes": true,
-  "work_type_reason": "Workflow debugging and automation maintenance fall directly under workflow automation.",
+  "work_type_reason": "The deliverable is a workflow automation fix, which matches the freelancer's work types.",
   "realistic_yes": true,
-  "realistic_reason": "A fixed price of $250 is realistic for fixing an existing n8n rate-limiting issue.",
+  "realistic_reason": "A budget of $250 for troubleshooting and fixing an n8n node failure with retries is reasonable.",
   "clear_yes": true,
-  "clear_reason": "The job post clearly specifies diagnosing the Google Sheets 429 error, adding batching or retries, and adding a Slack notification.",
+  "clear_reason": "The post clearly asks to fix rate-limiting in an n8n Google Sheets append, add retries, and send a Slack alert.",
   "project_labels": [
    {
     "project_id": "P1",
@@ -20,7 +20,7 @@
     "same_records": true,
     "shares_core_skills": true,
     "label": "similar",
-    "reason": "It involves n8n, Google Sheets, and data ingestion."
+    "reason": "It involved an n8n workflow integrating Google Sheets and Slack."
    },
    {
     "project_id": "P2",
@@ -29,7 +29,7 @@
     "same_records": false,
     "shares_core_skills": false,
     "label": "not_relevant",
-    "reason": "It focuses on Shopify to PostgreSQL inventory sync using Python."
+    "reason": "It was a Python inventory sync script between Shopify and PostgreSQL."
    },
    {
     "project_id": "P3",
@@ -38,7 +38,7 @@
     "same_records": false,
     "shares_core_skills": false,
     "label": "not_relevant",
-    "reason": "It involves email triage and LLMs rather than n8n and Google Sheets."
+    "reason": "It was an LLM-powered email triage job."
    }
   ]
  }

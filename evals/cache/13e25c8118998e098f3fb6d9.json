@@ -1,0 +1,98 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Deploy a Python script that runs once daily to fetch the previous day's Shopify orders via API, appends specified order details to Google Sheets while skipping existing entries, logs execution details, and handles rate limits and automated scheduling.",
+  "plan": [
+   {
+    "step": "Implement Shopify REST API client to pull previous day's orders with rate-limit backoff handling.",
+    "tools": [
+     "Python",
+     "Shopify"
+    ],
+    "suggested_tools": [
+     "requests"
+    ]
+   },
+   {
+    "step": "Integrate Google Sheets API to check existing order IDs and batch-append new rows (order number, date, email, items, total, fulfilment status).",
+    "tools": [
+     "Python",
+     "Google Sheets"
+    ],
+    "suggested_tools": [
+     "gspread"
+    ]
+   },
+   {
+    "step": "Add a lightweight logging mechanism to capture daily run status, processed order counts, and error reports.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure daily automated scheduling (e.g., cron or cloud runner) and provide handover documentation.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Shopify & Google Sheets Sync Script",
+    "deliverable": "Working Python script pulling Shopify orders and appending new records into Google Sheets with deduplication.",
+    "budget_share": "60%"
+   },
+   {
+    "name": "Rate Limiting, Logging & Scheduling Setup",
+    "deliverable": "Script enhanced with rate-limit handling, logging functionality, and configuration for automated daily execution.",
+    "budget_share": "40%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Implement Shopify REST API client to pull previous day's orders with rate-limit backoff handling.",
+    "project_id": "P2",
+    "gap": false
+   },
+   {
+    "step": "Integrate Google Sheets API to check existing order IDs and batch-append new rows (order number, date, email, items, total, fulfilment status).",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Add a lightweight logging mechanism to capture daily run status, processed order counts, and error reports.",
+    "project_id": "P2",
+    "gap": false
+   },
+   {
+    "step": "Configure daily automated scheduling (e.g., cron or cloud runner) and provide handover documentation.",
+    "project_id": "P2",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Shopify API rate limit throttling (429 responses) on days with high order volumes.",
+    "mitigation": "Monitor the X-Shopify-Shop-Api-Call-Limit header and implement exponential backoff sleep cycles when thresholds or 429 responses occur."
+   },
+   {
+    "risk": "Google Sheets API quota limits or slowdowns when scanning large historical order lists for deduplication.",
+    "mitigation": "Fetch all existing order numbers from the target column in a single batch read into a set for in-memory O(1) duplicate checks before batch-appending new records."
+   }
+  ],
+  "questions": [
+   "Where would you prefer the daily automation to run (e.g., your local machine via cron/Task Scheduler, a VPS, or a free cloud runner like GitHub Actions)?",
+   "How should multiple line items in a single order be formatted within the 'items' column (e.g., comma-separated list, line breaks, or item title with quantity)?",
+   "Do you already have a Google Cloud project with Google Sheets API enabled and a Shopify Custom App created, or will you need guidance setting those up?"
+  ],
+  "assumptions": [
+   "The script only needs to append newly placed orders and does not need to sync status updates to orders already recorded in the sheet.",
+   "Orders can be uniquely identified and deduplicated using the Shopify order number or order ID."
+  ]
+ }
+}

@@ -1,0 +1,28 @@
+case,run,goal,specific,honest_proof,plan,ask,items,pass,unsupported_or_overstated_claims,notes
+T01,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,Cites P1 and its result accurately; covers both forms; duplicates and failure alerts
+T02,v2.0.6_20261024-221457,no,yes,no,yes,yes,3,no,1,"Misses the README requirement; 'I did nearly this for a Shopify store' overstates an inventory sync as a HubSpot contact sync (the framing failure the eval also caught)"
+T03,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,"All fields, duplicates and run log covered; 'for a warehouse database' is odd wording but traces to P2"
+T04,v2.0.6_20261024-221457,no,no,no,no,no,0,no,1,"Opens 'My goal is…'; generic; 'I did nearly this for a client' claims a match on a post with no details; three questions instead of one"
+T05,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,"Starts with 'blue whale'; 8:00, weekends and urgent orders covered; awkward 'lead intake automation client'"
+T06,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,All three screening questions answered; describes P1 exactly
+T07,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,"5,000 rows, retries and Slack alert covered; 'nearly this' is generous for a lead-intake project but matches the expected framing"
+T11,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,"No '10 years' claim; P3 cited accurately; closing line repeats the whole plan"
+T12,v2.0.6_20261024-221457,yes,yes,yes,yes,yes,5,yes,0,Stripe and Gmail filters named; one clear question
+T01,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,"Covers both forms, duplicates, Slack and failure email; template wording leaked ('for a client type: … Result:')"
+T02,v2.0.6_20261024-232934,yes,yes,no,yes,yes,4,no,1,"Every requirement incl. README covered; 'I did nearly this for a store owner' still overstates an inventory sync as a contact sync"
+T03,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,"'this new work' then 'I did nearly this' is slightly mixed; facts trace to P2"
+T04,v2.0.6_20261024-232934,yes,no,yes,no,no,2,no,0,"Honest 'Different domain, same core work'; generic, no plan, ends on proof instead of the question"
+T05,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,Starts with 'blue whale'; asks for exact Airtable fields
+T06,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,All three screening questions answered
+T07,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,Names the 429 error; batching and retries
+T11,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,No '10 years' claim; P3 accurate
+T12,v2.0.6_20261024-232934,yes,yes,yes,yes,yes,5,yes,0,Access question names Stripe and Gmail
+T01,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,"Every requirement covered, including the row link and failure email; five concrete steps"
+T02,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,"Honest framing: 'Different domain, same core work' for the inventory sync; README covered"
+T03,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,"'for a warehouse database' is odd wording; facts trace to P2"
+T04,v2.0.6_20261025-000537,no,no,yes,no,no,1,no,0,"Opens 'My goal is…'; honest proof; generic, no plan, ends on the proof instead of a question"
+T05,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,Starts with 'blue whale'; asks for the exact Airtable fields
+T06,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,Three concrete milestones; all three screening questions answered
+T07,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,"Opening repeats itself ('I can help you fix…' then 'My goal is to fix…'); content complete"
+T11,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,No '10 years' claim; asks which AI API to use
+T12,v2.0.6_20261025-000537,yes,yes,yes,yes,yes,5,yes,0,Names all six workflows

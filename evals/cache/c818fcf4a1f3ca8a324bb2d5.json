@@ -1,0 +1,136 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an n8n-based lead routing system that automates intake from four sources, validates, deduplicates, enriches, routes leads to reps with PostgreSQL as the source of truth and a Google Sheet mirror, sends Slack alerts with fallback and error handling, and provides complete documentation for internal maintenance.",
+  "plan": [
+   {
+    "step": "Kickoff and PostgreSQL schema design for leads, touchpoints, assignments, and configuration settings.",
+    "tools": [
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "DBDiagram"
+    ]
+   },
+   {
+    "step": "Build intake workflows for website demo form webhooks, chat tool webhooks, Google Drive webinar CSV processor, and partner email ingestion with a review queue.",
+    "tools": [
+     "n8n",
+     "Webhooks",
+     "Google Sheets API",
+     "Python"
+    ],
+    "suggested_tools": [
+     "Gmail API"
+    ]
+   },
+   {
+    "step": "Implement validation, normalization, duplicate handling and merging logic, and data storage in PostgreSQL and Google Sheets.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Google Sheets API",
+     "JavaScript"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Integrate enrichment provider APIs with rate limiting, and build routing rules (regional, enterprise, round-robin, working hours) with Slack direct messaging, channel summaries, and claiming/reassignment logic.",
+    "tools": [
+     "n8n",
+     "Slack API",
+     "REST APIs"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Add error handling, exponential backoff retries, dead-letter tables, replay mechanism, daily digests, audit logging, and documentation.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Slack API"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Staging testing with 50 test leads, client review, Git repository commit of workflows and SQL migrations, and recorded handover call.",
+    "tools": [
+     "n8n",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Intake from all four sources, validation, duplicate handling, PostgreSQL storage, and the Google Sheet mirror.",
+    "budget_share": "$1,200"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Enrichment, routing rules, Slack notifications, claiming, and reassignment.",
+    "budget_share": "$1,400"
+   },
+   {
+    "name": "Milestone 3",
+    "deliverable": "Error handling, dead-letter replay, daily digest, logging, documentation, and handover.",
+    "budget_share": "$900"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and PostgreSQL schema design for leads, touchpoints, assignments, and configuration settings.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build intake workflows for website demo form webhooks, chat tool webhooks, Google Drive webinar CSV processor, and partner email ingestion with a review queue.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Implement validation, normalization, duplicate handling and merging logic, and data storage in PostgreSQL and Google Sheets.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Integrate enrichment provider APIs with rate limiting, and build routing rules (regional, enterprise, round-robin, working hours) with Slack direct messaging, channel summaries, and claiming/reassignment logic.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Add error handling, exponential backoff retries, dead-letter tables, replay mechanism, daily digests, audit logging, and documentation.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Staging testing with 50 test leads, client review, Git repository commit of workflows and SQL migrations, and recorded handover call.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Partner referral emails arrive in 15 different unformatted structures, which can break automated parsing and cause valid leads to be dropped.",
+    "mitigation": "Route any unparsed or ambiguous referral emails directly to a dedicated review queue instead of failing or dropping them, ensuring human inspection."
+   },
+   {
+    "risk": "Concurrency issues during high-volume webinar CSV processing (300 rows) could cause duplicate creation or unfair round-robin assignments.",
+    "mitigation": "Use atomic database transactions and store the round-robin pointer directly in PostgreSQL with row-level locking to guarantee safe concurrent reads and updates."
+   }
+  ],
+  "questions": [
+   "What specific email parsing rules or keywords should be prioritized when extracting details from the 15 different partner referral email formats?",
+   "What is the exact schema and authentication method required for the third-party company enrichment REST API?",
+   "Should the 30-minute unclaimed lead timer count down during non-working hours or pause until the rep's working hours resume?"
+  ],
+  "assumptions": [
+   "The client will provide valid API credentials and documentation for the company enrichment provider before Milestone 2 begins.",
+   "The staging PostgreSQL database and self-hosted n8n instance are fully accessible and configured with appropriate permissions prior to kickoff."
+  ]
+ }
+}

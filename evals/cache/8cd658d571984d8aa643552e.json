@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Python, PostgreSQL, and API skills which match the job requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires workflow automation and API integrations, which are core work types for the freelancer.",
+  "realistic_yes": true,
+  "realistic_reason": "The $3,500 fixed price budget for a complex n8n routing system is standard for this scope.",
+  "clear_yes": true,
+  "clear_reason": "The post provides detailed specifications, requirements, volumes, and deliverables, making a 3-step plan easy to formulate.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It builds an n8n lead intake workflow using webhooks, Google Sheets, and Slack alerts for leads."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It handles PostgreSQL and webhooks in Python, but it focuses on inventory sync rather than lead routing."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It processes support emails using Python and Gmail API rather than building a lead routing system in n8n."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

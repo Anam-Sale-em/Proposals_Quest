@@ -179,3 +179,53 @@ def test_vague_post_ties_go_to_the_project_that_is_that_kind_of_work(pipe):
     j = _job("T04")
     rec = pipe.decide(pipe.extract(j["link"], j["job_details"]))
     assert (rec.chosen_proof, rec.framing) == ("P1", "same_skills")
+
+
+def _force_facts(pipe, facts):
+    from proposal_v2.contracts import ProjectJudgement as J
+    real_call = pipe.llm.call
+
+    def call(step, *a, **k):
+        out = real_call(step, *a, **k)
+        if step == "assess":
+            out.project_labels = [J(project_id=i, **f) for i, f in facts.items()]
+        return out
+    pipe.llm.call = call
+
+
+def test_vague_post_is_never_similar(pipe):
+    """T04 names no specific tool, so even if the model says P1 matches platform and records, it's same skills."""
+    _force_facts(pipe, {"P1": dict(same_kind_of_work=True, same_platform=True, same_records=True, shares_core_skills=True)})
+    j = _job("T04")
+    rec = pipe.decide(pipe.extract(j["link"], j["job_details"]))
+    assert (rec.chosen_proof, rec.framing) == ("P1", "same_skills")
+
+
+def test_proof_goes_to_the_project_using_more_of_the_posts_tools(pipe):
+    """T05 (n8n, Airtable, Slack): P3 shares Airtable, P1 shares n8n and Slack; both similar -> P1."""
+    both = dict(same_kind_of_work=True, same_platform=False, same_records=False, shares_core_skills=True)
+    p3 = dict(both, same_platform=True)
+    p1 = dict(both, same_records=True)
+    _force_facts(pipe, {"P3": p3, "P1": p1})
+    j = _job("T05")
+    rec = pipe.decide(pipe.extract(j["link"], j["job_details"]))
+    assert (rec.chosen_proof, rec.framing) == ("P1", "similar")
+
+
+def test_users_own_notes_count_as_true():
+    """What the freelancer writes in 'Anything you want in the proposal?' may be stated: its numbers and claims pass."""
+    job = JobPost(job_key="k", platform="upwork", link="l", title="Shopify app", description="Build a Shopify app.",
+                  user_notes="I've built 3 Shopify apps. I can start Monday.")
+    text = "I've built 3 Shopify apps and I can start Monday."
+    claims = ClaimLists(experience_sentences=[ExperienceClaim(sentence="I've built 3 Shopify apps and I can start Monday.", maps_to="notes")])
+    assert validate(text, [], job, None, Profile(), claims).ok
+    job.user_notes = ""
+    assert not validate(text, [], job, None, Profile(), claims).ok
+
+
+def test_notes_reach_the_prompt_only_when_written():
+    from proposal_v2 import prompts
+    job = JobPost(job_key="k", platform="upwork", link="l", title="t", description="d")
+    assert "freelancer_notes" not in prompts._job_block(job)  # unchanged prompts for every job without notes
+    job.user_notes = "Mention I can start Monday"
+    assert "Mention I can start Monday" in prompts._job_block(job)

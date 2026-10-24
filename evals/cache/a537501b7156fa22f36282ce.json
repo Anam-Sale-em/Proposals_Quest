@@ -1,0 +1,89 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build a two-way contact sync between HubSpot and a PostgreSQL users table so that new signups appear in HubSpot within 5 minutes, HubSpot lifecycle stage changes write back to PostgreSQL, recent updates win conflicts with logging, and the solution runs on the client server with a maintenance README.",
+  "plan": [
+   {
+    "step": "Kickoff and analysis of HubSpot and PostgreSQL schemas",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "PostgreSQL client",
+     "HubSpot API docs"
+    ]
+   },
+   {
+    "step": "Develop the two-way sync script for new signups and lifecycle stages with recent-update conflict resolution and logging",
+    "tools": [
+     "Python",
+     "PostgreSQL",
+     "HubSpot"
+    ],
+    "suggested_tools": [
+     "Webhook handlers"
+    ]
+   },
+   {
+    "step": "Deploy the sync script to the client server and create the maintenance README",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Bash",
+     "Cron"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Sync script prototype and schema mapping review",
+    "budget_share": "40%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Fully deployed server script, conflict logging, and README",
+    "budget_share": "60%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and analysis of HubSpot and PostgreSQL schemas",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Develop the two-way sync script for new signups and lifecycle stages with recent-update conflict resolution and logging",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Deploy the sync script to the client server and create the maintenance README",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "API rate limits on HubSpot could delay the 5-minute sync window for high volumes of new signups.",
+    "mitigation": "Implement batching and efficient polling or webhook strategies within HubSpot limits."
+   },
+   {
+    "risk": "Clock drift between the server and HubSpot timestamps might cause incorrect conflict resolution.",
+    "mitigation": "Use HubSpot server-side timestamps as the authoritative source for last-modified checks."
+   }
+  ],
+  "questions": [
+   "What server environment and operating system are we deploying to?",
+   "Do you have existing HubSpot webhooks set up, or should we use polling for the sync?"
+  ],
+  "assumptions": [
+   "The client has provided necessary API credentials and database access for testing.",
+   "The budget of $800 covers scoping, development, deployment, and documentation."
+  ]
+ }
+}

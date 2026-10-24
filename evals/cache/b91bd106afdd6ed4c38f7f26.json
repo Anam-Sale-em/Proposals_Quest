@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to build a Python script that runs once a day, pulls the previous day's orders from your Shopify store through the API, and adds them to a Google Sheet with order number, date, customer email, items, total, and fulfilment status, while skipping existing orders and writing a run log.\n\nMy plan for this new work:\n1. Kickoff and requirements review.\n2. Develop Shopify API integration with rate limit handling.\n3. Implement Google Sheets integration to append orders and check for duplicates.\n\nI did nearly this for an inventory sync project: stock synced every 15 minutes, with no oversold orders in the first month.\n\nDo you have a preferred hosting environment for running the daily script, such as AWS, Heroku, or a local machine?\n\nLet's discuss the details in chat to get started.",
+  "screening_answers": []
+ }
+}

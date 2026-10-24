@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, PostgreSQL, Google Sheets, Slack, and webhooks well.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires building a complex workflow automation and integration system in n8n.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 is reasonable for this mid-sized n8n automation project.",
+  "clear_yes": true,
+  "clear_reason": "The scope is very detailed, allowing a clear 3-step plan for intake, routing, and error handling.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Both involve lead intake automation using n8n, webhooks, Google Sheets, and Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "Both use PostgreSQL and webhooks, but P2 focuses on inventory sync rather than lead routing."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "P3 handles support inbox triage with Gemini API and Airtable, which is different from lead routing."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

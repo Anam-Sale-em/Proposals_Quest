@@ -1,0 +1,92 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Connect a few of our tools using automation.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements gathering to identify the tools that need to be connected.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python"
+    ]
+   },
+   {
+    "step": "Design the automation workflow and map out the data flow between tools.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Build and test the workflow integration.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Webhooks",
+     "REST APIs"
+    ]
+   },
+   {
+    "step": "Deliver and review the final automated workflow.",
+    "tools": [],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Discovery and Design",
+    "deliverable": "Workflow architecture plan and tool connection mapping",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Build and Delivery",
+    "deliverable": "Fully tested and operational automation workflow",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements gathering to identify the tools that need to be connected.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Design the automation workflow and map out the data flow between tools.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build and test the workflow integration.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Deliver and review the final automated workflow.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The budget is not explicitly stated in the job post.",
+    "mitigation": "Treat the budget as an assumption and clarify compensation during the initial discussion."
+   },
+   {
+    "risk": "Tool details are not provided in the job post.",
+    "mitigation": "Ask the client for the list of specific tools during kickoff before starting design."
+   }
+  ],
+  "questions": [
+   "What specific tools do you need to connect?",
+   "What is the expected volume of data or frequency for this automation?"
+  ],
+  "assumptions": [
+   "The client has admin access to the tools that need to be integrated.",
+   "The actual budget will be discussed and agreed upon after sharing the project details."
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, JavaScript, and API integrations needed to fix rate limit issues.",
+  "work_type_yes": true,
+  "work_type_reason": "Fixing and optimizing workflow automation is a core deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "A $250 fixed price is reasonable for fixing an n8n workflow rate-limiting bug.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly asks to fix the n8n Google Sheets append node to handle rate limits, add retries, and send a Slack alert on failure.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets, and leads/data records."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation and error/retry handling in data syncs."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "similar",
+    "reason": "It is an automation workflow solving a data ingestion problem."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to automate demo request intake from two Typeform forms directly into Google Sheets and Slack while eliminating manual entry and duplicate submissions.\n\nHere are the first steps of my plan:\n1. Set up webhook triggers in your self-hosted n8n instance for both Typeform forms and normalize the incoming payloads.\n2. Query Google Sheets for matching email addresses to identify duplicates; if a match is found, the workflow halts before writing.\n3. Append unique entries to Google Sheets and post a notification containing the row link to your #sales Slack channel. Error alert emails for node failures will be new to configure.\n\nI did nearly this for a website lead intake workflow: Lead entry dropped from about 2 hours a week to under 10 minutes.\n\nShould duplicate submissions be ignored completely, or would you like them logged into a separate sheet?\n\nLet's connect on a quick call to go over the rest of the plan.",
+  "screening_answers": []
+ }
+}

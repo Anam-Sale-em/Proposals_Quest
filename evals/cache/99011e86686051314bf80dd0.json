@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python, Shopify API, and Google Sheets API skills which match the core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The requested work involves data sync scripts and API integrations, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250 to $750 for a daily Shopify to Google Sheets script is realistic for a fixed price task.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be easily made: connect to Shopify API to pull previous day orders, process and check against Google Sheets to skip duplicates, and write new rows with a log.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles leads and uses n8n instead of a Python script for Shopify."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and Shopify API to sync records, though the destination is PostgreSQL instead of Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It is a Python automation syncing records to a spreadsheet-like tool, but uses different platforms."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

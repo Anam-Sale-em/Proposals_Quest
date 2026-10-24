@@ -46,10 +46,8 @@
   "ignored_sections": [
    "Similar jobs",
    "Other open jobs by this client",
-   "Recommended jobs",
-   "Navigation",
-   "Sidebars",
-   "Footers"
+   "Footer",
+   "Navigation"
   ]
  }
 }

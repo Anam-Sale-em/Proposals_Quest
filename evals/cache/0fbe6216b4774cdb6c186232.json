@@ -5,13 +5,13 @@
  "prompt_version": "v2.0.6",
  "response": {
   "skills_yes": false,
-  "skills_reason": "The job requires logo design and Illustrator skills, which are not in the freelancer's skill set.",
+  "skills_reason": "The job requires logo design and Adobe Illustrator, which are not in the freelancer skills.",
   "work_type_yes": false,
-  "work_type_reason": "Logo design is a graphic design deliverable, not workflow automation or integration work.",
+  "work_type_reason": "Logo design is graphic design work, whereas the freelancer does automation and integration work.",
   "realistic_yes": true,
-  "realistic_reason": "Budget is treated as realistic by default.",
+  "realistic_reason": "The budget is a placeholder or standard for a small logo.",
   "clear_yes": true,
-  "clear_reason": "The post clearly asks for a modern, minimal logo and brand mark with 3 samples.",
+  "clear_reason": "The post clearly asks for a modern minimal logo and brand mark with 3 portfolio samples.",
   "project_labels": [
    {
     "project_id": "P1",
@@ -20,7 +20,7 @@
     "same_records": false,
     "shares_core_skills": false,
     "label": "not_relevant",
-    "reason": "This project is about lead intake automation rather than design."
+    "reason": "Different domain entirely."
    },
    {
     "project_id": "P2",
@@ -29,7 +29,7 @@
     "same_records": false,
     "shares_core_skills": false,
     "label": "not_relevant",
-    "reason": "This project is about inventory synchronization rather than design."
+    "reason": "Different domain entirely."
    },
    {
     "project_id": "P3",
@@ -38,8 +38,10 @@
     "same_records": false,
     "shares_core_skills": false,
     "label": "not_relevant",
-    "reason": "This project is about email triage automation rather than design."
+    "reason": "Different domain entirely."
    }
-  ]
+  ],
+  "votes": 0,
+  "split_facts": []
  }
 }

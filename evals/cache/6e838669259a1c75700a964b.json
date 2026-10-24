@@ -1,0 +1,45 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Gmail API, and Airtable, and has experience with AI APIs.",
+  "work_type_yes": true,
+  "work_type_reason": "This is a workflow automation and LLM-powered automation task.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly budget aligns well with intermediate Python and automation development.",
+  "clear_yes": true,
+  "clear_reason": "The project requirements outline specific ingestion from Gmail, AI summarization, and logging to Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles lead intake and data entry into a database similar to Airtable using automation."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It builds a data sync and processing pipeline using Python."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It reads emails via Gmail API, processes them with an LLM, and writes to Airtable."
+   }
+  ]
+ }
+}

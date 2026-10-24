@@ -1,0 +1,129 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an n8n-based lead routing system that automates intake from four sources, cleans and validates leads, merges duplicates, enriches with company data, routes based on clear rules, sends Slack alerts, and stores data in PostgreSQL with a Google Sheet mirror.",
+  "plan": [
+   {
+    "step": "Kickoff and Database Schema Setup",
+    "tools": [
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "Git",
+     "SQL Migration Tool"
+    ]
+   },
+   {
+    "step": "Intake, Validation, and Storage Workflows",
+    "tools": [
+     "n8n",
+     "Webhooks",
+     "Google Sheets API",
+     "PostgreSQL",
+     "JavaScript"
+    ],
+    "suggested_tools": [
+     "Google Drive API",
+     "IMAP Email Reader"
+    ]
+   },
+   {
+    "step": "Enrichment and Routing Logic Integration",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "REST APIs"
+    ],
+    "suggested_tools": [
+     "Enrichment Provider API"
+    ]
+   },
+   {
+    "step": "Slack Notifications, Reassignment, and Error Handling",
+    "tools": [
+     "n8n",
+     "Slack API",
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "Cron Scheduler"
+    ]
+   },
+   {
+    "step": "Documentation, Testing, and Handover",
+    "tools": [
+     "n8n",
+     "Git"
+    ],
+    "suggested_tools": [
+     "Markdown README"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Intake from all four sources, validation, duplicate handling, PostgreSQL storage, and Google Sheet mirror.",
+    "budget_share": "$1,200"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Enrichment, routing rules, Slack notifications, claiming, and reassignment.",
+    "budget_share": "$1,400"
+   },
+   {
+    "name": "Milestone 3",
+    "deliverable": "Error handling, dead-letter replay, daily digest, logging, documentation, and handover.",
+    "budget_share": "$900"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and Database Schema Setup",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Intake, Validation, and Storage Workflows",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Enrichment and Routing Logic Integration",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Slack Notifications, Reassignment, and Error Handling",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Documentation, Testing, and Handover",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Partner referral emails arrive in 15 different unstructured formats, causing high failure rates in parsing.",
+    "mitigation": "Route unparsed emails into a dedicated review queue with fallback logging rather than dropping them, and handle edge cases during Milestone 1."
+   },
+   {
+    "risk": "Webinar CSV bursts (up to 300 rows) hitting the enrichment provider rate limit of 10 requests per second.",
+    "mitigation": "Implement batching and rate-limiting delay nodes inside n8n workflows during Milestone 2."
+   }
+  ],
+  "questions": [
+   "What specific IMAP or email parsing service will be used to ingest the partner referral emails?",
+   "What is the exact REST API documentation and authentication method for the enrichment provider?"
+  ],
+  "assumptions": [
+   "The staging PostgreSQL database and n8n instance are fully provisioned and accessible.",
+   "The client will provide the country-to-region table and rep availability table formats prior to kickoff."
+  ]
+ }
+}

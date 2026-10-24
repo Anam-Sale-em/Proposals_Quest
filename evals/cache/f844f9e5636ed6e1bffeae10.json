@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, and REST APIs, which are needed to fix the workflow.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation and fixing integration errors match the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250 for fixing an n8n rate-limiting/batching issue is realistic.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: diagnose the 429 error, implement batching or rate limiting in n8n, add retries, and add a Slack notification.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involved n8n, Google Sheets, and webhooks for data handling."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It dealt with Shopify and PostgreSQL rather than Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It dealt with Gmail and Airtable rather than Google Sheets and n8n."
+   }
+  ],
+  "votes": 1,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

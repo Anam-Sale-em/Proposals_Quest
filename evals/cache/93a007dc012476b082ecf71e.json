@@ -7,39 +7,41 @@
   "skills_yes": true,
   "skills_reason": "The freelancer has general automation and API integration skills.",
   "work_type_yes": true,
-  "work_type_reason": "Connecting tools is standard workflow automation work.",
+  "work_type_reason": "Workflow automation and API integrations are core deliverable types.",
   "realistic_yes": true,
-  "realistic_reason": "The budget is a placeholder, so the scope is assumed realistic.",
+  "realistic_reason": "The budget is a placeholder, so it is treated as not stated.",
   "clear_yes": false,
-  "clear_reason": "The post is too vague to write a 3-step plan.",
+  "clear_reason": "The post is too vague to write a concrete 3-step plan.",
   "project_labels": [
    {
     "project_id": "P1",
-    "same_kind_of_work": false,
+    "same_kind_of_work": true,
     "same_platform": false,
     "same_records": true,
     "shares_core_skills": true,
     "label": "similar",
-    "reason": "It involves automation and records, but no specific platform matches the vague post."
+    "reason": "Involves connecting tools and handling leads via workflow automation."
    },
    {
     "project_id": "P2",
-    "same_kind_of_work": false,
+    "same_kind_of_work": true,
     "same_platform": false,
     "same_records": true,
     "shares_core_skills": true,
     "label": "similar",
-    "reason": "It involves integration and records, but no specific platform matches the vague post."
+    "reason": "Involves API integration and syncing data records between systems."
    },
    {
     "project_id": "P3",
-    "same_kind_of_work": false,
+    "same_kind_of_work": true,
     "same_platform": false,
     "same_records": true,
     "shares_core_skills": true,
     "label": "similar",
-    "reason": "It involves automation and records, but no specific platform matches the vague post."
+    "reason": "Involves connecting tools and automating record processing."
    }
-  ]
+  ],
+  "votes": 3,
+  "split_facts": []
  }
 }

@@ -1,0 +1,111 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Summarize incoming partnership request emails from a Gmail label with an AI model and add them to Airtable with sender, company, request type, a 2-sentence summary, and a priority flag, leaving low-confidence ones for human review.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements review",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "Gmail API"
+    ]
+   },
+   {
+    "step": "Set up Gmail API integration to read emails from the Partners label",
+    "tools": [
+     "Gmail API",
+     "Python"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure AI model integration for summarization, request type extraction, and confidence scoring",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "OpenAI API",
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Set up Airtable base schema and write records with sender, company, request type, summary, and priority flag",
+    "tools": [
+     "Airtable",
+     "Python"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Implement low-confidence routing for human review and final testing",
+    "tools": [
+     "Python",
+     "Gmail API",
+     "Airtable"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Gmail and Airtable Connection",
+    "deliverable": "Working script connecting to Gmail API to fetch labeled emails and structuring the Airtable base schema.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2: AI Processing and Review Routing",
+    "deliverable": "Fully functional lead capture workflow with AI summary, priority flag, and low-confidence human review handling.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements review",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Set up Gmail API integration to read emails from the Partners label",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Configure AI model integration for summarization, request type extraction, and confidence scoring",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Set up Airtable base schema and write records with sender, company, request type, summary, and priority flag",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Implement low-confidence routing for human review and final testing",
+    "project_id": "P3",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The job post lists OpenAI API as a skill, but the freelancer's past project uses Gemini API.",
+    "mitigation": "Adapt the Python script to use either OpenAI API or Gemini API depending on client preference."
+   },
+   {
+    "risk": "Hourly rate is specified as a range ($35-$55/hr) without a total project cap.",
+    "mitigation": "Establish a weekly hour cap to keep spending aligned with expectations."
+   }
+  ],
+  "questions": [
+   "Do you prefer OpenAI API or Gemini API for the AI summarization?",
+   "What specific criteria determine a low-confidence rating that requires human review?"
+  ],
+  "assumptions": [
+   "The client has existing Gmail and Airtable accounts with necessary admin access.",
+   "The project will be billed hourly within the stated $35\u2013$55 per hour range."
+  ]
+ }
+}

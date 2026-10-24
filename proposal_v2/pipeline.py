@@ -14,7 +14,7 @@ from . import prompts
 from .config import load_config
 from .contracts import (Assessment, Brief, ClaimLists, CVImport, Decision, Extraction, JobPost, Profile, Project,
                         ProposalDraft, ProposalRecord, ProposalVersion, now_iso)
-from .decision import proof_label, budget_gate, decide, fit_result, pre_decision
+from .decision import majority, proof_label, budget_gate, decide, fit_result, pre_decision
 from .links import LinkError, ParsedLink, parse_link, title_match
 from .llm import LLM
 from .policy import apply_policy
@@ -44,6 +44,14 @@ def _tags_in_project(tags: list[str], project: Project) -> int:
 
     text = "\n".join([project.title, project.problem, project.what_i_did, " ".join(project.skills)]).lower()
     return sum(1 for t in tags if t.strip() and re.search(r"(?<![a-z0-9])" + re.escape(t.strip().lower()) + r"s?(?![a-z0-9])", text))
+
+
+def _specific_tags_in_project(job: JobPost, project: Project) -> int:
+    """Specific (non-generic) tools named in the post that the project also names."""
+    from .skills import is_generic
+
+    tags = [t for t in [*job.skills, *job.client_tools] if t.strip() and not is_generic(t)]
+    return _tags_in_project(tags, project)
 
 
 class PipelineError(Exception):
@@ -141,9 +149,20 @@ class Pipeline:
         if d is None:
             projects = self.projects()
             system, user = prompts.assessment(rec.job, profile, projects)
-            rec.assessment = self.llm.call("assess", "light", system, user, Assessment, load_config()["models"]["temperature_extract"])
+            m = load_config()["models"]
+            runs = [self.llm.call("assess", "light", system, user, Assessment, m["temperature_extract"])]
+            for i in range(2, int(m.get("assess_votes", 1)) + 1):
+                # Separate runs (distinct prompt tail, so the cache keeps each), then the majority per fact.
+                runs.append(self.llm.call("assess", "light", system, user + f"\n\n(Independent check {i}.)",
+                                          Assessment, m.get("temperature_vote", 0.3)))
+            rec.assessment = majority(runs)
+            by_id = {pr.id: pr for pr in projects}
             for j in rec.assessment.project_labels:  # the label comes from the facts, by rule
                 j.label = proof_label(j)
+                # "Similar" needs evidence in both texts: a specific tool the post names that the project also used.
+                # A post that names none (only "Automation", "API Integration") can't be "nearly this".
+                if j.label == "similar" and j.project_id in by_id and not _specific_tags_in_project(rec.job, by_id[j.project_id]):
+                    j.label = "same_skills"
             if gate in ("placeholder", "none_stated") and not rec.assessment.realistic_yes:
                 # The rule, not the model, decides this: a placeholder or missing budget says nothing about scope.
                 rec.assessment.realistic_yes = True
@@ -174,8 +193,10 @@ class Pipeline:
             cands = [l for l in rec.assessment.project_labels if l.label == label and l.project_id in projects]
             if cands:
                 # Ties: the same kind of work first, then platform, records, then skill-tag overlap with the post.
-                best = max(cands, key=lambda l: (bool(l.same_kind_of_work), bool(l.same_platform), bool(l.same_records),
+                # Same kind of work first, then how many of the post's own tools the project used, then platform and records.
+                best = max(cands, key=lambda l: (bool(l.same_kind_of_work),
                                                  _tags_in_project(rec.job.skills, projects[l.project_id]),
+                                                 bool(l.same_platform), bool(l.same_records),
                                                  overlap(rec.job.skills, projects[l.project_id].skills)[0],
                                                  -rec.assessment.project_labels.index(l)))
                 return best.project_id, label
@@ -249,7 +270,7 @@ class Pipeline:
         return rec
 
     def _check(self, draft: ProposalDraft, job: JobPost, project: Optional[Project], profile: Profile, mode: str):
-        system, user = prompts.claim_lists(draft.text, draft.screening_answers, project)
+        system, user = prompts.claim_lists(draft.text, draft.screening_answers, project, job.user_notes)
         claims = self.llm.call("claims", "light", system, user, ClaimLists, 0.0)
         return validate(draft.text, draft.screening_answers, job, project, profile, claims, mode)
 

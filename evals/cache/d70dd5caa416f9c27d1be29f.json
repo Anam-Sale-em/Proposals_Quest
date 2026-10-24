@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, PostgreSQL, REST APIs, Webhooks, Google Sheets API, and Slack API in their skills list.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires workflow automation and data sync scripts, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 and milestone structure align well with a complex multi-source n8n and PostgreSQL integration project.",
+  "clear_yes": true,
+  "clear_reason": "The post provides detailed requirements, milestones, volumes, and acceptance criteria.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Both handle lead intake, deduplication, Google Sheets, and Slack alerts using n8n."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Both involve PostgreSQL and webhook-based synchronization workflows."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "Focuses on email triage and LLM classification rather than multi-source lead routing and PostgreSQL."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

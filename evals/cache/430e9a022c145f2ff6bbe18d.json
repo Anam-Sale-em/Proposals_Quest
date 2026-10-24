@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, JavaScript, and Google Sheets API well.",
+  "work_type_yes": true,
+  "work_type_reason": "Fixing and improving workflow automation is a core deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The $250 budget is reasonable for a quick n8n node rate-limit and retry fix.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: handle rate limits, add retries, and add a Slack alert.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on Python and Shopify inventory sync."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It uses Gmail and Gemini API for email triage."
+   }
+  ],
+  "votes": 4,
+  "split_facts": []
+ }
+}

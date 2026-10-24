@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, JavaScript, and API integration skills needed to fix the Google Sheets rate-limiting issue.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation troubleshooting and fixing node failures is standard workflow automation work.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $250 is realistic for debugging and patching an n8n Google Sheets batch processing issue.",
+  "clear_yes": true,
+  "clear_reason": "The requirements are clear: fix the 429 rate limit error in the n8n Google Sheets node, add batching/retries, and add a Slack alert.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets, and Slack alerts, matching the core toolset of the job post."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on Shopify and PostgreSQL inventory sync rather than n8n and Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It uses Python and Gmail instead of n8n and Google Sheets."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

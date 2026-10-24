@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has expertise in n8n, Python, PostgreSQL, REST APIs, and Webhooks which cover the core stack requested.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires workflow automation and backend integrations, matching the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 with defined milestones is reasonable for an experienced n8n and PostgreSQL automation developer.",
+  "clear_yes": true,
+  "clear_reason": "The job post provides a comprehensive specification with exact technical requirements, workflows, and milestones.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves building an n8n lead intake workflow with webhooks, validation, duplicate checking, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses PostgreSQL and webhooks to handle inventory synchronization and database logging."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on email triage and LLM classification using Gmail and Airtable rather than lead routing."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

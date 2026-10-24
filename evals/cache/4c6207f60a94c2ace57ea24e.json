@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hello, I can build your n8n lead routing system to integrate all four sources, clean and validate leads, merge duplicates, enrich company size and industry, assign reps using robust rules, notify via Slack, and store everything in PostgreSQL with a Google Sheet mirror. My plan starts with setting up the PostgreSQL schema and configuring n8n workflows for intake, validation, normalization, duplicate handling, and storage. Next, I will implement the enrichment provider integration with rate limiting, complex routing rules, round-robin pointer in PostgreSQL, and Slack notifications with claim and reassignment logic. I did nearly this for a lead intake automation with n8n: built an n8n workflow for form webhooks, field validation, a duplicate check by email, a new Google Sheets row and a Slack alert to the sales channel, which dropped lead entry from about 2 hours a week to under 10 minutes. What specific enrichment provider API is being used, and what is the exact endpoint specification and payload structure? Let's discuss the full plan in our chat.",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I would store and update the round-robin pointer directly in PostgreSQL using transactional locking or atomic update queries to maintain correct order."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I would incorporate flexible parsing logic in Milestone 1 and route any unparseable emails directly to a dedicated review queue instead of dropping them."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "Partner referral emails arriving in varying, unstructured formats is the biggest risk, which I would reduce by building flexible parsing logic and a review queue in the first milestone."
+   }
+  ]
+ }
+}

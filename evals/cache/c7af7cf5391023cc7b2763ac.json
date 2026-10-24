@@ -22,11 +22,8 @@
   ],
   "screening_questions": [],
   "explicit_requirements": [
-   "pull the previous day's orders from my Shopify store through the API",
-   "add them to a Google Sheet: order number, date, customer email, items, total and fulfilment status",
-   "skip orders that are already in the sheet",
-   "write a short log so I can see it ran",
-   "explain how you would schedule it and how you would handle Shopify API rate limits"
+   "explain how you would schedule it",
+   "explain how you would handle Shopify API rate limits"
   ],
   "client_tools": [],
   "client": {

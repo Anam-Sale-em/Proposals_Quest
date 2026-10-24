@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hello. I can build your n8n lead routing system to automate intake from all four sources, validate, deduplicate, enrich, route leads to reps, and mirror data in a Google Sheet while using PostgreSQL as the source of truth.\n\nMy plan begins with designing the PostgreSQL schema for leads, touchpoints, assignments, and configuration settings. Next, I will build intake workflows for website demo form webhooks, chat tool webhooks, Google Drive webinar CSV processor, and partner email ingestion with a review queue, followed by implementing validation, normalization, duplicate handling, and merging logic.\n\nI did nearly this for a client with lead intake automation: lead entry dropped from about 2 hours a week to under 10 minutes.\n\nCould you clarify the exact schema and authentication method required for the third-party company enrichment REST API?\n\nLet's discuss the full plan in chat and get started.",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I would use atomic database transactions and store the round-robin pointer directly in PostgreSQL with row-level locking to guarantee safe concurrent reads and updates."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I would route any unparsed or ambiguous referral emails directly to a dedicated review queue instead of failing or dropping them, ensuring human inspection."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "Partner referral emails arriving in 15 different unformatted structures is the biggest risk, which I would reduce by directing ambiguous emails to the review queue in Milestone 1."
+   }
+  ]
+ }
+}

@@ -4,10 +4,10 @@
  "model": "gemini-3.5-flash-lite",
  "prompt_version": "v2.0.6",
  "response": {
-  "goal": "Connect a few tools using automation",
+  "goal": "Connect a few of their tools using automation.",
   "plan": [
    {
-    "step": "Kickoff and requirements gathering to identify the specific tools that need connection",
+    "step": "Kickoff and discovery call to identify the tools that need to be connected and map out the required workflows.",
     "tools": [],
     "suggested_tools": [
      "n8n",
@@ -16,7 +16,7 @@
     ]
    },
    {
-    "step": "Design the automation workflow architecture based on the shared details",
+    "step": "Design and build the integration workflows based on the shared tool details.",
     "tools": [],
     "suggested_tools": [
      "n8n",
@@ -24,71 +24,69 @@
     ]
    },
    {
-    "step": "Build and test the API integrations and data sync scripts",
+    "step": "Test the automations with sample data to ensure reliable execution and error handling.",
     "tools": [],
     "suggested_tools": [
-     "n8n",
-     "Python",
-     "JavaScript"
+     "n8n"
     ]
    },
    {
-    "step": "Final review, deployment, and handover to the client",
+    "step": "Handover and review of the completed integrations with the client.",
     "tools": [],
     "suggested_tools": []
    }
   ],
   "milestones": [
    {
-    "name": "Discovery and Design",
-    "deliverable": "Reviewed tool details and finalized automation workflow architecture plan",
+    "name": "Discovery and Architecture",
+    "deliverable": "Detailed integration plan and confirmed list of tools to connect.",
     "budget_share": "30%"
    },
    {
-    "name": "Build and Delivery",
-    "deliverable": "Fully tested and working automation connecting the tools",
+    "name": "Build and Test",
+    "deliverable": "Functional automation workflows tested and verified.",
     "budget_share": "70%"
    }
   ],
   "proof_map": [
    {
-    "step": "Kickoff and requirements gathering to identify the specific tools that need connection",
+    "step": "Kickoff and discovery call to identify the tools that need to be connected and map out the required workflows.",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Design the automation workflow architecture based on the shared details",
+    "step": "Design and build the integration workflows based on the shared tool details.",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Build and test the API integrations and data sync scripts",
+    "step": "Test the automations with sample data to ensure reliable execution and error handling.",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Final review, deployment, and handover to the client",
+    "step": "Handover and review of the completed integrations with the client.",
     "project_id": null,
     "gap": true
    }
   ],
   "risks": [
    {
-    "risk": "The budget is not stated and placeholder value is provided, which may misalign with project scope",
-    "mitigation": "Discuss scope and finalize a realistic budget once tool details are shared"
+    "risk": "The budget is not stated beyond a $5 placeholder.",
+    "mitigation": "Clarify the actual project scope and budget requirements before starting work."
    },
    {
-    "risk": "Tool details are not specified in the job post",
-    "mitigation": "Review the required tools during the initial kickoff discussion before starting the build"
+    "risk": "Tool details are not specified in the job post.",
+    "mitigation": "Request the list of tools and API documentation during the initial discovery phase."
    }
   ],
   "questions": [
    "What specific tools and applications need to be connected?",
-   "What is the expected workflow or data flow between these tools?"
+   "What is the expected volume of data or frequency for these automations?"
   ],
   "assumptions": [
-   "The client will provide access credentials and documentation for the tools that need to be connected",
-   "The $5 budget listed in the post is purely a placeholder as stated"
+   "The budget is not stated and will be negotiated based on the specific tools and complexity.",
+   "The client will provide access credentials and documentation for the tools that need to be connected."
   ]
  }
 }

@@ -1,0 +1,128 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an automated n8n-based lead routing system that takes in leads from four sources, cleans and validates them, merges duplicates, enriches them, assigns them to reps via clear rules, notifies reps in Slack, stores everything in PostgreSQL with a Google Sheet mirror, and handles errors without losing data.",
+  "plan": [
+   {
+    "step": "Kickoff and Database Schema Setup: review routing rules, set up PostgreSQL tables (leads, touchpoints, assignments, dead-letter, logs), and connect to the staging database.",
+    "tools": [
+     "PostgreSQL",
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Git"
+    ]
+   },
+   {
+    "step": "Intake, Validation, and Storage: build n8n workflows for website webhooks, chat webhooks, Google Drive CSV webinar imports, and partner email parsing, complete with validation, duplicate detection, and Google Sheets mirroring.",
+    "tools": [
+     "n8n",
+     "Webhooks",
+     "Google Sheets API",
+     "PostgreSQL",
+     "Python",
+     "JavaScript"
+    ],
+    "suggested_tools": [
+     "Gmail API"
+    ]
+   },
+   {
+    "step": "Enrichment and Routing Rules: integrate the company enrichment REST API with rate limiting, and implement regional routing, enterprise checks, and database-backed round-robin pointers.",
+    "tools": [
+     "n8n",
+     "REST APIs",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Notifications, Claiming, and Error Handling: set up Slack direct messages, interactive claiming, escalation timeouts, daily digests, exponential backoff retries, and dead-letter replay mechanisms.",
+    "tools": [
+     "n8n",
+     "Slack API",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Testing, Documentation, and Handover: run test suites against staging, commit workflows and migrations to Git, write the README documentation, and conduct the recorded handover call.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "JavaScript"
+    ],
+    "suggested_tools": [
+     "Git"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Intake from all four sources, validation, duplicate handling, PostgreSQL storage, and the Google Sheet mirror.",
+    "budget_share": "$1,200"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Enrichment, routing rules, Slack notifications, claiming, and reassignment.",
+    "budget_share": "$1,400"
+   },
+   {
+    "name": "Milestone 3",
+    "deliverable": "Error handling, dead-letter replay, daily digest, logging, documentation, and handover.",
+    "budget_share": "$900"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and Database Schema Setup: review routing rules, set up PostgreSQL tables (leads, touchpoints, assignments, dead-letter, logs), and connect to the staging database.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Intake, Validation, and Storage: build n8n workflows for website webhooks, chat webhooks, Google Drive CSV webinar imports, and partner email parsing, complete with validation, duplicate detection, and Google Sheets mirroring.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Enrichment and Routing Rules: integrate the company enrichment REST API with rate limiting, and implement regional routing, enterprise checks, and database-backed round-robin pointers.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Notifications, Claiming, and Error Handling: set up Slack direct messages, interactive claiming, escalation timeouts, daily digests, exponential backoff retries, and dead-letter replay mechanisms.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Testing, Documentation, and Handover: run test suites against staging, commit workflows and migrations to Git, write the README documentation, and conduct the recorded handover call.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Partner referral emails arrive in 15 different unstructured formats, which could cause high failure rates in parsing.",
+    "mitigation": "Route unparseable partner emails to a dedicated review queue instead of dropping them, and implement fallback extraction rules."
+   },
+   {
+    "risk": "Concurrency issues during high-volume webinar CSV imports could corrupt the round-robin pointer or create duplicate assignments.",
+    "mitigation": "Store the round-robin pointer directly in PostgreSQL using transactional locking queries rather than in-memory variables."
+   }
+  ],
+  "questions": [
+   "What specific email parsing library or LLM tool would you prefer to use for extracting data from unstructured partner referral emails?",
+   "What is the specific schema or API documentation for the paid enrichment provider?",
+   "Are there any specific business hours definitions per region that need to be accounted for in the scheduling rules?"
+  ],
+  "assumptions": [
+   "The client will provide access to the staging PostgreSQL database and self-hosted n8n instance during the first week.",
+   "The enrichment provider API documentation will be shared promptly upon project kickoff.",
+   "Sample files for every lead source will be made available for testing during Milestone 1."
+  ]
+ }
+}

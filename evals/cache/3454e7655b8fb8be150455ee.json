@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL, which are needed for the job.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a data sync script and API integration, matching the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed price budget of $800 is realistic for a scoped sync script.",
+  "clear_yes": true,
+  "clear_reason": "The post provides clear implementation details to outline a 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It involves lead intake and Google Sheets/Slack rather than HubSpot and PostgreSQL sync."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves a database and API sync service using Python, but for Shopify and inventory instead of HubSpot and contacts."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data synchronization and record processing using Python, but with different platforms and records."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

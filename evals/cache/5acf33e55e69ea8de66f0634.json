@@ -1,0 +1,98 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Pull the previous day's orders from a Shopify store through the API and add them to a Google Sheet daily using a Python script, skipping existing orders and writing a log.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements review to confirm Shopify API credentials and Google Sheets access.",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "Shopify API",
+     "Google Sheets API"
+    ]
+   },
+   {
+    "step": "Develop the Python script to fetch the previous day's orders, parse required fields, and implement duplicate checking.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Shopify API",
+     "Google Sheets API"
+    ]
+   },
+   {
+    "step": "Implement rate limit handling for the Shopify API and configure daily scheduling.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Add logging functionality and deliver the final script with testing instructions.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Core Python script for fetching Shopify orders and writing to Google Sheets.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Rate limit handling, duplicate skipping, daily scheduling, and logging.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements review to confirm Shopify API credentials and Google Sheets access.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Develop the Python script to fetch the previous day's orders, parse required fields, and implement duplicate checking.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement rate limit handling for the Shopify API and configure daily scheduling.",
+    "project_id": "P2",
+    "gap": false
+   },
+   {
+    "step": "Add logging functionality and deliver the final script with testing instructions.",
+    "project_id": "P2",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Shopify API rate limits could be hit when pulling large volumes of historical or daily order data.",
+    "mitigation": "Implement exponential backoff and retry logic in Python for API requests."
+   },
+   {
+    "risk": "Duplicate entries could be written if the script runs multiple times in a single day.",
+    "mitigation": "Check existing order numbers in the Google Sheet before appending new rows."
+   }
+  ],
+  "questions": [
+   "Where will the Python script be hosted to run daily?",
+   "Should the Google Sheet be structured with specific headers beforehand?"
+  ],
+  "assumptions": [
+   "The budget is assumed to be the midpoint of $500.",
+   "Access credentials for Shopify Admin API and Google Sheets API will be provided."
+  ]
+ }
+}

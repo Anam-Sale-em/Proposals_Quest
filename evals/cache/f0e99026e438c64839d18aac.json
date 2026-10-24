@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, PostgreSQL, and API skills needed for the job.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is workflow automation and API integrations.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed price of $3,500 is reasonable for a scoped n8n and PostgreSQL automation project.",
+  "clear_yes": true,
+  "clear_reason": "The requirements provide a detailed breakdown of intake, validation, routing, and deliverables to form a clear 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It builds an n8n workflow for handling lead intake, duplicates, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles data synchronization into PostgreSQL using webhooks and backend scripts."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It processes inbound messages and logs records, using similar backend skills but not n8n as the primary platform."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

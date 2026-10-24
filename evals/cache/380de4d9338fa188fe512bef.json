@@ -21,14 +21,7 @@
    "Automation"
   ],
   "screening_questions": [],
-  "explicit_requirements": [
-   "Build a full CRM from scratch including contacts and property listings",
-   "Implement a deal pipeline with drag-and-drop stages",
-   "Set up automatic follow-up emails",
-   "Create a reporting dashboard for 6 agents",
-   "Develop a mobile app for agents in the field",
-   "Finish the project in 2 weeks"
-  ],
+  "explicit_requirements": [],
   "client_tools": [],
   "client": {
    "payment_verified": true,
@@ -43,11 +36,6 @@
   },
   "instructions": [],
   "red_flags": [],
-  "ignored_sections": [
-   "Similar jobs",
-   "Other open jobs by this client",
-   "Footer",
-   "Navigation"
-  ]
+  "ignored_sections": []
  }
 }

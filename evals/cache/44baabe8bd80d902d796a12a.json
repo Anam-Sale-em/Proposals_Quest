@@ -5,13 +5,13 @@
  "prompt_version": "v2.0.6",
  "response": {
   "skills_yes": true,
-  "skills_reason": "The freelancer has n8n, Airtable, and Slack integration skills.",
+  "skills_reason": "The job requires n8n, Airtable, and Slack, all of which are in the freelancer's listed skills.",
   "work_type_yes": true,
-  "work_type_reason": "Building daily scheduled digest automations fits workflow automation.",
+  "work_type_reason": "This is a standard workflow automation deliverable, matching the freelancer's work types.",
   "realistic_yes": true,
-  "realistic_reason": "The hourly rate is standard for n8n integration work.",
+  "realistic_reason": "The hourly rate of $30-$50 is realistic for an n8n and automation specialist.",
   "clear_yes": true,
-  "clear_reason": "A 3-step plan can be written: schedule n8n trigger for 8 AM excluding weekends, fetch yesterday's orders from Airtable with filters, and post the formatted summary to Slack.",
+  "clear_reason": "The post provides clear steps: read yesterday's orders from Airtable, summarize them, and post to Slack at 8:00 AM via n8n.",
   "project_labels": [
    {
     "project_id": "P1",
@@ -20,26 +20,33 @@
     "same_records": true,
     "shares_core_skills": true,
     "label": "similar",
-    "reason": "It uses n8n and Slack for notifications, dealing with records, but different primary source platform."
+    "reason": "It involves workflow automation and handling leads/records using n8n, but uses different platforms (Google Sheets and Slack instead of Airtable)."
    },
    {
     "project_id": "P2",
-    "same_kind_of_work": false,
+    "same_kind_of_work": true,
     "same_platform": false,
     "same_records": true,
-    "shares_core_skills": false,
-    "label": "not_relevant",
-    "reason": "Different tools and scheduled data syncing approach."
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles data synchronization and records, but is built in Python rather than n8n and uses Shopify/PostgreSQL."
    },
    {
     "project_id": "P3",
-    "same_kind_of_work": false,
+    "same_kind_of_work": true,
     "same_platform": true,
     "same_records": true,
-    "shares_core_skills": false,
-    "label": "not_relevant",
-    "reason": "Uses Python and Gmail/Airtable instead of n8n and Slack digests."
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It processes records using Airtable and integrates with APIs, but is built via Python instead of n8n."
    }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
   ]
  }
 }

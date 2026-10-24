@@ -49,7 +49,11 @@ def _job_block(job: JobPost) -> str:
         "skills": job.skills, "client_tools": job.client_tools,
         "explicit_requirements": job.explicit_requirements, "screening_questions": job.screening_questions,
     }
-    return (f"<job_post>\n{json.dumps(data, ensure_ascii=False, indent=1)}\n\nDescription:\n{job.description}\n</job_post>")
+    block = f"<job_post>\n{json.dumps(data, ensure_ascii=False, indent=1)}\n\nDescription:\n{job.description}\n</job_post>"
+    if job.user_notes.strip():
+        # The freelancer's own words, outside the untrusted post: include each point; they count as true.
+        block += f"\n\n<freelancer_notes>\nInclude each of these in the proposal; they are the freelancer's own facts and requests:\n{job.user_notes.strip()}\n</freelancer_notes>"
+    return block
 
 
 def _profile_block(profile: Profile) -> str:
@@ -172,7 +176,7 @@ def revise(job: JobPost, profile: Profile, project: Optional[Project], current: 
 
 
 # --------------------------------------------------------------------------- claim lists
-def claim_lists(text: str, answers: list, project: Optional[Project]) -> tuple[str, str]:
+def claim_lists(text: str, answers: list, project: Optional[Project], notes: str = "") -> tuple[str, str]:
     system = """You audit a freelance proposal. List:
 - tools_named: every tool, product, platform, language or skill the proposal and answers name (including the client's own tools).
 - experience_sentences: every sentence that claims past work or experience ("I've built", "I used", "in a past project", "experience with"). For each, maps_to is the project id it describes, "profile" when it only restates the freelancer's general skills, or "none" when it matches neither. Leave out sentences that say the work is new for the freelancer, and sentences that only describe what they will do.
@@ -180,6 +184,8 @@ Copy sentences exactly. Don't judge them; just list them."""
     pid = project.id if project else "none (plan only)"
     user = (f"Chosen project id: {pid}\nChosen project: {project.model_dump_json() if project else 'none'}\n\n"
             f"Proposal:\n{text}\n\nScreening answers:\n{json.dumps([a.model_dump() for a in answers], ensure_ascii=False)}")
+    if notes.strip():
+        user += f"\n\nFreelancer's own notes (maps_to \"notes\" for a sentence that only restates them):\n{notes.strip()}"
     return system, user
 
 

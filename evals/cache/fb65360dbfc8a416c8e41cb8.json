@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Gmail API, and Airtable, which cover the core technical stack.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is a workflow automation and LLM-powered integration deliverable, matching the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $35\u2013$55 is realistic and standard for an intermediate automation and Python freelancer.",
+  "clear_yes": true,
+  "clear_reason": "A concrete 3-step plan can be written: connect Gmail API to read labeled emails, integrate an AI model for summarization, and write the output records to Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles leads and shares skills like Webhooks and APIs, but uses n8n and Google Sheets instead of Gmail and Airtable."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It uses Python and APIs, but the platform and records are entirely different (Shopify and PostgreSQL)."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It reads Gmail, uses an LLM (Gemini instead of OpenAI) and writes to Airtable, making it a very close match."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

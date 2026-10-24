@@ -40,11 +40,6 @@
   },
   "instructions": [],
   "red_flags": [],
-  "ignored_sections": [
-   "Similar jobs",
-   "Other open jobs by this client",
-   "Worldwide location tag",
-   "Posted 3 hours ago"
-  ]
+  "ignored_sections": []
  }
 }

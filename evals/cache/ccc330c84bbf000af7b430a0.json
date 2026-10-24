@@ -4,27 +4,26 @@
  "model": "gemini-3.5-flash-lite",
  "prompt_version": "v2.0.6",
  "response": {
-  "goal": "We get partnership requests by email. We want each new email in our \"Partners\" Gmail label summarized by an AI model and added to Airtable: sender, company, request type, a 2-sentence summary and a priority flag. A person on our team reviews anything marked low confidence.",
+  "goal": "We get partnership requests by email. We want each new email in our Partners Gmail label summarized by an AI model and added to Airtable: sender, company, request type, a 2-sentence summary and a priority flag. A person on our team reviews anything marked low confidence.",
   "plan": [
    {
-    "step": "Kickoff and requirements review for Gmail and Airtable schema alignment.",
+    "step": "Kickoff and requirements review",
     "tools": [],
     "suggested_tools": [
-     "Python",
-     "Gmail API",
-     "Airtable"
+     "Python"
     ]
    },
    {
-    "step": "Develop the script to read new emails from the \"Partners\" Gmail label.",
+    "step": "Build Gmail API integration for the Partners label",
     "tools": [
-     "Gmail API",
-     "Python"
+     "Gmail API"
     ],
-    "suggested_tools": []
+    "suggested_tools": [
+     "Python"
+    ]
    },
    {
-    "step": "Integrate AI summarization to extract sender, company, request type, summary, and priority flag.",
+    "step": "Implement AI model integration for summarization and extraction",
     "tools": [
      "Python"
     ],
@@ -34,75 +33,78 @@
     ]
    },
    {
-    "step": "Configure Airtable integration to store parsed leads and route low-confidence items for review.",
+    "step": "Configure Airtable output and low-confidence review routing",
     "tools": [
-     "Airtable",
-     "Python"
+     "Airtable"
     ],
-    "suggested_tools": []
+    "suggested_tools": [
+     "Python"
+    ]
    },
    {
-    "step": "Testing, deployment, and handover.",
+    "step": "Testing and delivery",
     "tools": [],
-    "suggested_tools": []
+    "suggested_tools": [
+     "Python"
+    ]
    }
   ],
   "milestones": [
    {
-    "name": "Phase 1: Gmail Integration & AI Parsing",
-    "deliverable": "Working script connecting to Gmail and processing emails with an AI model.",
+    "name": "Milestone 1",
+    "deliverable": "Gmail and AI processing setup",
     "budget_share": "50%"
    },
    {
-    "name": "Phase 2: Airtable Sync & Review Workflow",
-    "deliverable": "Data successfully writing to Airtable with low-confidence routing.",
+    "name": "Milestone 2",
+    "deliverable": "Airtable integration and final testing",
     "budget_share": "50%"
    }
   ],
   "proof_map": [
    {
-    "step": "Kickoff and requirements review for Gmail and Airtable schema alignment.",
+    "step": "Kickoff and requirements review",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Develop the script to read new emails from the \"Partners\" Gmail label.",
+    "step": "Build Gmail API integration for the Partners label",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Integrate AI summarization to extract sender, company, request type, summary, and priority flag.",
+    "step": "Implement AI model integration for summarization and extraction",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Configure Airtable integration to store parsed leads and route low-confidence items for review.",
+    "step": "Configure Airtable output and low-confidence review routing",
     "project_id": null,
     "gap": true
    },
    {
-    "step": "Testing, deployment, and handover.",
+    "step": "Testing and delivery",
     "project_id": null,
     "gap": true
    }
   ],
   "risks": [
    {
-    "risk": "Budget is specified as an hourly range without a fixed project cap.",
-    "mitigation": "Establish a weekly hour cap and clear milestone check-ins to control costs."
+    "risk": "Budget format is hourly rather than fixed.",
+    "mitigation": "Track hours closely and provide regular progress updates to ensure alignment with expected output."
    },
    {
-    "risk": "Client job post mentions OpenAI API while proof project uses Gemini API.",
-    "mitigation": "Confirm preferred AI model during kickoff and adapt the Python script accordingly."
+    "risk": "AI model output inconsistency for extracting structured fields like sender and company.",
+    "mitigation": "Implement robust prompt engineering and low-confidence flags for human review."
    }
   ],
   "questions": [
-   "Do you prefer OpenAI or another LLM provider for the summarization?",
-   "What specific fields are currently set up in your Airtable base for the partnership requests?"
+   "What specific fields are needed in Airtable beyond sender, company, request type, summary, and priority flag?",
+   "What criteria define a low-confidence classification that requires human review?"
   ],
   "assumptions": [
-   "The client has an active Airtable account and Gmail account with API access permissions ready.",
-   "The hourly rate agreed upon will fit the estimated hours required for development and testing."
+   "The client has existing Gmail and Airtable accounts with appropriate API access.",
+   "The budget is flexible based on the hourly rate of $35\u2013$55 per hour."
   ]
  }
 }

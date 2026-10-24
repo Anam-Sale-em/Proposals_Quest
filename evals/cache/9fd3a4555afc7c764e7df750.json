@@ -1,0 +1,112 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "We get partnership requests by email. We want each new email in our Partners Gmail label summarized by an AI model and added to Airtable: sender, company, request type, a 2-sentence summary and a priority flag. A person on our team reviews anything marked low confidence.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements review",
+    "tools": [],
+    "suggested_tools": [
+     "Python",
+     "Gmail API",
+     "Airtable"
+    ]
+   },
+   {
+    "step": "Configure Gmail API connection and label monitoring",
+    "tools": [
+     "Gmail API"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Integrate AI summarization and extraction logic",
+    "tools": [
+     "OpenAI API"
+    ],
+    "suggested_tools": [
+     "Python",
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Set up Airtable base schema and write records",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Testing, handling low confidence reviews, and deployment",
+    "tools": [],
+    "suggested_tools": [
+     "Python"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Gmail and Airtable integration script with AI extraction logic",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "End-to-end testing, confidence flag handling, and final deployment",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements review",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure Gmail API connection and label monitoring",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Integrate AI summarization and extraction logic",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Set up Airtable base schema and write records",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Testing, handling low confidence reviews, and deployment",
+    "project_id": "P3",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The job post requests OpenAI API while the project proof uses Gemini API.",
+    "mitigation": "Adapt the AI extraction and summarization code to use OpenAI API as specified."
+   },
+   {
+    "risk": "Budget is specified as an hourly rate range rather than a fixed project price.",
+    "mitigation": "Track hours diligently and provide weekly progress reports."
+   }
+  ],
+  "questions": [
+   "What specific fields are currently configured in your Airtable base for partnership requests?",
+   "What criteria determine whether a request is flagged as low confidence?"
+  ],
+  "assumptions": [
+   "The client will provide necessary API keys and access credentials for Gmail and Airtable.",
+   "Python will be used as the programming language for this automation."
+  ]
+ }
+}

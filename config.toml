@@ -15,6 +15,9 @@ fallbacks = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
 judges = ["qwen/qwen3.8-27b", "openai/gpt-oss-20b"]
 temperature_extract = 0.0
 temperature_draft = 0.4
+# The fit check asks the model this many times and keeps the majority answer for every yes/no fact.
+assess_votes = 3
+temperature_vote = 0.3
 
 [retries]
 # Seconds to wait before retrying a busy model (Gemini 503 "high demand", 429, 500).

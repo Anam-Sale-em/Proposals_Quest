@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires logo design and Adobe Illustrator, which are not in the freelancer's skill set.",
+  "work_type_yes": false,
+  "work_type_reason": "The deliverable is a logo design, whereas the freelancer does automation and integration work.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $300 for a logo is plausible.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: conceptualize, design logo options, and deliver final vector files.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Lead intake automation is unrelated to logo design."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Inventory sync is unrelated to logo design."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Support inbox triage is unrelated to logo design."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

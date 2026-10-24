@@ -23,8 +23,8 @@
   ],
   "screening_questions": [],
   "explicit_requirements": [
-   "Share a similar workflow you've built",
-   "Tell us how you'd handle duplicates"
+   "share a similar workflow you've built",
+   "tell us how you'd handle duplicates"
   ],
   "client_tools": [],
   "client": {
@@ -42,7 +42,9 @@
   "red_flags": [],
   "ignored_sections": [
    "Similar jobs",
-   "Other open jobs by this client"
+   "Other open jobs by this client",
+   "Footer",
+   "Navigation"
   ]
  }
 }

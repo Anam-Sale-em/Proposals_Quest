@@ -63,7 +63,7 @@ def _draft_numbers(text: str) -> list[tuple[str, str]]:
 
 def job_text(job: JobPost) -> str:
     parts = [job.title, job.description, job.budget.raw_text, " ".join(job.screening_questions),
-             " ".join(job.skills), " ".join(job.client_tools), job.raw_text]
+             " ".join(job.skills), " ".join(job.client_tools), job.raw_text, job.user_notes]
     return "\n".join(p for p in parts if p)
 
 
@@ -128,8 +128,9 @@ def validate(
         if NEW_WORK.search(c.sentence) or not PAST_CLAIM.search(c.sentence):
             continue
         target_id = (c.maps_to or "none").strip()
-        ok = (chosen_id is not None and target_id == chosen_id) or target_id == "profile"
-        if target_id == "profile":
+        ok = (chosen_id is not None and target_id == chosen_id) or target_id == "profile" \
+            or (target_id == "notes" and bool(job.user_notes.strip()))
+        if target_id in ("profile", "notes"):
             # A profile claim can't carry numbers or tools the profile doesn't have.
             nums_bad = [v for _, v in _draft_numbers(c.sentence) if v not in allowed_nums]
             ok = not nums_bad

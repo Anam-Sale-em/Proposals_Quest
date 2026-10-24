@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, JavaScript, and API integration skills needed for the job.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is appropriate for the skill level and scope.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear three-step requirement to set up the n8n triggers, duplicate check, and Slack/email notifications.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is an n8n workflow handling form submissions, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It involves workflow automation and API integrations but uses Python instead of n8n and handles inventory."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It is an automation project handling incoming leads or messages, but focuses on LLM classification rather than a form-to-sheet n8n flow."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

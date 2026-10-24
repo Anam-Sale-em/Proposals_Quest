@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has general automation and API integration skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Connecting tools falls under workflow automation and API integrations.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so it is assumed to be realistic.",
+  "clear_yes": false,
+  "clear_reason": "The post is too vague to write a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation, leads records, and core skills, but no specific platform was named."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data sync and API integration for inventory, using core skills."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves tool connection and data processing for email records, using core skills."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

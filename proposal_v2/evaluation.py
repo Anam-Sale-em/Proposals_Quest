@@ -86,6 +86,8 @@ def run_case(case: dict, llm: LLM, workdir: Path) -> dict:
             want_framing = (exp.get("framing") or "").replace("-", "_")
             if want_framing:
                 checks["framing"] = rec.framing == want_framing
+            if not (checks["proof"] and checks.get("framing", True)):
+                notes.append(f"proof: expected {exp['proof']} {want_framing or ''}, got {rec.chosen_proof} {rec.framing}")
         v = rec.latest()
         if v:
             checks["validators_pass"] = v.validation.ok
@@ -133,6 +135,10 @@ def run_case(case: dict, llm: LLM, workdir: Path) -> dict:
         "providers": ",".join(sorted({c.provider for c in case_calls if not c.error})),
         "latency_s": elapsed, "tokens_in": sum(c.tokens_in for c in case_calls), "tokens_out": sum(c.tokens_out for c in case_calls),
         "draft_words": len(v.text.split()) if v else 0, "draft_chars": len(v.text) if v else 0,
+        "split_facts": "; ".join(rec.assessment.split_facts) if rec and rec.assessment else "",
+        "project_facts": "; ".join(f"{l.project_id}:{l.label}(work={l.same_kind_of_work},platform={l.same_platform},"
+                                    f"records={l.same_records},skills={l.shares_core_skills})"
+                                    for l in rec.assessment.project_labels) if rec and rec.assessment else "",
         "notes": " | ".join(notes),
         "rubric_1_goal": "", "rubric_2_specific": "", "rubric_3_proof": "", "rubric_4_plan": "", "rubric_5_ask": "",
         "unsupported_claims_hand": "",

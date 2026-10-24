@@ -1,0 +1,101 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Fix our n8n workflow so the full CSV file of about 5,000 rows lands in Google Sheets every night without failing due to rate limits, including retries and a Slack message if it still fails.",
+  "plan": [
+   {
+    "step": "Analyze the existing n8n workflow and diagnose the Google Sheets 429 Too Many Requests error on large batch inserts.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Postman"
+    ]
+   },
+   {
+    "step": "Redesign the data import logic to process rows in smaller chunks with built-in batching, delays, or pagination to respect Google Sheets API rate limits.",
+    "tools": [
+     "n8n",
+     "Google Sheets"
+    ],
+    "suggested_tools": [
+     "JavaScript"
+    ]
+   },
+   {
+    "step": "Implement robust error handling, automated retry logic, and a Slack alert notification if the import fails after retries.",
+    "tools": [
+     "n8n",
+     "Slack"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Test the updated workflow with a full-size dataset and verify nightly execution stability.",
+    "tools": [
+     "n8n",
+     "Google Sheets",
+     "Slack"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Diagnosis and Redesign",
+    "deliverable": "Updated n8n workflow structure featuring batching logic to bypass Google Sheets rate limits.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Error Handling and Final Testing",
+    "deliverable": "Fully tested workflow containing automated retries and Slack failure alerts.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Analyze the existing n8n workflow and diagnose the Google Sheets 429 Too Many Requests error on large batch inserts.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Redesign the data import logic to process rows in smaller chunks with built-in batching, delays, or pagination to respect Google Sheets API rate limits.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement robust error handling, automated retry logic, and a Slack alert notification if the import fails after retries.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Test the updated workflow with a full-size dataset and verify nightly execution stability.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Google Sheets API quotas might continue to restrict write operations even with modified batch sizes.",
+    "mitigation": "Implement appropriate wait nodes or batch chunking to stay well within Google API rate limits."
+   },
+   {
+    "risk": "The fixed budget of $250 assumes the existing n8n structure is straightforward to refactor.",
+    "mitigation": "Review the workflow structure immediately upon project start to confirm scope aligns with the budget."
+   }
+  ],
+  "questions": [
+   "Are you using self-hosted n8n or n8n cloud, and do you have access to execution logs?",
+   "Should the workflow overwrite the existing sheet each night or append new rows to a historical sheet?"
+  ],
+  "assumptions": [
+   "The client will provide access to the existing n8n instance and Google Sheets/Slack credentials for testing.",
+   "The CSV source format remains consistent each night."
+  ]
+ }
+}

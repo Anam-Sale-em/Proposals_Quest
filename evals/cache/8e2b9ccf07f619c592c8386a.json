@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The core stack uses n8n, PostgreSQL, Google Sheets, Slack, and webhooks, which are all listed in the freelancer's skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a workflow automation and lead routing system built in n8n, matching the freelancer's workflow automation and integration expertise.",
+  "realistic_yes": true,
+  "realistic_reason": "The $3,500 fixed price for a multi-milestone n8n automation project is within a reasonable market range for an expert freelancer.",
+  "clear_yes": true,
+  "clear_reason": "The job post details explicit requirements, milestones, and deliverables, making a 3-step plan straightforward.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n lead intake automation, deduplication, and Google Sheets/Slack updates."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It is a Python script for inventory sync rather than an n8n lead routing system."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It is a Python support inbox triage system using Gemini and Gmail."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

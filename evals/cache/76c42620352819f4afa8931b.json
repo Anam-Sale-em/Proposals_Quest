@@ -1,0 +1,25 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "Typeform",
+   "Google Sheet",
+   "Slack",
+   "Google Sheets",
+   "JavaScript",
+   "Webhooks",
+   "Google Sheets API",
+   "Slack API"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a client type: Lead intake automation with n8n.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

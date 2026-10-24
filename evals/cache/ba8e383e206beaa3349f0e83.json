@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to build an n8n lead routing system that ingests leads across four sources, deduplicates them into PostgreSQL, enriches them via REST APIs, and notifies reps in Slack without dropping leads. To achieve this, my first steps are: 1. Design the PostgreSQL schema for leads, touchpoints, assignments, and audit logs, creating staging SQL migrations. 2. Build n8n intake workflows for form webhooks, chat webhooks, Google Drive CSV processing, and referral email ingestion. 3. Implement PostgreSQL deduplication logic and sync active records to Google Sheets within 5 minutes. I did nearly this for a web client: Lead entry dropped from about 2 hours a week to under 10 minutes. Answers to your questions: 1. Round-robin concurrency: Use PostgreSQL atomic transactions with row-level locking to advance rep pointers sequentially. 2. Partner email parsing: Parse required fields with JavaScript regex; route non-standard formats to a PostgreSQL review table. 3. Biggest risk: Unstructured referral emails, which I will mitigate in Milestone 1 with strict fallback routing to the review queue so zero leads are dropped. Which email service protocol does your partner referral inbox use? I look forward to discussing the rest of the plan on a call.",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I will maintain rep assignment pointers in PostgreSQL and update them inside atomic transactions using row-level locking. This prevents race conditions and ensures concurrent leads advance the rotation sequentially."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I will use JavaScript in n8n to parse email bodies and document attachments for required contact fields. Any email missing required fields or failing extraction will be placed into a PostgreSQL review queue table for manual review."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "The biggest risk is parsing arbitrary partner referral emails. In Milestone 1, I will mitigate this by implementing strict fallback routing to send unparseable emails into the review queue table so zero leads are dropped."
+   }
+  ]
+ }
+}

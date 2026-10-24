@@ -1,0 +1,22 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "tools_named": [
+   "Zapier",
+   "n8n",
+   "Google Sheets",
+   "Slack",
+   "Stripe",
+   "Gmail"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a lead intake automation: Lead entry dropped from about 2 hours a week to under 10 minutes.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Airtable, and Slack in their skills list.",
+  "work_type_yes": true,
+  "work_type_reason": "The post asks for workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $30-$50 is appropriate for an n8n automation project.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: 1. Set up a scheduled trigger in n8n for 8:00 AM excluding weekends, 2. Fetch and filter yesterday's orders from Airtable, 3. Format the summary and post it to the Slack channel.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation and data handling, but uses Google Sheets instead of Airtable."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves scheduled data synchronization and processing, though using Python and Shopify rather than n8n and Airtable."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Airtable for record management and integrates multiple systems, though it is built in Python rather than n8n."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

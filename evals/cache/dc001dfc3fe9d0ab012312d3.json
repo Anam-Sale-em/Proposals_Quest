@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to pull the previous day's orders from your Shopify store through the API and add them to a Google Sheet daily using a Python script, including order number, date, customer email, items, total, and fulfilment status, while skipping duplicates and writing a short run log. Here is my plan: 1. Kickoff and API credential setup for Shopify and Google Sheets. 2. Develop the Python script to fetch previous day orders, handle rate limits, and check for duplicates. 3. Implement daily scheduling mechanism and execution logging. 4. Testing, validation, and delivery. I did nearly this for a warehouse database: stock synced every 15 minutes, with no oversold orders in the first month. For scheduling, I would run the Python script using a scheduling tool or server environment to trigger the daily execution. For Shopify API rate limits, I would implement exponential backoff and sleep intervals in the Python script when rate limit thresholds approach. What timezone should be used to determine the previous day's orders? Please review the full plan and let's get started.",
+  "screening_answers": []
+ }
+}

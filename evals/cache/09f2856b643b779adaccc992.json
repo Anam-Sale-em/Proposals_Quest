@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to automate lead intake from two Typeform forms into Google Sheets and Slack while eliminating duplicate submissions and alerting you on execution failures.\n\nHere is how I plan to start:\n1. Set up webhook triggers in your self-hosted n8n instance for both Typeform forms and standardize incoming payload fields.\n2. Handle duplicates by normalizing incoming email addresses, searching Google Sheets for existing matches, and filtering out repeat entries before any rows are created.\n3. Append unique leads to Google Sheets, dispatch formatted notifications with row links to your #sales Slack channel, and configure error triggers for email alerts.\n\nI did nearly this for a sales team: Lead entry dropped from about 2 hours a week to under 10 minutes.\n\nWhich email service should n8n use to send the failure alert emails, and what address should receive them?\n\nLet's get on a call to discuss the full workflow.",
+  "screening_answers": []
+ }
+}

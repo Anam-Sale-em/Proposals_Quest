@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "blue whale. Your goal is to automate the process where the ops lead opens Airtable, filters yesterday's new orders, and pastes a summary into Slack every morning.\n\nMy plan:\n1. Kickoff and requirements review to confirm Airtable base structure and Slack channel details.\n2. Build the scheduled n8n workflow to trigger at 8:00 AM, skipping weekends.\n3. Configure Airtable integration to query and filter yesterday's new orders, total value, and urgent flags.\n\nI did nearly this for a small support team: About 300 emails a week sorted into 6 categories; low-confidence ones go to a person.\n\nWhat is the exact field name in Airtable for order value and the urgent status?\n\nLet's get started on this automation.",
+  "screening_answers": []
+ }
+}

@@ -102,6 +102,8 @@ class Assessment(BaseModel):
     clear_yes: bool  # could a 3-step plan be written from the post alone?
     clear_reason: str
     project_labels: list[ProjectJudgement] = Field(default_factory=list)
+    votes: int = 1  # how many times the check ran (majority vote)
+    split_facts: list[str] = Field(default_factory=list)  # facts the runs didn't all agree on
 
 
 class PlanStep(BaseModel):
@@ -223,6 +225,7 @@ class JobPost(BaseModel):
     budget: Budget = Field(default_factory=Budget)
     skills: list[str] = Field(default_factory=list)
     screening_questions: list[str] = Field(default_factory=list)
+    user_notes: str = ""  # what the freelancer wants in the proposal, in their own words
     explicit_requirements: list[str] = Field(default_factory=list)
     client_tools: list[str] = Field(default_factory=list)
     allowed_instructions: list[PostInstruction] = Field(default_factory=list)

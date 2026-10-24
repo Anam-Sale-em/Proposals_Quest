@@ -113,3 +113,43 @@ def proof_label(j) -> str:
     if j.same_kind_of_work or j.shares_core_skills:
         return "same_skills"
     return "not_relevant"
+
+
+FIT_FACTS = [("skills_yes", "skills"), ("work_type_yes", "kind of work"), ("realistic_yes", "realistic for the budget"),
+             ("clear_yes", "clear enough to plan")]
+PROJECT_FACTS = [("same_kind_of_work", "same kind of work"), ("same_platform", "same platform"),
+                 ("same_records", "same records"), ("shares_core_skills", "core skills")]
+
+
+def majority(runs: list):
+    """Combines several assessment runs: each yes/no fact takes the majority answer, and its reason comes from
+    a run that gave that answer. Facts the runs split on are listed, so the screen can show the confidence."""
+    first = runs[0].model_copy(deep=True)
+    if len(runs) == 1:
+        return first
+    split = []
+    for field, name in FIT_FACTS:
+        vals = [getattr(r, field) for r in runs]
+        win = sum(vals) * 2 > len(vals)
+        if len(set(vals)) > 1:
+            split.append(name)
+        setattr(first, field, win)
+        reason_field = field.replace("_yes", "_reason")
+        setattr(first, reason_field, next(getattr(r, reason_field) for r in runs if getattr(r, field) == win))
+    labels = []
+    for j in first.project_labels:
+        same = [next((l for l in r.project_labels if l.project_id == j.project_id), None) for r in runs]
+        same = [l for l in same if l is not None]
+        for field, name in PROJECT_FACTS:
+            vals = [getattr(l, field) for l in same if getattr(l, field) is not None]
+            if not vals:
+                continue
+            win = sum(vals) * 2 > len(vals)
+            if len(set(vals)) > 1:
+                split.append(f"{j.project_id} {name}")
+            setattr(j, field, win)
+        labels.append(j)
+    first.project_labels = labels
+    first.votes = len(runs)
+    first.split_facts = split
+    return first

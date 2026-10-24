@@ -8,13 +8,13 @@ Code decides; the LLM extracts and writes; the user approves twice and always se
 flowchart TD
     A["User: paste link + job details<br/>(or Freelancer.com link / keyword pick)"] --> B{"links.py: link check step 1<br/>+ duplicate check"}
     B -- "error" --> X1["Inline error, nothing else runs"]
-    B -- "duplicate" --> X2["Open existing draft, or regenerate as a new version"]
+    B -- "duplicate" --> X2["Open it, write a new version, or check it again"]
     B -- "ok" --> C["LLM extract (light model)<br/>→ Extraction schema"]
     C --> P["policy.py: instruction policy<br/>(LLM list + regex backstop)"]
     P --> D["User confirms the fields<br/>(link check step 2: Matched / Warned / Unchecked)"]
     D --> E{"trust.py + decision.py<br/>red flag? below minimum?"}
     E -- "yes" --> X3["Skip with reason + Override<br/>(no further LLM call)"]
-    E -- "no" --> F["LLM assess (light)<br/>3 fit answers, clarity, proof labels"]
+    E -- "no" --> F["LLM assess (light), asked 3 times<br/>fit facts + 4 facts per project<br/>majority per fact; proof label by rule"]
     F --> G{"decision.py: fit band × trust band,<br/>then clarity / placeholder"}
     G -- "skip" --> X3
     G -- "apply / apply with questions" --> H["LLM Solution Brief (draft model)"]
@@ -33,7 +33,7 @@ flowchart TD
 | Layer | Module | What it owns | LLM? |
 | --- | --- | --- | --- |
 | Contracts | `proposal_v2/contracts.py` | One Pydantic schema per step, shared by prompt, parser and validator | — |
-| Rules | `links.py`, `trust.py`, `decision.py`, `policy.py`, `skills.py` | Link check, job key, trust score, budget gate, fit band, decision, instruction policy | No |
+| Rules | `links.py`, `trust.py`, `decision.py`, `policy.py`, `skills.py` | Link check, job key, trust score (Freelancer.com rule included), budget gate, placeholder rule, fit band, majority vote, proof label, decision, instruction policy | No |
 | Validation | `validators.py` | The three-part claim check, voice, instructions, length, screening answers | Uses the claim lists |
 | Models | `llm.py`, `prompts.py` | Gemini first, Groq fallback, response cache, replay mode, run log | Yes |
 | Workflow | `pipeline.py` | Step order, the one retry, overrides, revisions, send and outcomes | Calls `llm.py` |
@@ -47,7 +47,7 @@ flowchart TD
 | Step | Model role | Default model | Calls per job |
 | --- | --- | --- | --- |
 | Extraction | light | Gemini 3.5 Flash-Lite | 1 |
-| Assessment | light | Gemini 3.5 Flash-Lite | 1 (0 for red-flag and below-minimum jobs) |
+| Assessment | light | Gemini 3.5 Flash-Lite | 3, majority vote per fact (0 for red-flag and below-minimum jobs) |
 | Solution Brief | draft | Gemini 3.8 Flash | 1 per Apply |
 | Proposal | draft | Gemini 3.8 Flash | 1, plus 1 on retry |
 | Claim lists | light | Gemini 3.5 Flash-Lite | 1, plus 1 on retry |
@@ -61,6 +61,7 @@ An Apply job makes 2 calls on 3.8 Flash (free tier: 20 a day), so caching and th
 | Choice | Why | Cost |
 | --- | --- | --- |
 | Rules in code, not prompts | Decisions are explainable, testable without an LLM and adjustable in Settings | Rules are rough heuristics; tuned by hand |
+| Facts from the model, asked 3 times; labels from code | A single answer flipped between runs; a majority of three, plus "similar" only with a tool named in both texts, holds | 2 extra light-model calls per checked job |
 | Claim check = LLM lists + code checks | The model finds sentences; code decides what's allowed | Misses what the model doesn't list; measured against hand labels |
 | Regex backstop for instructions | The policy holds even if extraction misses an instruction | Can over-match; flagged instructions are shown to the user |
 | Paste first, official APIs only | Upwork has no API access in time and its terms forbid page fetching | The user copies the page by hand |

@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to build a two-way sync of contacts between HubSpot and your PostgreSQL users table, ensuring new signups appear in HubSpot within 5 minutes, lifecycle stage changes are written back, conflicts use most-recent-update-wins and are logged, and the script runs on your server with a short README. My plan starts with: 1. Kickoff and analysis of HubSpot and PostgreSQL schemas. 2. Develop two-way sync script for new signups and lifecycle stage updates. 3. Implement conflict resolution logic and logging. Different domain, same core work: in Shopify to PostgreSQL inventory sync I used Python, Shopify API, Webhooks, PostgreSQL, and REST APIs to achieve stock synced every 15 minutes, with no oversold orders in the first month. What specific hosting environment or OS should the script run on? Let us discuss the full plan over chat.",
+  "screening_answers": []
+ }
+}

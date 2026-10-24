@@ -38,8 +38,9 @@
   "instructions": [],
   "red_flags": [],
   "ignored_sections": [
-   "Similar jobs",
-   "Other open jobs by this client"
+   "Worldwide location tag",
+   "Experience level and duration metadata",
+   "About the client sidebar"
   ]
  }
 }

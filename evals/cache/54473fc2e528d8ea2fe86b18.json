@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The project requires n8n, PostgreSQL, Google Sheets, Slack, and webhooks, all of which are in the freelancer's listed skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverables are workflow automations and data sync scripts, matching the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 for a 1-to-3 month project with clear milestones is reasonable for this scope.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a detailed breakdown of ingestion, database storage, routing logic, and milestones.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involved lead intake, duplicate checking, and n8n workflows storing records in Google Sheets and alerting Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It focused on inventory sync between Shopify and PostgreSQL rather than lead routing."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focused on support email triage and classification rather than lead intake and routing."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "Google Sheets",
+   "Slack",
+   "CSV"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a lead intake automation: built an n8n workflow: form webhooks, field validation, a duplicate check by email, a new Google Sheets row and a Slack alert to the sales channel, reducing lead entry from about 2 hours a week to under 10 minutes.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

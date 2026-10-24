@@ -5,13 +5,13 @@
  "prompt_version": "v2.0.6",
  "response": {
   "skills_yes": true,
-  "skills_reason": "The freelancer knows n8n, Google Sheets API, Slack API, and Gmail API, which cover all required tasks.",
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, and Slack, which are needed for the workflows.",
   "work_type_yes": true,
-  "work_type_reason": "Workflow migration and automation building are core work types for this freelancer.",
+  "work_type_reason": "Migrating and building workflows is core workflow automation work.",
   "realistic_yes": true,
-  "realistic_reason": "The fixed budget of $450 for 6 simple workflows is reasonable for a standard migration project.",
+  "realistic_reason": "The fixed budget of $450 for 6 simple workflows is a reasonable scope.",
   "clear_yes": true,
-  "clear_reason": "The post clearly specifies rebuilding 6 workflows, testing them, and providing a short documentation.",
+  "clear_reason": "The 3 steps are clear: rebuild the 6 Zaps in n8n, test them, and provide documentation.",
   "project_labels": [
    {
     "project_id": "P1",
@@ -20,7 +20,7 @@
     "same_records": true,
     "shares_core_skills": true,
     "label": "similar",
-    "reason": "It involves n8n workflow creation using forms, Google Sheets, and Slack."
+    "reason": "It involves n8n workflow automation with form webhooks, Google Sheets, and Slack."
    },
    {
     "project_id": "P2",
@@ -28,18 +28,20 @@
     "same_platform": false,
     "same_records": false,
     "shares_core_skills": false,
-    "label": "same_skills",
-    "reason": "It is an automation project but uses Python and Shopify instead of n8n and the required business tools."
+    "label": "similar",
+    "reason": "It builds an automation integration service using webhooks."
    },
    {
     "project_id": "P3",
     "same_kind_of_work": true,
-    "same_platform": true,
+    "same_platform": false,
     "same_records": true,
-    "shares_core_skills": true,
+    "shares_core_skills": false,
     "label": "similar",
-    "reason": "It involves email automation and handling emails with API integrations."
+    "reason": "It builds an automated integration processing emails and records."
    }
-  ]
+  ],
+  "votes": 3,
+  "split_facts": []
  }
 }

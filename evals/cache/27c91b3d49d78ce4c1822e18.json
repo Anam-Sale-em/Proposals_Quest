@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to migrate 6 Zaps from Zapier to your self-hosted n8n instance, including a form to Google Sheets, Sheets to Slack alerts, a Stripe payment to an email receipt, and three small Gmail filters, test them, and receive a short doc. My plan is: 1. Audit existing Zapier workflows and document triggers and actions for all 6 Zaps. 2. Rebuild the form to Google Sheets and Sheets to Slack alerts workflows in n8n. 3. Rebuild the Stripe payment email receipt workflow and the three Gmail filters in n8n. I did nearly this for a lead intake workflow: Lead entry dropped from about 2 hours a week to under 10 minutes. Can you provide access credentials or export JSONs of the existing 6 Zaps? Let's discuss the full plan.",
+  "screening_answers": []
+ }
+}

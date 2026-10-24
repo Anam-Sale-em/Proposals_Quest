@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n and the required integrations like Google Sheets and Slack well.",
+  "work_type_yes": true,
+  "work_type_reason": "Migrating workflows between automation platforms is standard workflow automation work.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $450 is reasonable for migrating 6 simple workflows.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly specifies rebuilding 6 specific Zapier workflows in n8n, testing them, and providing a short documentation.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets, Slack, and lead intake records, though it's not a platform migration."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is an automation and integration project using webhooks and backend syncing, but with different platform and records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It builds an automated data pipeline using APIs and external tools, but handles support emails instead of migration workflows."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

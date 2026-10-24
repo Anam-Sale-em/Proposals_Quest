@@ -219,6 +219,47 @@ LINK_STATUS = {
 }
 
 
+SETTING_NAMES = {"work_types": "Work types", "skills": "Skills", "min_hourly_usd": "Minimum hourly rate",
+                 "min_fixed_usd": "Minimum fixed price", "trust_cutoffs": "Trust levels"}
+
+
+def _setting_value(key: str, v) -> str:
+    if v in (None, "", [], {}):
+        return "not set"
+    if key in ("min_hourly_usd", "min_fixed_usd"):
+        return f"${v:,.0f}" + ("/hr" if key == "min_hourly_usd" else "")
+    if key == "trust_cutoffs":
+        return ", ".join(f"{k.capitalize()} {x:g}" for k, x in v.items())
+    if isinstance(v, list):
+        return ", ".join(v)
+    return str(v)
+
+
+def settings_line(e: dict) -> str:
+    """One readable line per settings change, e.g. "24 Oct, 20:17 · You: Minimum hourly rate $20/hr → $25/hr"."""
+    from datetime import datetime
+
+    changes = e.get("changes") or {}
+    if not isinstance(changes, dict):
+        changes = {k: {} for k in changes}
+    parts = []
+    for key, ch in changes.items():
+        if key not in SETTING_NAMES:  # search terms and old fields aren't settings any more
+            continue
+        if ch and "to" in ch:
+            parts.append(f"{SETTING_NAMES[key]}: {_setting_value(key, ch.get('from'))} → {_setting_value(key, ch.get('to'))}")
+        else:
+            parts.append(SETTING_NAMES[key])
+    if not parts:
+        return ""
+    try:
+        when = datetime.fromisoformat(e["at"]).strftime("%d %b, %H:%M UTC")
+    except Exception:
+        when = e.get("at", "")
+    who = "Sample data loaded" if e.get("by") == "sample data" else "You"
+    return f"**{when}** · {who}  \n" + "  \n".join(parts)
+
+
 def md(text: str, where=st) -> None:
     """Markdown with dollar signs kept literal (Streamlit reads $...$ as maths)."""
     where.markdown(text.replace("$", "\\$"))
@@ -343,15 +384,14 @@ def screen_new() -> None:
         if is_sample:
             st.info("Sample workspace: this searches 4 saved sample Freelancer.com jobs, not the live site, "
                     "and shows the ones that match your keywords and budget floor. Switch to My workspace to search live.")
-        kw = st.text_input("Keywords", ", ".join(profile.keywords), placeholder="React Native, n8n, Flutter")
-        ex = st.text_input("Exclude terms", ", ".join(profile.exclude_terms))
-        floor = num("Budget floor (USD, optional)", profile.budget_floor_usd, "kw_floor")
+        # Search terms live in this browser's session only: the live link has one shared workspace,
+        # so saving them would show one person's search on everyone's device.
+        kw = st.text_input("Keywords", ", ".join(profile.keywords) if is_sample else "",
+                           key=f"kw_{uid}", placeholder="React Native, n8n, Flutter")
+        floor = num("Budget floor (USD, optional)", None, f"kw_floor_{uid}")
+        ss.kw_list = [x.strip() for x in kw.split(",") if x.strip()]
         if st.button("Search"):
-            profile.keywords = [x.strip() for x in kw.split(",") if x.strip()]
-            profile.exclude_terms = [x.strip() for x in ex.split(",") if x.strip()]
-            profile.budget_floor_usd = floor
-            storage().put_profile(uid, profile)
-            jobs = run(sample_search if is_sample else search_jobs, profile.keywords, profile.exclude_terms, floor)
+            jobs = run(sample_search if is_sample else search_jobs, ss.kw_list, [], floor)
             if jobs is not None:
                 seen = {r.job_key for r in storage().list_proposals(uid)}
                 ss.results = [j.model_dump(mode="json") for j in jobs if j.job_key not in seen][: load_config()["feed"]["max_results"]]
@@ -364,7 +404,7 @@ def screen_new() -> None:
 
             j = JobPost.model_validate(jd)
             with st.container(border=True, key=f"card_feed_{i}"):
-                places = match_places(j, profile.keywords)
+                places = match_places(j, ss.get("kw_list", []))
                 hits = {norm(k) for k, _ in places}
                 tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
                 found = ", ".join(f"**{k}** ({where})" for k, where in places)
@@ -379,7 +419,7 @@ def screen_new() -> None:
                     except DuplicateJob:
                         st.warning("You already have this job.")
         if ss.get("results") == []:
-            st.info("No new jobs match. Try broader keywords or fewer exclude terms.")
+            st.info("No new jobs match. Try broader keywords or a lower budget floor.")
 
 
 def screen_confirm() -> None:
@@ -388,7 +428,6 @@ def screen_confirm() -> None:
     rec = ProposalRecord.model_validate(ss.pending)
     job, c = rec.job, rec.client
     st.title("Confirm the details")
-    st.caption("Check what v2 took from the post. Fix anything wrong, then confirm. Fields marked * are required.")
     if job.link_status == "Warned":
         st.warning(LINK_WARNING)
         fix, proceed = st.columns(2)
@@ -397,10 +436,6 @@ def screen_confirm() -> None:
         proceed_ok = proceed.checkbox("Proceed anyway")
     else:
         proceed_ok = True
-        st.caption(f"Link check: {LINK_STATUS.get(job.link_status, job.link_status)}")
-    left_out = next((e["text"] for e in rec.events if e["type"] == "ignored_sections"), [])
-    if left_out:
-        st.caption("Ignored, not part of this job's post: " + ", ".join(left_out))
 
     title = st.text_input("Title *", job.title)
     desc = st.text_area("Description *", job.description, height=200)
@@ -413,27 +448,46 @@ def screen_confirm() -> None:
     lo = b2.number_input("From", value=float(job.budget.min_usd or 0), min_value=0.0) if kind in ("hourly", "fixed_range") else None
     hi = b3.number_input("To", value=float(job.budget.max_usd or 0), min_value=0.0) if kind in ("hourly", "fixed_range") else None
     skills = st.text_input("Skills", ", ".join(job.skills))
-    questions = st.text_area("Screening questions (one per line)", "\n".join(job.screening_questions))
+    questions = "\n".join(job.screening_questions)
+    if job.screening_questions:
+        questions = st.text_area("Questions the client asks applicants (v2 answers each one)", questions,
+                                 help="Taken from the post. Edit or remove any that aren't real questions; one per line.")
+    notes = st.text_area("Anything you want in the proposal? (optional)", job.user_notes,
+                         placeholder="e.g. I can start Monday · mention I've built 3 Shopify apps · ask about their CRM",
+                         help="Your own words. v2 works them into the proposal and treats them as true, so only write what is.")
 
     st.subheader("Client history")
     on_freelancer = job.platform == "freelancer"
-    if on_freelancer:
-        st.caption("Copy these from \"About the Client\" on the job page: the star rating, the number next to it "
-                   "(reviews) and Payment verified. Leave them blank and trust shows Unknown.")
-    else:
-        st.caption("Leave a field blank if the post doesn't show it.")
-    k1, k2, k3 = st.columns(3)
     pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
-    pv = k1.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
-    rating = num("Rating", c.rating, f"c_rating_{rec.job_key}")
-    reviews = num("Reviews", c.reviews, f"c_reviews_{rec.job_key}")
-    jobs_posted = hire_rate = spent = hires = active = None
-    if not on_freelancer:  # Freelancer.com doesn't show these
-        jobs_posted = num("Jobs posted", c.jobs_posted, f"c_jobs_{rec.job_key}")
-        hire_rate = num("Hire rate %", c.hire_rate_pct, f"c_hr_{rec.job_key}")
-        spent = num("Total spent (USD)", c.total_spent_usd, f"c_spent_{rec.job_key}")
-        hires = num("Hires", c.hires, f"c_hires_{rec.job_key}")
-        active = num("Active hires", c.active_hires, f"c_active_{rec.job_key}")
+    # (key, label, current value). Freelancer.com only shows payment, rating and reviews.
+    fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
+    if not on_freelancer:
+        fields += [("jobs_posted", "Jobs posted", c.jobs_posted), ("hire_rate_pct", "Hire rate %", c.hire_rate_pct),
+                   ("total_spent_usd", "Total spent (USD)", c.total_spent_usd), ("hires", "Hires", c.hires),
+                   ("active_hires", "Active hires", c.active_hires)]
+    shown = [f for f in fields if f[2] is not None]
+    hidden = [f for f in fields if f[2] is None]
+    vals = {}
+    if c.payment_verified is None and not shown:
+        st.caption("The post doesn't show the client's history, so client trust will be Unknown. "
+                   "Add it below if the job page shows it.")
+    if c.payment_verified is not None:
+        pv = st.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
+    for key, label, value in shown:
+        vals[key] = num(label, value, f"c_{key}_{rec.job_key}")
+    if hidden or c.payment_verified is None:
+        title_more = ("Add client details from the job page" if on_freelancer
+                      else "Add client details the post didn't show")
+        with st.expander(title_more):
+            if on_freelancer:
+                st.caption("From \"About the Client\": the star rating, the number next to it (reviews) and Payment verified.")
+            if c.payment_verified is None:
+                pv = st.selectbox("Payment", list(pv_opts), index=0)
+            for key, label, value in hidden:
+                vals[key] = num(label, value, f"c_{key}_{rec.job_key}")
+    rating, reviews = vals.get("rating"), vals.get("reviews")
+    jobs_posted, hire_rate = vals.get("jobs_posted"), vals.get("hire_rate_pct")
+    spent, hires, active = vals.get("total_spent_usd"), vals.get("hires"), vals.get("active_hires")
 
     if job.allowed_instructions or job.refused_instructions or job.ignored_instructions or job.red_flags:
         st.subheader("Instructions in the post")
@@ -460,6 +514,7 @@ def screen_confirm() -> None:
                             approximate=job.budget.approximate, raw_text=job.budget.raw_text)
         job.skills = [s.strip() for s in skills.split(",") if s.strip()]
         job.screening_questions = [q.strip() for q in questions.splitlines() if q.strip()]
+        job.user_notes = notes.strip()
         rec.client = ClientProfile(payment_verified=pv_opts[pv], rating=rating, reviews=None if reviews is None else int(reviews),
                                    jobs_posted=None if jobs_posted is None else int(jobs_posted), hire_rate_pct=hire_rate,
                                    total_spent_usd=spent, total_spent_approximate=c.total_spent_approximate,
@@ -524,6 +579,10 @@ def screen_card() -> None:
                         f"- Proof in your projects: {yn(f.proof)}  \n- Realistic for the budget: {yn(f.realistic)}. {f.reasons.get('realistic', '')}  \n"
                         f"- Clear enough to plan: {yn(f.clear)}. {f.reasons.get('clear', '')}")
             md(f"**Skill tags:** {f.skill_overlap}")
+            asm = rec.assessment
+            if asm and asm.votes > 1:
+                md(f"**Confidence:** all {asm.votes} checks agreed" if not asm.split_facts else
+                   f"**Confidence:** the {asm.votes} checks split on {', '.join(asm.split_facts)}; the majority answer is used")
         st.markdown(f"**Link check:** {LINK_STATUS.get(rec.job.link_status, rec.job.link_status)}")
 
 
@@ -560,7 +619,7 @@ def screen_draft() -> None:
         msg += f" and doesn't answer the client's request: _{asks[0]}_" if asks else ""
         st.warning(msg + ". Add your work under **Projects** (+ Add project), then pick it in **Proof** above and click **Rewrite with this proof**.")
     val = v.validation
-    if val.ok:
+    if val.ok and v.framing != "plan_only":
         st.markdown('<div class="quiet-ok">✓ Checked against your projects and the post</div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Check before sending. These lines may claim something your Projects or the post don't back up:")
@@ -691,7 +750,6 @@ def project_form(p: Project | None, key: str, on_save=None) -> None:
         link = st.text_input("Link", (p.link or "") if p else "")
         roles = ["solo", "led", "contributed"]
         role = st.selectbox("Role", roles, index=roles.index(p.role) if p else 0)
-        can_name = st.checkbox("I can name the client", p.can_name_client if p else False)
         if st.form_submit_button("Save"):
             if not title.strip():
                 st.error("Add a title.")
@@ -700,7 +758,7 @@ def project_form(p: Project | None, key: str, on_save=None) -> None:
             pid = p.id if p and p.id in ids else next_project_id(ids)
             storage().put_project(uid, Project(id=pid, title=title.strip(), problem=problem, what_i_did=did,
                                                skills=[s.strip() for s in skills.split(",") if s.strip()], result=result,
-                                               link=link or None, role=role, can_name_client=can_name))
+                                               link=link or None, role=role, can_name_client=False))
             if on_save:
                 on_save()
             st.rerun()
@@ -732,11 +790,12 @@ def page_settings() -> None:
             p.trust_cutoffs = {"excellent": ex, "high": hi, "medium": me, "low": lo}
             storage().put_profile(uid, p)
             st.success("Saved. Every change is logged.")
-    log = storage().settings_log(uid)
-    if log:
-        with st.expander(f"Change log ({len(log)})"):
-            for e in reversed(log[-20:]):
-                st.markdown(f"- {e['at']} · {e['by']}: " + ", ".join(e["changes"]))
+    lines = [ln for ln in (settings_line(e) for e in reversed(storage().settings_log(uid)[-30:])) if ln][:20]
+    if lines:
+        with st.expander("Settings history"):
+            st.caption("Every change to your rates, skills and trust levels, newest first.")
+            for ln in lines:
+                md(ln)
     with st.expander("Delete all data in this workspace"):
         st.caption("Removes your jobs, drafts, projects and settings from this app. Download your sent log from My jobs first if you want to keep it.")
         if st.checkbox("I understand this can't be undone") and st.button("Delete everything"):

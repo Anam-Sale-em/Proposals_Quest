@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, Slack API, and Gmail API, which cover the required skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Migrating workflows between automation platforms is workflow automation work.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $450 is reasonable for migrating six small workflows.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly specifies rebuilding 6 exact Zaps in n8n, testing them, and providing documentation.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation connecting webhooks, Google Sheets, and Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It uses core automation and integration skills but features different platforms and record types."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles email triage and records using automation tools."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

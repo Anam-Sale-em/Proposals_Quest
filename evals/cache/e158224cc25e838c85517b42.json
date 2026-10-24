@@ -1,0 +1,134 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an n8n-based lead routing and intake system that ingests leads from four distinct sources, validates and dedupes them into PostgreSQL, enriches them via API, routes them to reps based on region, availability, and enterprise criteria, and manages Slack notifications and claim timeouts without dropping any leads.",
+  "plan": [
+   {
+    "step": "Design PostgreSQL schema (leads, touchpoints, assignments, dead-letter, audit logs, configuration tables) and write SQL migrations for the staging environment.",
+    "tools": [
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Build intake workflows in n8n for website webhooks, chat webhooks, Google Drive webinar CSV polling, and partner referral email inbox parsing, including email validation, country/phone normalization, and raw payload logging.",
+    "tools": [
+     "n8n",
+     "Webhooks",
+     "Google Sheets"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Implement deduplication and touchpoint merge logic in PostgreSQL, including reopening closed-lost leads older than 180 days and synchronizing active records to the Google Sheet mirror within 5 minutes.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Google Sheets"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Create enrichment pipeline with domain-level rate limiting (10 req/s), followed by rule-based routing (enterprise size >= 500, region-based atomic round-robin stored in PostgreSQL, rep availability, and working hours checks).",
+    "tools": [
+     "n8n",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure Slack notification workflows (direct messages with Claim buttons, #leads channel summary, 30-minute escalation/reassignment timer, and daily 9:00 AM digest).",
+    "tools": [
+     "n8n",
+     "Slack"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Implement dead-letter queuing with automated retries and manual replay, run end-to-end testing with 50 synthetic test cases, produce README and architecture documentation, and execute the recorded handover call.",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Slack"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Intake, Dedupe, and Database Mirror",
+    "deliverable": "Intake from webhooks, chat, CSVs, and referral inbox; validation and normalization; PostgreSQL schema and deduplication logic; Google Sheet mirror sync.",
+    "budget_share": "34.29%"
+   },
+   {
+    "name": "Milestone 2: Enrichment, Routing, and Slack Automation",
+    "deliverable": "Enrichment API integration with rate-limiting, round-robin and enterprise routing engine in PostgreSQL, Slack DM/channel alerts, and 30-minute claim/reassignment flow.",
+    "budget_share": "40.00%"
+   },
+   {
+    "name": "Milestone 3: Error Handling, Logging, Docs, and Handover",
+    "deliverable": "Dead-letter retry and replay mechanisms, daily digest workflow, audit logging, system documentation, 50-lead validation test, and recorded handover session.",
+    "budget_share": "25.71%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Design PostgreSQL schema (leads, touchpoints, assignments, dead-letter, audit logs, configuration tables) and write SQL migrations for the staging environment.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build intake workflows in n8n for website webhooks, chat webhooks, Google Drive webinar CSV polling, and partner referral email inbox parsing, including email validation, country/phone normalization, and raw payload logging.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Implement deduplication and touchpoint merge logic in PostgreSQL, including reopening closed-lost leads older than 180 days and synchronizing active records to the Google Sheet mirror within 5 minutes.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Create enrichment pipeline with domain-level rate limiting (10 req/s), followed by rule-based routing (enterprise size >= 500, region-based atomic round-robin stored in PostgreSQL, rep availability, and working hours checks).",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure Slack notification workflows (direct messages with Claim buttons, #leads channel summary, 30-minute escalation/reassignment timer, and daily 9:00 AM digest).",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Implement dead-letter queuing with automated retries and manual replay, run end-to-end testing with 50 synthetic test cases, produce README and architecture documentation, and execute the recorded handover call.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Non-standard partner referral emails and arbitrary attachments failing parsing logic, potentially causing ingestion delays.",
+    "mitigation": "Establish strict pattern-matching fallbacks that route any email missing required fields directly into a dedicated human-review queue table and flag it in the daily digest, ensuring zero dropped leads."
+   },
+   {
+    "risk": "Race conditions during simultaneous lead arrivals causing concurrent round-robin increments or duplicate assignments.",
+    "mitigation": "Handle round-robin state tracking using atomic PostgreSQL transactions with row-level locking (e.g., SELECT FOR UPDATE) to guarantee sequential rep pointer advancement."
+   },
+   {
+    "risk": "Webinar CSV ingestion spikes (up to 300 rows) exceeding the enrichment API rate limit of 10 requests per second.",
+    "mitigation": "Process batch records in n8n using controlled chunking and rate-limited loop intervals before executing enrichment API calls."
+   }
+  ],
+  "questions": [
+   "What email service/protocol (IMAP, Gmail API, or Microsoft Graph) is used to access the dedicated partner referral inbox in n8n?",
+   "How should the system receive rep 'Claim' interactions from Slack\u2014via interactive Block Kit action webhooks pointing to an n8n webhook URL?",
+   "Are partner referral email attachments exclusively standard document types (like PDF/DOCX) or structured CSV/spreadsheets?"
+  ],
+  "assumptions": [
+   "The self-hosted n8n instance has public webhook access configured or is accessible to Slack interactive callbacks and website form webhooks.",
+   "A test Slack workspace or sandbox channel will be provided for development prior to staging and production rollout.",
+   "The enrichment provider credentials and API documentation will be made accessible during Milestone 1."
+  ]
+ }
+}

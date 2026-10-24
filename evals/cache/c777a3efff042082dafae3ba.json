@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is an automated Python script that pulls the previous day's Shopify orders through the API, appends them to Google Sheets while skipping duplicates, and writes an execution log.\n\nMy approach:\n- Query the Shopify API in Python, monitoring response headers and adding backoff pauses to handle rate limits.\n- Check existing order numbers in Google Sheets to skip duplicates, then append the new order rows.\n- Implement a local run log and configure automated scheduling for daily execution.\n\nI did nearly this for an e-commerce retailer: Stock synced every 15 minutes, with no oversold orders in the first month.\n\nHow should multiple line items in an order be formatted within the items column in Google Sheets?\n\nLet's connect on a quick call to go over the setup.",
+  "screening_answers": []
+ }
+}

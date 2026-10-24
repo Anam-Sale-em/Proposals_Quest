@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is a two-way sync between HubSpot and your PostgreSQL users table so new signups appear in HubSpot within 5 minutes, lifecycle stage edits sync back to PostgreSQL, and conflicts resolve to the most recent update with audit logging.\n\nHere is how I plan to start:\n- Map contact fields and timestamp properties between PostgreSQL and HubSpot.\n- Build a Python sync service to push new PostgreSQL signups into HubSpot within 5 minutes.\n- Set up a webhook listener in Python to capture HubSpot lifecycle stage edits and update PostgreSQL, logging any conflict where the most recent update wins.\n\nIntegrating HubSpot is new, but I did nearly this for an e-commerce store: Stock synced every 15 minutes, with no oversold orders in the first month.\n\nDoes your server have an existing webhook-accessible public endpoint or reverse proxy in place for inbound HubSpot events?\n\nI would be glad to discuss the rest of the plan and server deployment on a call.",
+  "screening_answers": []
+ }
+}

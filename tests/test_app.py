@@ -169,3 +169,13 @@ def test_number_fields_accept_loose_input():
     assert parse_number("USD, 300") == 300 and parse_number("$1,500") == 1500 and parse_number("1.5k") == 1500
     assert parse_number("80%") == 80 and parse_number("4.9") == 4.9 and parse_number("  ") == "blank"
     assert parse_number("abc") is None and parse_number("300-500") is None
+
+
+def test_settings_history_reads_like_plain_english():
+    from app import settings_line
+    e = {"at": "2026-10-24T20:17:05+00:00", "by": "user",
+         "changes": {"min_hourly_usd": {"from": 20, "to": 25}, "keywords": {"from": [], "to": ["n8n"]}}}
+    line = settings_line(e)
+    assert "24 Oct, 20:17 UTC" in line and "You" in line and "Minimum hourly rate: $20/hr → $25/hr" in line
+    assert "keywords" not in line.lower()
+    assert settings_line({"at": "2026-10-24T20:17:05+00:00", "by": "user", "changes": {"keywords": {"to": ["x"]}}}) == ""

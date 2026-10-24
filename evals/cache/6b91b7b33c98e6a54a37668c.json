@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The job requires Python, Shopify, Google Sheets, and APIs, all of which are in the freelancer skills list.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a data sync script connecting Shopify to Google Sheets, which matches the workflow automation and data sync scripts work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $250-750 for a daily Shopify order sync script is realistic for the scope.",
+  "clear_yes": true,
+  "clear_reason": "A concrete 3-step plan can be written: set up Shopify API connection for orders, format and append the data to Google Sheets with duplicate checking, and set up daily scheduling with rate limit handling.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles leads instead of Shopify orders and uses n8n instead of a standalone Python script."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and the Shopify API to sync records, closely matching the job requirements."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It handles Gmail messages and Airtable instead of Shopify orders and Google Sheets."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

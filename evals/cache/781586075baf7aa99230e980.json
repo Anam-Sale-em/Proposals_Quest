@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets API, Slack API, and JavaScript skills required for the job.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is a workflow automation, which matches the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate fits the skill level for an n8n automation project.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a concrete 3-step plan: trigger from Typeform, check for duplicates and write to Google Sheets, and post to Slack with error notification.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves an n8n workflow for lead intake from forms into Google Sheets with duplicate checking and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on Shopify inventory sync using Python and PostgreSQL."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on support inbox triage using Python and Gmail."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires graphic design skills like Adobe Illustrator and Logo Design, which are outside our automation stack.",
+  "work_type_yes": false,
+  "work_type_reason": "Designing a logo is a graphic design deliverable, not workflow automation or API integration.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $300 for a logo is a placeholder or standard market rate for small tasks.",
+  "clear_yes": true,
+  "clear_reason": "The requirements are clear: create a modern minimal logo and brand mark, and provide 3 portfolio samples.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different domain and deliverable."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different domain and deliverable."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different domain and deliverable."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

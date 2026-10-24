@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to process incoming partnership request emails from your \"Partners\" Gmail label, summarize them, capture sender, company, request type, a 2-sentence summary and a priority flag in Airtable, and route low-confidence items for review. \n\nHere is how I plan to handle this:\n1. Kickoff and requirements review\n2. Set up Gmail API integration to read emails from the Partners label\n3. Configure AI model integration to process and summarize partnership requests\n\nI did nearly this for a small support team: About 300 emails a week sorted into 6 categories; low-confidence ones go to a person.\n\nWhat specific criteria determine a low-confidence classification?\n\nLet's chat about the full plan.",
+  "screening_answers": []
+ }
+}

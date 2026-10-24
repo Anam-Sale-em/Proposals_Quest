@@ -1,0 +1,111 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Automate the process where the ops lead opens Airtable, filters yesterday's new orders, and pastes a summary into Slack every morning.",
+  "plan": [
+   {
+    "step": "Kickoff and requirements review to confirm Airtable base structure and Slack channel details.",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Airtable",
+     "Slack"
+    ]
+   },
+   {
+    "step": "Build the scheduled n8n workflow to trigger at 8:00 AM, skipping weekends.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure Airtable integration to query and filter yesterday's new orders, total value, and urgent flags.",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Format the digest message and set up the Slack integration to post into #ops.",
+    "tools": [
+     "Slack"
+    ],
+    "suggested_tools": [
+     "n8n"
+    ]
+   },
+   {
+    "step": "Test the end-to-end workflow and hand off the automated process.",
+    "tools": [
+     "n8n",
+     "Airtable",
+     "Slack"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Workflow Setup and Airtable Integration",
+    "deliverable": "Configured n8n scheduled trigger and Airtable query logic for yesterday's orders.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2: Slack Formatting and Testing",
+    "deliverable": "Working automated daily digest posting to the Slack #ops channel.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and requirements review to confirm Airtable base structure and Slack channel details.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build the scheduled n8n workflow to trigger at 8:00 AM, skipping weekends.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure Airtable integration to query and filter yesterday's new orders, total value, and urgent flags.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Format the digest message and set up the Slack integration to post into #ops.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Test the end-to-end workflow and hand off the automated process.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Airtable API rate limits or view filter discrepancies could cause missing order data.",
+    "mitigation": "Design the n8n query using precise date filters rather than relying on UI views."
+   },
+   {
+    "risk": "Timezone differences between the server running n8n and the client's local time could cause the digest to post at the wrong hour.",
+    "mitigation": "Explicitly configure the timezone in the n8n schedule trigger node."
+   }
+  ],
+  "questions": [
+   "What is the exact field name in Airtable for order value and the urgent status?",
+   "Should the workflow handle pagination if the number of daily orders is very large?"
+  ],
+  "assumptions": [
+   "The client will provide access to the Airtable base and the Slack workspace.",
+   "An n8n cloud or self-hosted instance is already available for deployment."
+  ]
+ }
+}

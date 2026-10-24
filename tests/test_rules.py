@@ -194,3 +194,19 @@ def test_proof_label_comes_from_the_facts():
     assert proof_label(J(project_id="P1", same_kind_of_work=True, same_platform=False, same_records=False, shares_core_skills=False)) == "same_skills"
     assert proof_label(J(project_id="P3", same_kind_of_work=False, same_platform=False, same_records=False, shares_core_skills=False)) == "not_relevant"
     assert proof_label(J(project_id="P1", label="similar")) == "similar"  # no facts: the model's label stands
+
+
+def test_majority_vote_over_assessment_runs():
+    from proposal_v2.contracts import Assessment, ProjectJudgement as J
+    from proposal_v2.decision import majority
+
+    def run(work_type, platform):
+        return Assessment(skills_yes=True, skills_reason="s", work_type_yes=work_type, work_type_reason=f"wt {work_type}",
+                          realistic_yes=True, realistic_reason="r", clear_yes=True, clear_reason="c",
+                          project_labels=[J(project_id="P2", same_kind_of_work=True, same_platform=platform,
+                                            same_records=False, shares_core_skills=True)])
+    m = majority([run(True, False), run(False, False), run(True, True)])
+    assert m.work_type_yes and m.work_type_reason == "wt True" and m.votes == 3
+    assert m.project_labels[0].same_platform is False  # 1 of 3 said yes
+    assert m.split_facts == ["kind of work", "P2 same platform"]
+    assert majority([run(True, True)]).split_facts == []

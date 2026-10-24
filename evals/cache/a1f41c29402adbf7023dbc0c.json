@@ -1,0 +1,119 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Build an n8n-based lead routing system that takes in leads from four sources automatically, cleans and validates them, merges duplicates, enriches them, assigns them to the right reps using clear rules, notifies reps in Slack, stores every lead in PostgreSQL with a Google Sheet mirror, handles errors without losing leads, and includes complete documentation for handover.",
+  "plan": [
+   {
+    "step": "Kickoff and PostgreSQL Schema Setup",
+    "tools": [
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Build Intake Workflows for Website, Chat, Webinar CSVs, and Partner Emails",
+    "tools": [
+     "n8n",
+     "Webhooks"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Implement Validation, Duplicate Merging, and Google Sheet Mirroring",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Google Sheets"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Add Enrichment Integration and Routing Rules with Slack Notifications",
+    "tools": [
+     "n8n",
+     "Slack",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Configure Error Handling, Dead-Letter Replay, Daily Digest, and Final Documentation",
+    "tools": [
+     "n8n",
+     "PostgreSQL",
+     "Slack"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Intake from all four sources, validation, duplicate handling and PostgreSQL storage, with the Google Sheet mirror.",
+    "budget_share": "$1,200"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Enrichment, routing rules, Slack notifications, claiming and reassignment.",
+    "budget_share": "$1,400"
+   },
+   {
+    "name": "Milestone 3",
+    "deliverable": "Error handling, dead-letter replay, the daily digest, logging, documentation and handover.",
+    "budget_share": "$900"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and PostgreSQL Schema Setup",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build Intake Workflows for Website, Chat, Webinar CSVs, and Partner Emails",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Implement Validation, Duplicate Merging, and Google Sheet Mirroring",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Add Enrichment Integration and Routing Rules with Slack Notifications",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Configure Error Handling, Dead-Letter Replay, Daily Digest, and Final Documentation",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Partner referral emails arrive in unpredictable unstructured formats, causing parsing failures.",
+    "mitigation": "Route unparseable emails into a dedicated review queue table so no data is dropped while refining the extraction rules."
+   },
+   {
+    "risk": "Concurrency issues during high volume traffic (e.g., webinar CSV processing) could corrupt round-robin pointers or create race conditions.",
+    "mitigation": "Store the round-robin pointer in PostgreSQL and use atomic updates or database locks to ensure fair and accurate assignments."
+   }
+  ],
+  "questions": [
+   "What specific email parsing tool or LLM service should be used to parse unstructured partner referral emails?",
+   "What is the exact schema structure preferred for the PostgreSQL tables beyond the requested leads, touchpoints, and assignments tables?",
+   "Are there specific formatting requirements or naming conventions for the Google Sheet mirror columns?"
+  ],
+  "assumptions": [
+   "The client will provide access to the staging PostgreSQL database and n8n instance as outlined in the brief.",
+   "The enrichment API documentation and credentials will be shared promptly at project start.",
+   "The fixed price total of $3,500 accurately covers all three proposed milestones."
+  ]
+ }
+}

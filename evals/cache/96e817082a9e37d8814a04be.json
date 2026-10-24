@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Hi. Your goal is to build an automated n8n-based lead routing system that takes in leads from four sources, cleans and validates them, merges duplicates, enriches them, assigns them to reps via clear rules, notifies reps in Slack, stores everything in PostgreSQL with a Google Sheet mirror, and handles errors without losing data.\n\nHere are my first steps:\n1. Kickoff and Database Schema Setup: review routing rules, set up PostgreSQL tables, and connect to the staging database.\n2. Intake, Validation, and Storage: build n8n workflows for website webhooks, chat webhooks, Google Drive CSV webinar imports, and partner email parsing, complete with validation, duplicate detection, and Google Sheets mirroring.\n3. Enrichment and Routing Rules: integrate the company enrichment REST API with rate limiting, and implement regional routing, enterprise checks, and database-backed round-robin pointers.\n\nI did nearly this for a lead intake automation with n8n: lead entry dropped from about 2 hours a week to under 10 minutes.\n\nQuestion: What specific email parsing library or LLM tool would you prefer to use for extracting data from unstructured partner referral emails?\n\nLet's get started on Milestone 1.",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I would store the round-robin pointer directly in PostgreSQL using transactional locking queries rather than in-memory variables to prevent concurrency issues and ensure fairness."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I would implement fallback extraction rules and route unparseable partner emails to a dedicated review queue instead of dropping them."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "Partner referral emails arriving in 15 different unstructured formats is the biggest risk. I would reduce it in the first milestone by routing unparseable emails to a dedicated review queue and building robust validation."
+   }
+  ]
+ }
+}

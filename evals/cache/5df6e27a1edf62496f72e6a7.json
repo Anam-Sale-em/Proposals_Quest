@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python and Airtable in their skills, along with Gmail API experience even though OpenAI is requested instead of Gemini.",
+  "work_type_yes": true,
+  "work_type_reason": "The project asks for workflow automation and LLM-powered integration, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is an hourly rate range which is appropriate for the skill level required.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clearly outlined: read Gmail label, summarize with AI, write to Airtable, and flag low confidence.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles lead intake via webhooks and Google Sheets rather than Gmail and Airtable."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It does inventory synchronization with Shopify and PostgreSQL."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Gmail and Airtable with Python to process inbox messages and route low-confidence items."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

@@ -44,13 +44,14 @@
   "red_flags": [
    {
     "kind": "off_platform",
-    "evidence": "Message me on WhatsApp before applying and I'll share the full details and a test sheet there."
+    "evidence": "To speed things up, let's move to WhatsApp. Message me on WhatsApp before applying and I'll share the full details and a test sheet there."
    }
   ],
   "ignored_sections": [
    "Similar jobs",
    "Other open jobs by this client",
-   "Footer"
+   "Footer",
+   "Navigation"
   ]
  }
 }

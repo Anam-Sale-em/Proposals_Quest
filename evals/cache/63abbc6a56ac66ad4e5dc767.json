@@ -1,0 +1,113 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "goal": "Pull the previous day's orders from Shopify store through the API daily and add them to a Google Sheet with order number, date, customer email, items, total, and fulfilment status, while skipping existing orders and writing a log.",
+  "plan": [
+   {
+    "step": "Kickoff and API credentials setup for Shopify and Google Sheets",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Google Sheets API",
+     "Shopify API"
+    ]
+   },
+   {
+    "step": "Develop Python script to fetch previous day orders and handle rate limits",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Shopify API"
+    ]
+   },
+   {
+    "step": "Implement Google Sheets integration to append new orders and skip duplicates",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Google Sheets API"
+    ]
+   },
+   {
+    "step": "Configure daily scheduling mechanism and execution logging",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Cron",
+     "Task Scheduler"
+    ]
+   },
+   {
+    "step": "Testing, validation, and delivery",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Script Development & Integration",
+    "deliverable": "Python script capable of fetching Shopify orders, handling rate limits, and writing to Google Sheets without duplicates.",
+    "budget_share": "70%"
+   },
+   {
+    "name": "Milestone 2: Scheduling, Logging & Delivery",
+    "deliverable": "Fully scheduled daily script with execution logs and final handover documentation.",
+    "budget_share": "30%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Kickoff and API credentials setup for Shopify and Google Sheets",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Develop Python script to fetch previous day orders and handle rate limits",
+    "project_id": "P2",
+    "gap": false
+   },
+   {
+    "step": "Implement Google Sheets integration to append new orders and skip duplicates",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure daily scheduling mechanism and execution logging",
+    "project_id": "P2",
+    "gap": false
+   },
+   {
+    "step": "Testing, validation, and delivery",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Shopify API rate limits during high order volume days.",
+    "mitigation": "Implement exponential backoff and retry logic in the Python script to gracefully handle rate limit responses."
+   },
+   {
+    "risk": "Duplicate entries created in Google Sheets if execution overlaps.",
+    "mitigation": "Check existing order numbers in the sheet before appending new rows."
+   }
+  ],
+  "questions": [
+   "Where will the Python script be hosted to run daily (e.g., local machine, AWS, Heroku)?",
+   "What specific Google Sheet structure or column headers do you prefer?"
+  ],
+  "assumptions": [
+   "The client has admin access to generate Shopify API credentials and Google Sheets API service account keys.",
+   "The budget of $250 - $750 is adequate for the scope described."
+  ]
+ }
+}

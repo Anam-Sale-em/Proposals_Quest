@@ -1,6 +1,8 @@
 # Evaluation package
 
-Frozen on 2026-10-21, before any v2 code exists, so the build can't tune the test.
+Frozen on 2026-10-21, before any v2 code existed, so the build couldn't tune the test. One amendment since, logged openly: T04 and T09 expected "0 reviews" on client boxes that show no reviews line, against the extraction rule (null when not shown); both are now null (decision log #53).
+
+Results: [day4-results.md](day4-results.md) · failures: [failures.md](failures.md).
 
 | File | What it holds |
 | --- | --- |

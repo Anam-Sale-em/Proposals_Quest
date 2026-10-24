@@ -1,0 +1,18 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "tools_named": [
+   "HubSpot",
+   "PostgreSQL"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a store owner: Stock synced every 15 minutes, with no oversold orders in the first month.",
+    "maps_to": "P2"
+   }
+  ]
+ }
+}

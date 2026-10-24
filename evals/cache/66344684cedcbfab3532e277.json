@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "text": "Your goal is to fix the n8n workflow so the full file lands every night with retries and a Slack message if it still fails. To achieve this, I will first audit the existing n8n workflow and analyze the 429 Too Many Requests error from Google Sheets API. Second, I will implement rate limiting, batching, or pagination logic in n8n to respect Google Sheets API limits. I did nearly this for a lead intake automation with n8n: lead entry dropped from about 2 hours a week to under 10 minutes. Are you using self-hosted n8n or n8n Cloud? Let us discuss the full plan over chat.",
+  "screening_answers": []
+ }
+}

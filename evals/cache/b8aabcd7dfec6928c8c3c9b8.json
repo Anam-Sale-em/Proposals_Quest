@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Airtable, and Slack APIs which cover the core tech stack.",
+  "work_type_yes": true,
+  "work_type_reason": "Building daily scheduled workflow automations matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $30-$50 fits the skill level for an n8n automation task.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: 1. Set up a daily cron trigger at 8am skipping weekends in n8n, 2. Fetch and filter yesterday's orders from Airtable, 3. Format and post the summary to the Slack channel.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation processing records and sending alerts to Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It is an automation script handling records, but uses Python and PostgreSQL instead of Airtable and Slack."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It processes records and moves data between services, but uses different platforms."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

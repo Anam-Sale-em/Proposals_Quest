@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, PostgreSQL, REST APIs, Webhooks, Google Sheets API, and Slack API in their skills list.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires workflow automation and API integrations, which matches the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed-price budget of $3,500 is specified and the scope aligns well with a senior n8n automation expert.",
+  "clear_yes": true,
+  "clear_reason": "The requirements are extremely detailed, allowing for a concrete 3-step plan covering intake/storage, routing/enrichment, and error handling/handover.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation handling lead intake, deduplication, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It uses PostgreSQL and webhooks for data sync, but the main work is a Python service rather than n8n routing."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It deals with support inbox triage and LLM email classification rather than lead routing."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

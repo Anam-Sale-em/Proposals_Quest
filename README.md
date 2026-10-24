@@ -4,7 +4,7 @@ v2 is an AI OS Mini for freelance job triage. Paste a job, and it checks the lin
 
 ## For non-developers: just open the link
 
-Open the app link you were given and enter the passphrase you were given. Nothing to install.
+Open the app link you were given and enter the passphrase. Nothing to install. To try it without your own jobs, pick **Sample workspace → Load sample data**: a sample freelancer with 3 projects, 12 test jobs, and sample Freelancer.com jobs for the link and search tabs.
 
 Running it locally instead? If `.env` has no keys yet, the app shows a one-time screen to paste them.
 
@@ -33,20 +33,20 @@ My jobs → **Download sent log (CSV)** gives every sent proposal with its decis
 
 Online, the key setup screen never appears: until the Secrets are set, visitors only see "This app isn't set up yet".
 
-Limits: the app sleeps after 12 hours without visitors (open the link and click the wake-up button; wake it before a demo), and its local files reset whenever it restarts or you push a change. That clears saved jobs and settings. Sent proposals with their timings are kept in each user's Sheet log.
+Limits: the app sleeps after 12 hours without visitors (open the link and click the wake-up button; wake it before a demo), and its local files reset whenever it restarts or you push a change. That clears saved jobs and settings, so download the sent log (CSV) from My jobs now and then.
 
 ## Using it
 
-1. **New job:** paste the job link and the whole job post (copying the whole page is fine; v2 keeps only the main post and its own client box). Add the client box separately if it isn't in the paste. Freelancer.com jobs can also come in by link or keyword search. **Check if this job is a good fit first** is ticked by default; untick it to go straight to the draft (red flags and a low budget still show as warnings).
-2. **Confirm the details:** check what v2 took from the post, fix anything wrong, then **Confirm and check**.
-3. **Decision card:** one decision and one reason. **Write proposal**, or **Override** a Skip (logged). **Details** shows the trust score with its top reasons, the four fit answers, the link status and the skill overlap.
-4. **Draft:** your best project is pre-selected as proof (switch it, or choose plan only). Edit the text, answer the screening questions, read the claim-check notes, or revise with a comment (it changes only what you ask).
-5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap.
+1. **New job:** paste the job link and the whole job post from Upwork, Freelancer.com, Guru, PeoplePerHour or Fiverr (copying the whole page is fine; v2 keeps only the main post and its own client box). Freelancer.com jobs can also come in by link or keyword search. **Check if this job is a good fit first** is ticked by default; untick it to go straight to the draft (red flags and a low budget still show as warnings). Pasting a job you already have offers Open, New version or Check again.
+2. **Confirm the details:** check what v2 took from the post, fix anything wrong (budget type, client history), then **Confirm and check**. For Freelancer.com jobs, copy the rating, review count and payment status from the job page. Add anything the proposal must say under **Anything you want in the proposal?** (your own words; v2 treats them as true).
+3. **Decision card:** one decision, one reason, client trust, budget and fit. **Write proposal**, or **Override** a Skip (logged). **Details** shows the trust score with its top reasons, the four fit answers, whether the three checks agreed, the skill tags and the link check.
+4. **Draft:** your best project is pre-selected as proof (switch it, or choose plan only). Edit the text, answer the screening questions, fix any line the claim check flags, or revise with a comment (it changes only what you ask).
+5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap. My jobs → **Download sent log (CSV)** keeps the record.
 
 ## Run the tests and evals
 
 ```bash
-python -m pytest -q                      # 79 tests: rules, pipeline, app, integrations (offline)
+python -m pytest -q                      # 100 tests: rules, pipeline, app, integrations (offline)
 python scripts/run_evals.py              # the 12 frozen test cases on the real models (cached)
 python scripts/run_evals.py --replay     # same, from saved responses only: identical every run, offline
 python scripts/run_evals.py --record     # call the APIs again and refresh the saved responses
@@ -65,8 +65,8 @@ Each eval run writes `evals/results/<prompt_version>_<time>/` with `results.csv`
 | `proposal_v2/` | Contracts, rules, validators, LLM client, prompts, pipeline, storage, integrations, eval runner |
 | `config.toml` | Every threshold, model name, rate limit and length limit |
 | `fixtures/` | The 12 synthetic test jobs and the sample profile |
-| `evals/` | Test cases, trust examples, rubric, metrics, baseline, results, replay cache |
-| `docs/` | Problem, workflow map, scope, architecture, v1 → v2, decision log |
+| `evals/` | Test cases, trust examples, rubric, metrics, baseline, Day 4 results, failures, rubric scores, run outputs |
+| `docs/` | Case study, AI collaboration note, problem, workflow map, scope, architecture, v1 → v2, decision log |
 | `scripts/` | Eval runner, judge, terminal v0 |
 | `tests/` | Unit, pipeline, app and integration tests |
 
@@ -74,7 +74,7 @@ Each eval run writes `evals/results/<prompt_version>_<time>/` with `results.csv`
 
 | Problem | What you see | What to do |
 | --- | --- | --- |
-| Gemini rate limit (free tier: 5 a minute, 20 a day on 3.8 Flash) | Slower answers; run log shows `groq` as provider | Nothing: Groq takes over. If both fail, the app says so; wait a minute, or add billing to the Gemini project |
+| Gemini rate limit (free tier: 5 a minute, about 20 a day on 3.8 Flash) | Slower answers (a drafted job takes about 1.5–2 minutes on the free tier) | Nothing: the other Gemini model, then Groq, take over. If all fail, the app says so; wait a minute, or add billing to the Gemini project |
 | Gemini busy (503 "high demand") | A slower answer; the run log shows retries, then another model | Nothing: v2 retries, tries the other Gemini model, then Groq. If everything is busy, the app says so; wait a minute |
 | Every model fails | "The AI service didn't respond properly after trying every model…" | Run `python scripts/check_models.py`, then list only available models under `[models]` in `config.toml`; check both keys and quotas; set `LLM_MODE=replay` for a demo |
 | Replay mode has no saved response | "Replay mode has no saved response for the … step" | Run once with `LLM_MODE=live`, or `run_evals.py --record` |
@@ -82,7 +82,9 @@ Each eval run writes `evals/results/<prompt_version>_<time>/` with `results.csv`
 | Failed extraction | "No job title or description was found in the paste" | Copy the job's own page (not a search page) and paste again, or fill the fields by hand on the confirm screen |
 | Wrong link or job | "The link and the details may be different jobs" | Fix the link or details, or Proceed anyway (logged) |
 | A Skip that looks wrong | The card's reason | Open Details to see which rule fired; Override (logged), or adjust minimum rates or trust cut-offs in Settings (every change logged) |
-| Draft needs review | Yellow box with the failing sentences | Edit those sentences, switch the proof, or add the missing project under Projects |
+| Draft needs a check | "Check before sending" with the doubtful lines | Edit those lines, switch the proof, or add the missing project under Projects |
+| An old job's check looks out of date | The job shows an old decision | Paste it again → **Check again** (not offered once a job is marked as sent) |
+| "The three checks split on …" in Details | The model answered a fact differently across its three checks | The majority answer is used; read the reason and override if you disagree |
 | Freelancer.com fetch fails | "Freelancer.com didn't return this job…" | Paste the job text instead |
 
 Logs: `logs/runs/<date>.jsonl` has one line per LLM call (step, model, provider, latency, tokens, prompt_version, commit, cache hit, error).
@@ -95,12 +97,8 @@ Logs: `logs/runs/<date>.jsonl` has one line per LLM call (step, model, provider,
 - Gemini's free tier may use content to improve Google's products. Use a paid key for anyone else's data.
 - `private/` (gitignored) holds v1's export, v1's raw drafts and my Day 4 calls. None of it is committed.
 
-## Status
+## Results and docs
 
-| Day | State |
-| --- | --- |
-| 1 Discover, map, baseline | Done: [problem](docs/problem.md), [workflow map](docs/workflow-map.md), [baseline](evals/baseline.md), [metrics](evals/metrics.md), [scope](docs/scope.md), [12 test cases](evals/test_cases.md) |
-| 2 Design and v0 | Code written: [architecture](docs/architecture.md), contracts, rules with tests, LLM steps, validators, eval runner, CLI. Still to do: first real-model eval run, Freelancer.com API check |
-| 3 Working core | App written and tested headlessly. Still to do: deploy, Firestore if needed, first run by a proxy user |
-| 4 Evaluate and harden | Not started |
-| 5 Hand off | Not started |
+- [Case study](docs/case-study.md) · [AI collaboration note](docs/ai-collaboration-note.md)
+- [Day 4 results](evals/day4-results.md): four fully live eval runs, every decision and trust score right (48 of 48); final code 12/12 and 11/12 live; 8 of 9 drafts pass the rubric with zero unsupported claims in the last run
+- [Failures](evals/failures.md) · [Architecture](docs/architecture.md) · [Decision log](docs/decision-log.md)

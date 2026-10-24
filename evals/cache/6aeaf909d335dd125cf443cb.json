@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, JavaScript, and PostgreSQL which fit the required tech stack.",
+  "work_type_yes": true,
+  "work_type_reason": "The job asks for a data sync script and API integration, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $800 is a reasonable placeholder for a straightforward two-way sync script.",
+  "clear_yes": true,
+  "clear_reason": "The scope clearly outlines the two-way sync requirements, conflict resolution, and deployment format.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It handles leads and webhooks with n8n, whereas this job is a two-way sync for PostgreSQL and HubSpot."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is a Python data sync service using PostgreSQL, but involves Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is a Python integration script handling records, but uses Gemini and Airtable instead of HubSpot."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}
