@@ -210,3 +210,16 @@ def test_majority_vote_over_assessment_runs():
     assert m.project_labels[0].same_platform is False  # 1 of 3 said yes
     assert m.split_facts == ["kind of work", "P2 same platform"]
     assert majority([run(True, True)]).split_facts == []
+
+
+def test_price_asks_get_a_placeholder_not_a_commitment():
+    from proposal_v2.contracts import JobPost, Profile
+    from proposal_v2.prompts import asks_for_price
+    from proposal_v2.validators import validate
+    from proposal_v2.contracts import ClaimLists
+    job = JobPost(job_key="k", platform="upwork", link="l", title="t",
+                  description="To apply: share one integration you've built. Confirm your fixed price and timeline.")
+    assert asks_for_price(job)
+    assert not asks_for_price(JobPost(job_key="k", platform="upwork", link="l", title="t", description="Fixed price: $400"))
+    r = validate("I'd start Monday. My quote: [your price and timeline].", [], job, None, Profile(), ClaimLists())
+    assert r.ok and any("Fill in [your price and timeline]" in n for n in r.notes)

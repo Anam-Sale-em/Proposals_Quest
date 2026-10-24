@@ -165,6 +165,10 @@ def validate(
         else:
             r.notes.append(f"Check by hand: the post says \"{ins.text}\".")
 
+    # A price or timeline the freelancer still has to fill in. A reminder, not a failure.
+    if "[your price" in full_text.lower():
+        r.notes.append("Fill in [your price and timeline] before sending: the post asks for it, and only you can commit to it.")
+
     # Screening questions all answered.
     answered = {a.question.strip().lower() for a in screening if a.answer.strip()}
     if len([a for a in screening if a.answer.strip()]) < len(job.screening_questions):

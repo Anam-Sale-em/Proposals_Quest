@@ -182,7 +182,11 @@ Every screen shows why: the reason for the decision, the trust score and how man
 - **Running it:** open the live link, enter the passphrase. Nothing to install.
 - **Trying it:** the Sample workspace loads a sample freelancer with 3 projects, the 12 test jobs, and sample Freelancer.com jobs for the link and search tabs.
 - **Handing it over:** the README has the 3-step local setup, the operator runbook (what each error means and what to do) and the eval commands.
-- **Proxy user:** _added after the proxy session_.
+- **Proxy user:** a computer science student learning Django, with no freelance experience and no project library, ran two real jobs on the live link: an Upwork paste and a Freelancer.com link. Both reached a full draft. With no projects, both drafts said honestly that the work was new to him. His session led to four changes:
+  - "Exclude terms" removed, because it confused him.
+  - The search tab explained in plain words.
+  - Price and timeline are never confirmed for you (one draft had confirmed "$400–$600, 5–7 days" on his behalf).
+  - Dollar amounts in the Solution Brief fixed.
 
 ## 8. First two weeks after launch
 

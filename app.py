@@ -379,15 +379,14 @@ def screen_new() -> None:
                 go("confirm")
 
     with tab_kw:
-        st.caption("Lists new Freelancer.com jobs that mention one of your keywords. Separate keywords with commas. "
-                   "It decides nothing; the fit check runs once you pick a job.")
+        st.caption("Find new Freelancer.com jobs by keyword. Pick one, and v2 checks it and writes the proposal.")
         if is_sample:
             st.info("Sample workspace: this searches 4 saved sample Freelancer.com jobs, not the live site, "
                     "and shows the ones that match your keywords and budget floor. Switch to My workspace to search live.")
         # Search terms live in this browser's session only: the live link has one shared workspace,
         # so saving them would show one person's search on everyone's device.
         kw = st.text_input("Keywords", ", ".join(profile.keywords) if is_sample else "",
-                           key=f"kw_{uid}", placeholder="React Native, n8n, Flutter")
+                           key=f"kw_{uid}", placeholder="React Native, n8n, Flutter", help="Separate keywords with commas.")
         floor = num("Budget floor (USD, optional)", None, f"kw_floor_{uid}")
         ss.kw_list = [x.strip() for x in kw.split(",") if x.strip()]
         if st.button("Search"):
@@ -643,12 +642,12 @@ def screen_draft() -> None:
     with st.expander("Solution Brief (for the call)"):
         b = rec.brief
         if b:
-            st.markdown(f"**Goal:** {b.goal}")
-            st.markdown("**Plan:**\n" + "\n".join(f"{i}. {s.step}" + (f" (suggested: {', '.join(s.suggested_tools)})" if s.suggested_tools else "") for i, s in enumerate(b.plan, 1)))
-            st.markdown("**Milestones:**\n" + "\n".join(f"- {m.name}: {m.deliverable} {m.budget_share}" for m in b.milestones))
-            st.markdown("**Risks:**\n" + "\n".join(f"- {r.risk} → {r.mitigation}" for r in b.risks))
-            st.markdown("**Questions:**\n" + "\n".join(f"- {q}" for q in b.questions))
-            st.markdown("**Assumptions:**\n" + "\n".join(f"- {a}" for a in b.assumptions))
+            md(f"**Goal:** {b.goal}")
+            md("**Plan:**\n" + "\n".join(f"{i}. {s.step}" + (f" (suggested: {', '.join(s.suggested_tools)})" if s.suggested_tools else "") for i, s in enumerate(b.plan, 1)))
+            md("**Milestones:**\n" + "\n".join(f"- {m.name}: {m.deliverable} {m.budget_share}" for m in b.milestones))
+            md("**Risks:**\n" + "\n".join(f"- {r.risk} → {r.mitigation}" for r in b.risks))
+            md("**Questions:**\n" + "\n".join(f"- {q}" for q in b.questions))
+            md("**Assumptions:**\n" + "\n".join(f"- {a}" for a in b.assumptions))
     if len(rec.versions) > 1:
         with st.expander(f"Earlier versions ({len(rec.versions) - 1})"):
             for old in rec.versions[:-1]:

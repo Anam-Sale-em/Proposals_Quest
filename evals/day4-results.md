@@ -2,7 +2,7 @@
 
 **Short answer:** across four fully live runs, v2 got **every decision and every trust score right (48 of 48)**. The one unstable part was how it describes the proof: "I did nearly this" versus "same skills". Two code changes (a vote over three checks, and an evidence rule) cut that from 2 misses per run to 0–1. The final code, run live twice, passed **12 of 12** and **11 of 12** (23 of 24 cases, 399 of 400 checks). Drafts pass the rubric **8 of 9** in the last run, with **0** unsupported claims. Six live failures (F1–F6) and three eval failures (E1–E3) are written up with root causes.
 
-Still to add: real-job timing against the baseline, and proxy-user feedback.
+Still to add: real-job timing against the baseline.
 
 ## 1. Test-set results
 
@@ -133,7 +133,31 @@ _Pending: 6–10 fresh jobs, with my call written down before v2 runs._
 
 ## 8. Proxy user
 
-_Pending: proxy session notes._
+**Who:** a computer science student learning Django. Not yet a freelancer or a developer. That makes him a harder test than an experienced freelancer: no project library, no Upwork habits.
+
+**What he ran, on the live link:**
+1. A real Upwork job (Python + OpenAI lead qualification for an existing app and CRM, $400–600 fixed), pasted.
+2. A real Freelancer.com job (a custom e-commerce storefront), fetched by link.
+
+Both went from input to a full draft and Solution Brief.
+
+**What worked:**
+- With no projects in his library, both drafts said so honestly ("This part is new for me, here's how I'd de-risk it") instead of inventing experience.
+- The drafts answered the posts' own asks: three to four concrete integration steps, retries and duplicate handling, a question back to the client.
+- The Solution Brief flagged the storefront budget as far too low for the scope and suggested asking about a template or CMS.
+
+**What broke or confused him, and what changed:**
+
+| Finding | Change |
+| --- | --- |
+| "Exclude terms" on the search tab was confusing | Removed (#62); whole-phrase matching already keeps unrelated jobs out |
+| "It decides nothing; the fit check runs once you pick a job" read as jargon | Rewritten: "Find new Freelancer.com jobs by keyword. Pick one, and v2 checks it and writes the proposal" (#68) |
+| The Upwork post said "Confirm your fixed price and timeline", and the draft confirmed "$400–$600 and 5–7 days" for him | v2 never commits to a price or timeline: it uses the freelancer's own note, or writes "[your price and timeline]" with a reminder to fill it in (#67) |
+| The Solution Brief showed "131.65 – 131.65–394.95" (dollar signs read as maths) | Fixed (#68) |
+| The post asked "Share one AI or API integration you've built"; he had none to share | Handled as designed: the draft warns that no past work is cited and names the unanswered request (F3) |
+
+**Not measured:** minutes per job for the proxy.
+
 
 ## 9. Where v2 is still weak
 
