@@ -79,3 +79,13 @@ def is_sample_link(link: str) -> bool:
     """Sample jobs (T01-T12 and the saved Freelancer.com ones) have made-up links with no live page."""
     link = (link or "").strip().rstrip("/")
     return bool(_SAMPLE_LINK.search(link)) or link in {j["link"].rstrip("/") for j in sample_jobs()}
+
+
+def sample_client(job):
+    """The sample client box for a saved sample Freelancer.com job, or None for any other job."""
+    from .contracts import ClientProfile
+
+    for p in _freelancer_projects():
+        if job.job_key == f"freelancer:{p['id']}":
+            return ClientProfile(**{k: v for k, v in p.get("_sample_client", {}).items() if v is not None})
+    return None

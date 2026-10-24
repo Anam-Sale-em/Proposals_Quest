@@ -171,6 +171,12 @@ section[data-testid="stSidebar"] { width: 276px !important; min-width: 276px !im
 .meter i.on { background: var(--tone); }
 .note { margin-top: .9rem; color: var(--ink-soft); font-size: .95rem; }
 
+.sample-banner {
+  background: #FBF0D9; color: #6B4A0E; border: 1px solid #F0DDB2; border-radius: 12px;
+  padding: .55rem .9rem; font-size: .92rem; margin: -0.6rem 0 1rem;
+}
+.sample-banner b { color: #6B4A0E; }
+
 .quiet-ok { color: var(--apply); font-weight: 600; font-size: .92rem; margin: .2rem 0 .6rem; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

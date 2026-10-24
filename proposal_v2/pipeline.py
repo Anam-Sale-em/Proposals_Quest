@@ -12,7 +12,7 @@ from typing import Optional
 
 from . import prompts
 from .config import load_config
-from .contracts import (Assessment, Brief, ClaimLists, CVImport, Decision, Extraction, JobPost, Profile, Project,
+from .contracts import (ClientProfile, Assessment, Brief, ClaimLists, CVImport, Decision, Extraction, JobPost, Profile, Project,
                         ProposalDraft, ProposalRecord, ProposalVersion, now_iso)
 from .decision import majority, proof_label, budget_gate, decide, fit_result, pre_decision
 from .links import LinkError, ParsedLink, parse_link, title_match
@@ -115,12 +115,12 @@ class Pipeline:
             rec.events.append({"at": now_iso(), "type": "ignored_sections", "text": seen})
         return rec
 
-    def from_fetched(self, job: JobPost) -> ProposalRecord:
+    def from_fetched(self, job: JobPost, client: Optional[ClientProfile] = None) -> ProposalRecord:
         """Fetched jobs skip the link check: link and details come from the same API response."""
         existing = self.storage.get_proposal(self.uid, job.job_key)
         if existing:
             raise DuplicateJob(existing)
-        return ProposalRecord(uid=self.uid, job_key=job.job_key, job=job)
+        return ProposalRecord(uid=self.uid, job_key=job.job_key, job=job, client=client or ClientProfile())
 
     # ------------------------------------------------------------------ decide
     def decide(self, rec: ProposalRecord, check: bool = True) -> ProposalRecord:

@@ -85,6 +85,8 @@ def parse_link(url: str) -> ParsedLink:
         if not lower.startswith("/projects/"):
             raise LinkError(NOT_A_JOB)
         parts = [p for p in path.split("/") if p]
+        if parts and parts[-1].lower() in {"details", "proposals", "overview", "payments", "files", "reviews"}:
+            parts = parts[:-1]  # a tab of the project page, e.g. /projects/n8n/SEO-Autopilot-Setup/details
         slug = parts[-1] if len(parts) >= 2 else ""
         num = re.search(r"(\d{5,})", slug)
         key = num.group(1) if num else slug.lower()

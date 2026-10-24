@@ -87,7 +87,7 @@ from proposal_v2.integrations import FetchError, fetch_by_link, match_places, ma
 from proposal_v2.links import LINK_WARNING, LinkError  # noqa: E402
 from proposal_v2.llm import LLMError, make_llm  # noqa: E402
 from proposal_v2.pipeline import DuplicateJob, Pipeline, PipelineError  # noqa: E402
-from proposal_v2.sample import WHOLE_PAGE_CASES, is_sample_link, sample_fetched_job, sample_search, split_client_box, load_sample, sample_jobs  # noqa: E402
+from proposal_v2.sample import WHOLE_PAGE_CASES, is_sample_link, sample_client, sample_fetched_job, sample_search, split_client_box, load_sample, sample_jobs  # noqa: E402
 from proposal_v2.storage import make_storage  # noqa: E402
 
 USER_ERRORS = (LinkError, PipelineError, LLMError, FetchError)
@@ -320,9 +320,9 @@ def screen_new() -> None:
                 post, box = split_client_box(j["id"], j["job_details"])
                 ss.f_link, ss.f_details, ss.f_client = j["link"], post, box
                 st.rerun()
-        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr",
-                             help="Use the job's own link: open the job, click Share (top right of the job), then Copy link. "
-                                  "A search or feed page link won't work.")
+        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr")
+        st.caption("Get it from the job's **Share** button (top right of the job) → **Copy link**. "
+                   "The address of a search or feed page won't work.")
         details = st.text_area("Job details *", key="f_details", height=220,
                                help="The whole job post. If you copy the whole page, v2 keeps only the main post and its own client box.")
         client = st.text_area("Client history (optional)", key="f_client", height=90,
@@ -341,18 +341,18 @@ def screen_new() -> None:
                 go("confirm")
 
     with tab_link:
-        st.caption("Only Freelancer.com links can be fetched; Upwork and others come in by paste.")
+        st.caption("Open the project on Freelancer.com, click **Share** (top right) → **Copy link**, and paste it here. "
+                   "Upwork and other platforms: use Paste a job.")
         use_sample = False
         if is_sample:
             st.info("Sample workspace: try a saved sample Freelancer.com job, or paste a real link to fetch it live.")
             use_sample = st.button("Use the sample Freelancer.com job")
         flink = st.text_input("Freelancer.com project link",
-                              placeholder="https://www.freelancer.com/projects/automation/...",
-                              help="Open the project, click Share (top right), then Copy link. A search page link won't work.")
+                              placeholder="https://www.freelancer.com/projects/automation/...")
         if st.button("Fetch job") or use_sample:
             try:
                 job = sample_fetched_job() if use_sample else run(fetch_by_link, flink)
-                rec = pipe.from_fetched(job) if job else None
+                rec = pipe.from_fetched(job, sample_client(job)) if job else None
             except DuplicateJob as e:
                 ss.duplicate = e.record.job_key
                 st.rerun()
@@ -371,16 +371,18 @@ def screen_new() -> None:
                            key=f"kw_{uid}", placeholder="React Native, n8n, Flutter", help="Separate keywords with commas.")
         floor = num("Budget floor (USD, optional)", None, f"kw_floor_{uid}")
         ss.kw_list = [x.strip() for x in kw.split(",") if x.strip()]
+        rkey = f"results_{uid}"  # each workspace keeps its own results: a live search never shows in Sample
         if st.button("Search"):
             jobs = run(sample_search if is_sample else search_jobs, ss.kw_list, [], floor)
             if jobs is not None:
                 seen = {r.job_key for r in storage().list_proposals(uid)}
-                ss.results = [j.model_dump(mode="json") for j in jobs if j.job_key not in seen][: load_config()["feed"]["max_results"]]
-        if ss.get("results"):
-            n = len(ss["results"])
-            st.markdown(f"**{n} job{'s' if n != 1 else ''} match.** Freelancer.com doesn't share client history, "
-                        "so check the client on the job page before you pick.")
-        for i, jd in enumerate(ss.get("results") or []):
+                ss[rkey] = [j.model_dump(mode="json") for j in jobs if j.job_key not in seen][: load_config()["feed"]["max_results"]]
+        if ss.get(rkey):
+            n = len(ss[rkey])
+            tail = ("Sample jobs come with their client details." if is_sample else
+                    "Freelancer.com doesn't share client history, so check the client on the job page before you pick.")
+            st.markdown(f"**{n} job{'s' if n != 1 else ''} match.** {tail}")
+        for i, jd in enumerate(ss.get(rkey) or []):
             from proposal_v2.contracts import JobPost
 
             j = JobPost.model_validate(jd)
@@ -397,12 +399,12 @@ def screen_new() -> None:
                 link_or_note(j.link, c1)
                 if c2.button("Pick", key=f"pick{i}"):
                     try:
-                        rec = pipe.from_fetched(j)
+                        rec = pipe.from_fetched(j, sample_client(j))
                         ss.pending = rec.model_dump(mode="json")
                         go("confirm")
                     except DuplicateJob:
                         st.warning("You already have this job.")
-        if ss.get("results") == []:
+        if ss.get(rkey) == []:
             st.info("No new jobs match. Try broader keywords or a lower budget floor.")
 
 
@@ -443,9 +445,12 @@ def screen_confirm() -> None:
     st.subheader("Client history")
     on_freelancer = job.platform == "freelancer"
     where = {"upwork": "below the skills and \"Activity on this job\"", "freelancer": "on the right side"}.get(job.platform, "")
-    st.caption(f"Find it in the **About the client** section of the job's page{(', ' + where) if where else ''}. "
-               "Copy what it shows into the fields below; leave the rest blank.")
-    link_or_note(job.link)
+    if is_sample_link(job.link):
+        st.caption("Sample job: the client details are filled in from its sample page.")
+    else:
+        st.caption(f"Find it in the **About the client** section of the job's page{(', ' + where) if where else ''}. "
+                   "Copy what it shows into the fields below; leave the rest blank.")
+        link_or_note(job.link)
     pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
     # (key, label, current value). Freelancer.com only shows payment, rating and reviews.
     fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
@@ -797,6 +802,12 @@ def page_settings() -> None:
 
 
 # =========================================================================== router
+if is_sample:
+    what = {"Settings": "These settings belong to a made-up sample freelancer, not you.",
+            "Projects": "These projects belong to a made-up sample freelancer, not you.",
+            "My jobs": "These are the sample freelancer's jobs, not yours."}.get(page, "You're trying v2 with sample data.")
+    st.markdown(f'<div class="sample-banner"><b>Sample workspace.</b> {what} '
+                f'Switch to <b>Mine</b> in the sidebar for your own.</div>', unsafe_allow_html=True)
 if page == "New job":
     {"new": screen_new, "confirm": screen_confirm, "card": screen_card, "draft": screen_draft}[ss.screen]()
     if ss.screen != "new" and st.sidebar.button("+ New job"):

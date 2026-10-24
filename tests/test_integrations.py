@@ -141,3 +141,36 @@ def test_match_snippet_shows_where_the_keyword_is():
     s = match_snippet("n8n", text)
     assert "workflows in n8n (lead pulls" in s and s.startswith("…")
     assert match_snippet("Flutter", text) == ""
+
+
+def test_project_tab_links_are_fetched_as_the_project(monkeypatch):
+    """A link to a tab of the project page (…/details) fetches the project itself, with the same job key."""
+    import requests
+    from proposal_v2.links import parse_link
+    seen = {}
+
+    def get(url, params, timeout):
+        seen.update(params)
+        return Resp(200, {"status": "success", "result": {"projects": [dict(PROJECT, seo_url="n8n/SEO-Autopilot-Setup")]}})
+    monkeypatch.setattr(requests, "get", get)
+    fetch_by_link("https://www.freelancer.com/projects/n8n/SEO-Autopilot-Setup/details")
+    assert seen["seo_urls[]"] == "n8n/SEO-Autopilot-Setup"
+    assert parse_link("https://www.freelancer.com/projects/n8n/SEO-Autopilot-Setup/details").job_key == \
+        parse_link("https://www.freelancer.com/projects/n8n/SEO-Autopilot-Setup").job_key
+
+
+def test_sample_freelancer_jobs_come_with_their_client_box(tmp_path):
+    from proposal_v2.pipeline import Pipeline
+    from proposal_v2.sample import load_sample, sample_client, sample_fetched_job
+    from proposal_v2.storage import JsonStorage
+    from proposal_v2.trust import score_client
+    from tests.scripted_llm import ScriptedLLM
+    job = sample_fetched_job()
+    c = sample_client(job)
+    assert c.payment_verified and c.rating == 4.9 and c.reviews == 14
+    assert score_client(c, [], platform="freelancer").band == "High"
+    storage = JsonStorage(tmp_path)
+    load_sample(storage, "t")
+    rec = Pipeline(storage, ScriptedLLM(), "t").from_fetched(job, c)
+    assert rec.client.reviews == 14
+    assert sample_client(job.model_copy(update={"job_key": "freelancer:123"})) is None

@@ -34,10 +34,10 @@ def _get(path: str, params: dict) -> dict:
     if r.status_code == 429:
         raise FetchError("Freelancer.com is rate-limiting requests. Wait a minute and try again.")
     if r.status_code >= 400:
-        raise FetchError("Freelancer.com didn't return this job. Paste the job text instead.")
+        raise FetchError("Freelancer.com didn't return this job. Copy the link from the project's Share button (top right) → Copy link and try again, or use Paste a job instead.")
     data = r.json()
     if data.get("status") != "success":
-        raise FetchError("Freelancer.com didn't return this job. Paste the job text instead.")
+        raise FetchError("Freelancer.com didn't return this job. Copy the link from the project's Share button (top right) → Copy link and try again, or use Paste a job instead.")
     return data["result"]
 
 
@@ -114,7 +114,7 @@ def fetch_by_link(url: str) -> JobPost:
     m = re.search(r"freelancer\.[a-z.]+/projects/([^?#]+)", url)
     if not m:
         raise FetchError("This isn't a Freelancer.com project link. Open the project, click Share (top right), then Copy link and paste it here. For other platforms, use Paste a job.")
-    seo = m.group(1).strip("/")
+    seo = re.sub(r"/(details|proposals|overview|payments|files|reviews)$", "", m.group(1).strip("/"), flags=re.I)
     num = re.search(r"(\d{5,})$", seo)
     if num:
         res = _get(f"/projects/{num.group(1)}/", {"full_description": "true", "job_details": "true"})
@@ -123,7 +123,7 @@ def fetch_by_link(url: str) -> JobPost:
         res = _get("/projects/", {"seo_urls[]": seo, "full_description": "true", "job_details": "true"})
         projects = res.get("projects") or []
     if not projects:
-        raise FetchError("Freelancer.com didn't return this job. Paste the job text instead.")
+        raise FetchError("Freelancer.com didn't return this job. Copy the link from the project's Share button (top right) → Copy link and try again, or use Paste a job instead.")
     p = projects[0]
     if (p.get("status") or "active") != "active" and (p.get("frontend_project_status") or "open") != "open":
         raise FetchError("This job is closed on Freelancer.com.")
