@@ -25,7 +25,7 @@ flowchart TD
     J2 -- "still fails" --> X4["Needs review: failing sentences shown"]
     J -- "passes" --> L["User edits, copies, sends on the platform"]
     J2 -- "passes" --> L
-    L --> M["Mark as sent → saved record<br/>→ one-tap outcome → CSV sent log"]
+    L --> M["Mark as sent → saved record<br/>→ one-tap outcome → Excel sent log"]
 ```
 
 ## Boundaries

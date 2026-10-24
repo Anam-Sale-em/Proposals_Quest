@@ -78,6 +78,10 @@ def test_revise_and_mark_sent(pipe):
     assert msg == "Saved as sent."
     csv_text = pipe.sent_log_csv()
     assert csv_text.startswith("Date sent,Job,Link") and rec.job.title in csv_text
+    import io
+    from openpyxl import load_workbook
+    ws = load_workbook(io.BytesIO(pipe.sent_log_xlsx())).active
+    assert ws["A1"].value == "Date sent" and ws["B2"].value == rec.job.title and ws.column_dimensions["A"].width >= 12
     assert pipe.storage.get_proposal("t", rec.job_key).status == "sent"
 
 

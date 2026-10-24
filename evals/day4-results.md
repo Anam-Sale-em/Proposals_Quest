@@ -168,5 +168,5 @@ It took him about **10 minutes** to open the app, pick a job he liked and get a 
 - **Fit questions are still the model's answers**, now voted on three times rather than asked once.
 - **Free-tier limits set the speed.** About 2 minutes per drafted job, mostly waiting, and some drafts come from the fallback model when the daily quota runs out.
 - **Client data is thin on some platforms.** Freelancer.com's API gives no client history, so trust there rests on what the user copies in.
-- **The live app forgets.** Streamlit Cloud resets local files on restart; the sent log has to be downloaded as CSV.
+- **The live app forgets.** Streamlit Cloud resets local files on restart; the sent log has to be downloaded as an Excel file.
 - **Small test set.** 12 synthetic cases on one sample profile; the real-job check is the outside test.

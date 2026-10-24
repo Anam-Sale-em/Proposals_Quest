@@ -40,7 +40,7 @@ I used AI heavily to build this. The decisions, the checks on its output, and wh
 | --- | --- | --- |
 | Login and sign-up with accounts in a Google Sheet (my request, AI-built) | Removed the same day; one passphrase kept | Too much setup for everyone who runs it |
 | Double-click start scripts for non-developers | Rejected | Windows shows "Unknown publisher"; a non-developer won't click past it. A live link instead |
-| A Google Sheet as the sent log | Removed; a CSV download instead | It needed a Google service account set up by me and shared by every user |
+| A Google Sheet as the sent log | Removed; an Excel download instead | It needed a Google service account set up by me and shared by every user |
 | An "Approximate" budget checkbox | Removed | It changed nothing and only confused the screen |
 | A mandatory fit check | Made optional | Sometimes I already want the job; red flags and low budgets stay as warnings |
 | Keyword search showing "Native Turkish Translation" for "React Native" | Flagged; fixed with whole-phrase matching | The platform's search matches single words |

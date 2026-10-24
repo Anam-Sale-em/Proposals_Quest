@@ -25,7 +25,8 @@ from .validators import failures_for_retry, validate
 
 
 SENT_LOG_HEADER = ["Date sent", "Job", "Link", "v2's call", "You overrode it", "Client trust", "Proof", "Minutes, job added to sent",
-                   "Share edited before send", "Outcome"]
+                   "How much of the draft you changed", "Outcome"]
+SENT_LOG_WIDTHS = [13, 40, 45, 18, 15, 13, 14, 14, 18, 14]
 
 
 def _call(d) -> str:
@@ -328,22 +329,59 @@ class Pipeline:
         self.storage.put_proposal(rec)
         return rec, "Saved as sent."
 
+    def _sent_rows(self) -> list[list]:
+        rows = []
+        for r in sorted(self.storage.list_proposals(self.uid), key=lambda r: r.outcome.sent_at or ""):
+            if r.status != "sent":
+                continue
+            o = r.outcome
+            sent = datetime.fromisoformat(o.sent_at).date() if o.sent_at else None
+            mins = None if o.minutes_paste_to_sent is None else round(o.minutes_paste_to_sent)
+            rows.append([sent, r.job.title, r.job.link, _call(r.decision),
+                         "Yes" if r.decision and r.decision.overridden else "",
+                         r.trust.band if r.trust else "", (r.framing or "").replace("_", " "),
+                         mins, o.edit_share, (o.result or "").replace("_", " ")])
+        return rows
+
     def sent_log_csv(self) -> str:
-        """Every sent proposal as CSV, for the My jobs download (open it in any spreadsheet)."""
+        """Every sent proposal as CSV."""
         import csv
         import io
 
         buf = io.StringIO()
         w = csv.writer(buf)
         w.writerow(SENT_LOG_HEADER)
-        for r in sorted(self.storage.list_proposals(self.uid), key=lambda r: r.outcome.sent_at or ""):
-            if r.status != "sent":
-                continue
-            o = r.outcome
-            w.writerow([(o.sent_at or "")[:10], r.job.title, r.job.link, _call(r.decision),
-                        "Yes" if r.decision and r.decision.overridden else "",
-                        r.trust.band if r.trust else "", r.framing or "",
-                        o.minutes_paste_to_sent, o.edit_share, (o.result or "").replace("_", " ")])
+        for row in self._sent_rows():
+            row[0] = row[0].strftime("%d %b %Y") if row[0] else ""
+            row[8] = "" if row[8] is None else f"{row[8]:.0%}"
+            w.writerow(row)
+        return buf.getvalue()
+
+    def sent_log_xlsx(self) -> bytes:
+        """Every sent proposal as an Excel file with readable dates, widths and a % column (the My jobs download)."""
+        import io
+
+        from openpyxl import Workbook
+        from openpyxl.styles import Font
+        from openpyxl.utils import get_column_letter
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Sent"
+        ws.append(SENT_LOG_HEADER)
+        for c in ws[1]:
+            c.font = Font(bold=True)
+        for row in self._sent_rows():
+            ws.append(row)
+        for i, width in enumerate(SENT_LOG_WIDTHS, start=1):
+            ws.column_dimensions[get_column_letter(i)].width = width
+        for cell in ws["A"][1:]:
+            cell.number_format = "d mmm yyyy"
+        for cell in ws["I"][1:]:
+            cell.number_format = "0%"
+        ws.freeze_panes = "A2"
+        buf = io.BytesIO()
+        wb.save(buf)
         return buf.getvalue()
 
     def set_outcome(self, rec: ProposalRecord, result: str) -> ProposalRecord:

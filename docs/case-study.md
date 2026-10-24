@@ -73,7 +73,7 @@ Paste / Freelancer.com link / Freelancer.com search
  → Solution Brief → proposal (LLM)
  → claim check: LLM lists claims, code checks each against my projects and the post
      → one automatic retry → still failing: the doubtful lines are shown
- → I edit, copy and send → Mark as sent → outcome → CSV sent log
+ → I edit, copy and send → Mark as sent → outcome → Excel sent log
 ```
 
 | Layer | What's in it |
@@ -92,7 +92,7 @@ Paste / Freelancer.com link / Freelancer.com search
 - **Facts from the model, labels from code.** The model answers small yes/no questions three times; code takes the majority and applies the rule. That's 2 extra cheap calls per job for answers that hold from run to run.
 - **Half-LLM claim check.** The model lists the claims and code decides what's allowed. It misses what the model doesn't list, so I also count unsupported claims by hand.
 - **Free tiers.** Gemini 3.8 Flash allows about 20 calls a day. Every response is cached, and busy or out-of-quota calls move down the fallback chain. The logs record which model answered.
-- **Streamlit Cloud forgets on restart.** So the sent log downloads as CSV. I picked that over a database, a Google Sheet or login, because each of those pushed setup onto the user.
+- **Streamlit Cloud forgets on restart.** So the sent log downloads as an Excel file. I picked that over a database, a Google Sheet or login, because each of those pushed setup onto the user.
 
 **Input variation handled:**
 - search, profile and duplicate links

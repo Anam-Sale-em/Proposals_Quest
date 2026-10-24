@@ -39,7 +39,7 @@ In this repo v1 means my previous workflow, so the brief's "v1 scope" is called 
 - Fit assessment and the decision: Apply, Apply with questions or Skip, each with a reason and an Override.
 - Solution Brief, a proposal grounded in real projects, and the claim check (one retry, then "needs review").
 - The draft screen: proof switch, editor and copy buttons.
-- Mark as sent, with the sent log downloadable as CSV from My jobs.
+- Mark as sent, with the sent log downloadable as an Excel file from My jobs.
 - The passphrase gate.
 - The eval runner (one command) and replay mode from cached LLM responses.
 
@@ -55,4 +55,4 @@ In this repo v1 means my previous workflow, so the brief's "v1 scope" is called 
 
 **Only if ahead:** the n8n Community jobs adapter, and talking points for video interviews.
 
-**Stack:** Python with Pydantic contracts, Streamlit Community Cloud, Gemini (Groq as fallback and as the eval judge), local JSON storage behind one interface, and a CSV download for the sent log.
+**Stack:** Python with Pydantic contracts, Streamlit Community Cloud, Gemini (Groq as fallback and as the eval judge), local JSON storage behind one interface, and an Excel download for the sent log.

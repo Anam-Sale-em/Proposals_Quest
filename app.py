@@ -798,10 +798,12 @@ def page_jobs() -> None:
     m1, m2, m3 = st.columns(3)
     m1.metric("Sent", len(sent))
     m2.metric("Skipped", len([r for r in recs if r.status == "skipped"]))
-    m3.metric("Median min, paste → sent", f"{statistics.median(mins):.0f}" if mins else "—")
+    m3.metric("Typical minutes per job", f"{statistics.median(mins):.0f}" if mins else "—")
     if sent:
-        st.download_button("Download sent log (CSV)", pipe.sent_log_csv(), file_name="sent-log.csv", mime="text/csv",
-                           help="Every sent proposal with its decision, client trust, minutes and outcome. Opens in Excel or Google Sheets. "
+        st.download_button("Download sent log (Excel)", pipe.sent_log_xlsx(), file_name="sent-log.xlsx",
+                           mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                           help="Every sent proposal with v2's call, client trust, minutes, how much you changed the draft and the outcome. "
+                                "Opens in Excel or Google Sheets. "
                                 "The live app's files reset when it restarts, so download it now and then.")
     for r in recs:
         with st.container(border=True, key="card_job_" + re.sub(r"\W", "_", r.job_key)):

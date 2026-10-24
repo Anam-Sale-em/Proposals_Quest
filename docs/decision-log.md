@@ -113,6 +113,7 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 89 | "Override and write anyway" and "Write proposal" now run at the top of the job page with the "Writing your proposal…" timer in view; before, the work ran inside the folded Override box, the page looked frozen and the box showed twice | Me (clicked Override, saw no loading and a doubled box) | Yes | A one-minute wait needs a visible timer |
 | 90 | When v2 picks the proof and finds nothing close enough, the draft says so: "No relevant project found. v2 checked your N projects and none is close enough, so it didn't add one." Choosing "no past project" gets a plain note instead of a warning | Me (chose "let v2 pick" and got a warning that read like I hadn't picked anything) | Yes | The message should match what actually happened |
 | 91 | The sent line reads "Sent on 24 Oct 2026 · 5 min from adding the job to sending it" instead of "5.0 min from paste to sent"; the CSV column is "Minutes, job added to sent" | Me ("paste to sent" is builder wording) | Yes | Users think in jobs, not pastes |
+| 92 | Sent log downloads as Excel (.xlsx) instead of CSV: real dates with a column wide enough (CSV showed ###### in Excel), set column widths, and "Share edited before send" renamed "How much of the draft you changed" as a % (0% = sent as written). My jobs metric renamed "Typical minutes per job" | Me (dates showed as ######, and the edit column meant nothing to me) | Yes | The log is for the user to read; it should open clean |
 
 ## To verify by hand
 

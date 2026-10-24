@@ -22,7 +22,7 @@ Open the link Streamlit prints and enter your passphrase. Then set your minimum 
 
 ### Sent log
 
-My jobs → **Download sent log (CSV)** gives every sent proposal with its decision, client trust, proof, minutes from adding the job to sending it, the share of the draft you edited and the outcome. It opens in Excel or Google Sheets. On the live link, download it now and then: the app's files reset when it restarts.
+My jobs → **Download sent log (Excel)** gives every sent proposal with v2's call, client trust, proof, minutes from adding the job to sending it, how much of the draft you changed (0% = sent as written) and the outcome. It opens in Excel or Google Sheets. On the live link, download it now and then: the app's files reset when it restarts.
 
 ### Live link (Streamlit Community Cloud, free)
 
@@ -41,7 +41,7 @@ Limits: the app sleeps after 12 hours without visitors (open the link and click 
 2. **Confirm the details:** check what v2 took from the post, fix anything wrong (budget type, client history), then **Confirm and check**. Client history is the **About the client** section of the job's page: below the skills and activity on Upwork, on the right side on Freelancer.com (Open job is right there). For Freelancer.com jobs, copy the rating, review count and payment status; for Guru, the **Posted By** box (feedback, total spend, jobs posted, jobs paid, paid and outstanding invoices). Add anything the proposal must say under **Anything you want in the proposal?** (your own words; v2 treats them as true). Under **Proof**, let v2 pick the best project, choose up to 3 yourself, or cite none.
 3. **Decision card:** one decision, one reason, client trust, budget and fit. **Apply with questions** means it's worth applying, but the post is vague or the budget looks unreal, so the proposal leads with questions. Changed your skills, rates or projects? **Check the fit again** reruns it. **Write proposal**, or **Override** a Skip (logged). **Details** shows the trust score with its top reasons, the four fit answers, whether the three checks agreed, the skill tags and the link check.
 4. **Draft:** your best project is pre-selected as proof. Pick up to 3 (the first is the main one), or none for plan only, then **Rewrite with this proof**. Edit the text, answer the screening questions, fix any line the claim check flags, or revise with a comment (it changes only what you ask).
-5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap. My jobs → **Download sent log (CSV)** keeps the record.
+5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap. My jobs → **Download sent log (Excel)** keeps the record.
 
 ## Run the tests and evals
 
