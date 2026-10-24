@@ -31,7 +31,7 @@ freelancer_api_per_minute = 20
 
 [link_check]
 title_match_threshold = 0.5
-supported_domains = ["upwork.com", "freelancer.com", "guru.com", "fiverr.com", "peopleperhour.com"]
+supported_domains = ["upwork.com", "freelancer.com", "guru.com"]
 
 [budget]
 # A fixed budget under this is a placeholder, not a real budget.
@@ -48,9 +48,7 @@ low = 20
 # Hard platform limits in characters. Verify against each platform before relying on them.
 upwork_chars = 5000
 freelancer_chars = 1500
-fiverr_chars = 1500
 guru_chars = 3000
-peopleperhour_chars = 3000
 default_chars = 3000
 # Target length the prompts aim for.
 proposal_max_words = 230

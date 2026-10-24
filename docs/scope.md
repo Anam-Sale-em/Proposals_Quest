@@ -11,7 +11,7 @@ On the same three test jobs (T01–T03), v2's median time from opening a job to 
 - Images, video, storyboards and per-proposal scripts. v1 spent 120+ minutes and paid credits per approved proposal on visuals, and they weren't the bottleneck.
 - Auto-submitting or auto-filling proposals on any platform.
 - Scraping any site, paid scrapers such as Apify actors included.
-- Fetching from platforms without an official API (Upwork, Fiverr and others come in by paste), and fetching on a schedule. Fetches run only when the user asks.
+- Fetching from platforms without an official API (Upwork and Guru come in by paste), and fetching on a schedule. Fetches run only when the user asks.
 - Pricing, win-chance, voice matching and rule learning.
 - Drafting in languages other than English.
 - Multi-user login, team accounts and payments. (Login was built on Day 2, then removed: decision log #34.)

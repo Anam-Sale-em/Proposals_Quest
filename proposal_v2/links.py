@@ -48,8 +48,8 @@ def normalized_url(url: str) -> str:
     return f"{host}{path}"
 
 
-NOT_A_JOB = ("This looks like a search or profile page, not a job posting. Open the job, then use its Share button "
-             "(top right of the job) → Copy link, and paste that link here.")
+NOT_A_JOB = ("This looks like a search or profile page, not a job posting. Open the job on its own page and copy that "
+             "address. On Freelancer.com, use the project's Share button (top right) → Copy link.")
 
 
 def parse_link(url: str) -> ParsedLink:
@@ -62,7 +62,7 @@ def parse_link(url: str) -> ParsedLink:
     host = _host(url)
     platform = _platform_for(host)
     if not platform:
-        raise LinkError("Paste the job's own page from a supported platform (Upwork, Freelancer.com, Guru, Fiverr or PeoplePerHour).")
+        raise LinkError("Paste the job's own page from a supported platform (Upwork, Freelancer.com or Guru).")
     path = urlparse(url).path
     lower = path.lower()
 
@@ -104,17 +104,7 @@ def parse_link(url: str) -> ParsedLink:
         slug = parts[-1] if parts and parts[-1] not in {"work", "detail", "jobs"} else ""
         return ParsedLink(url, platform, host, path, f"guru:{m.group(1)}", _tokens(slug))
 
-    if platform == "peopleperhour":
-        if "/freelance-jobs" not in lower:
-            raise LinkError(NOT_A_JOB)
-        parts = [p for p in path.split("/") if p]
-        last = parts[-1] if parts else ""
-        m = re.search(r"-(\d{4,})$", last)
-        if not m:
-            raise LinkError(NOT_A_JOB)
-        return ParsedLink(url, platform, host, path, f"peopleperhour:{m.group(1)}", _tokens(last[: m.start()]))
-
-    # fiverr and anything else supported: normalized URL; no title words to check
+    # anything else supported: normalized URL; no title words to check
     if re.search(r"/(search|categories)(/|$)", lower):
         raise LinkError(NOT_A_JOB)
     return ParsedLink(url, platform, host, path, f"{platform}:{normalized_url(url)}", [])

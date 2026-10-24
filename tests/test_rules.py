@@ -223,3 +223,14 @@ def test_price_asks_get_a_placeholder_not_a_commitment():
     assert not asks_for_price(JobPost(job_key="k", platform="upwork", link="l", title="t", description="Fixed price: $400"))
     r = validate("I'd start Monday. My quote: [your price and timeline].", [], job, None, Profile(), ClaimLists())
     assert r.ok and any("Fill in [your price and timeline]" in n for n in r.notes)
+
+
+def test_guru_trust_uses_the_posted_by_box():
+    from proposal_v2.trust import score_client
+    g = lambda **k: score_client(ClientProfile(**k), [], platform="guru")
+    # The real Guru box: 100% feedback, $1,041 spend, 8 jobs posted, 2 paid (25%), 2 paid invoices (100%), 0 outstanding
+    got = g(feedback_pct=100, total_spent_usd=1041, jobs_posted=8, jobs_paid=2, paid_invoices_pct=100, outstanding_invoices=0)
+    assert (got.score, got.band, got.coverage) == (45, "Medium", "6 of 6 fields")  # 40 + 10 invoices - 5 paid on 25%
+    assert g(total_spent_usd=1041, jobs_posted=8).band == "Unknown"
+    assert g(feedback_pct=99, total_spent_usd=30000, jobs_posted=14, jobs_paid=12, paid_invoices_pct=100).score == 79  # capped
+    assert g(feedback_pct=70, total_spent_usd=900, jobs_posted=4, jobs_paid=3, paid_invoices_pct=60, outstanding_invoices=2).band == "Red flag"

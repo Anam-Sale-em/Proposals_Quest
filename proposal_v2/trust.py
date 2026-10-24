@@ -103,11 +103,84 @@ def _post_flags(score: int, caps: list, reasons: list, flags: set) -> tuple[int,
     return score, caps
 
 
+def score_guru(client: ClientProfile, flags: set, cutoffs: Optional[dict] = None) -> TrustResult:
+    """Guru's "Posted By" box: feedback %, total spend, jobs posted, jobs paid, paid invoices %, outstanding invoices.
+    Jobs paid stand in for hires (a job the client actually paid for); paid invoices stand in for payment verified."""
+    shown = [client.feedback_pct, client.total_spent_usd, client.jobs_posted, client.jobs_paid,
+             client.paid_invoices_pct, client.outstanding_invoices]
+    coverage = f"{sum(1 for f in shown if f is not None)} of 6 fields"
+    if client.jobs_paid is None or client.total_spent_usd is None:
+        reasons = ["Jobs paid or total spend isn't filled in, so the client's history can't be scored"]
+        reasons += [f"Red flag: {FLAG_TEXT[f]}" for f in sorted(flags) if f in FLAG_TEXT]
+        if "off_platform" in flags or "pay_to_apply" in flags:
+            return TrustResult(score=5 if "pay_to_apply" in flags else 15, band="Red flag", coverage=coverage, reasons=reasons)
+        return TrustResult(score=None, band="Unknown", coverage=coverage, reasons=reasons)
+
+    paid, spent = client.jobs_paid, client.total_spent_usd
+    reasons: list[tuple[int, str]] = []
+    caps = [79]  # Guru shows too little for Excellent
+    if paid == 0:
+        base, label = 25, "No paid jobs yet"
+    elif spent == 0:
+        base, label = 15, f"{paid} paid job(s) but $0 spent (red flag)"
+        caps.append(15)
+    else:
+        base, label = 40, f"{paid} paid job(s), {_money(spent)} spent"
+        for n, m, b, lab in ((3, 500, 48, "3+ paid jobs and $500+ spent"), (5, 2500, 56, "5+ paid jobs and $2,500+ spent"),
+                             (10, 10000, 64, "10+ paid jobs and $10,000+ spent")):
+            if paid >= n and spent >= m:
+                base, label = b, f"{lab} ({paid} jobs, {_money(spent)})"
+    reasons.append((base, label))
+    score = base
+
+    fb = client.feedback_pct
+    if fb is not None and paid >= 3:
+        if fb >= 98:
+            score += 10
+            reasons.append((10, f"{fb:.0f}% feedback over {paid} paid jobs"))
+        elif fb >= 90:
+            score += 5
+            reasons.append((5, f"{fb:.0f}% feedback over {paid} paid jobs"))
+        elif fb < 80:
+            score -= 25
+            reasons.append((-25, f"Low feedback: {fb:.0f}%"))
+    pi = client.paid_invoices_pct
+    if pi is not None and paid >= 1:
+        if pi >= 100:
+            score += 10
+            reasons.append((10, "Pays every invoice (100% paid)"))
+        elif pi < 90:
+            score -= 10
+            reasons.append((-10, f"Only {pi:.0f}% of invoices paid"))
+    if client.outstanding_invoices:
+        score -= 5
+        reasons.append((-5, f"{client.outstanding_invoices} outstanding invoice(s)"))
+    jp = client.jobs_posted or 0
+    if jp >= 5:
+        hr = 100 * paid / jp
+        if hr >= 70:
+            score += 5
+            reasons.append((5, f"Paid on {hr:.0f}% of {jp} jobs posted"))
+        elif hr < 25:
+            score -= 10
+            reasons.append((-10, f"Paid on only {hr:.0f}% of {jp} jobs posted"))
+        elif hr < 40:
+            score -= 5
+            reasons.append((-5, f"Paid on only {hr:.0f}% of {jp} jobs posted"))
+
+    score, caps = _post_flags(score, caps, reasons, flags)
+    score = min(max(0, min(100, score)), min(caps))
+    ordered = [text for _, text in sorted(reasons, key=lambda x: -abs(x[0]))]
+    return TrustResult(score=score, band=band_for(score, cutoffs), coverage=coverage, reasons=ordered)
+
+
 def score_client(client: ClientProfile, post_flags: Iterable[str] = (), cutoffs: Optional[dict] = None,
                  platform: str = "") -> TrustResult:
     flags = set(post_flags)
     if platform == "freelancer":
         return score_freelancer(client, flags, cutoffs)
+    if platform == "guru":
+        return score_guru(client, flags, cutoffs)
     covered = sum(1 for f in COVERAGE_FIELDS if getattr(client, f) is not None)
     coverage = f"{covered} of 6 fields"
     if client.hires is None or client.total_spent_usd is None:

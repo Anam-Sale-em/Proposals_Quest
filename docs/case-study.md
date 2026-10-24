@@ -102,7 +102,7 @@ Paste / Freelancer.com link / Freelancer.com search
 - hourly, fixed and non-USD budgets
 - instructions inside posts (followed, refused, ignored or red-flagged)
 - busy or failing models
-- Freelancer.com jobs with no client data
+- a different client box per platform: Upwork's history, Freelancer.com's rating and reviews (its API shares no client data), Guru's paid jobs and invoices
 - checking an old job again
 
 ## 5. What the AI does, what the human decides

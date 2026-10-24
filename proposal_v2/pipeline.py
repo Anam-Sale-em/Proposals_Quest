@@ -98,7 +98,7 @@ class Pipeline:
         allowed, refused, ignored, flags = apply_policy(ex.instructions, ex.red_flags, ex.description)
         job = JobPost(
             job_key=parsed.job_key, platform=parsed.platform if parsed.platform in
-            ("upwork", "freelancer", "guru", "fiverr", "peopleperhour") else "other",
+            ("upwork", "freelancer", "guru") else "other",
             link=parsed.url, source="paste", title=ex.title, description=ex.description, budget=ex.budget,
             skills=ex.skills, screening_questions=ex.screening_questions, explicit_requirements=ex.explicit_requirements,
             client_tools=ex.client_tools, allowed_instructions=allowed, refused_instructions=refused,

@@ -48,6 +48,11 @@ class ClientProfile(BaseModel):
     total_spent_approximate: bool = False
     hires: Optional[int] = None
     active_hires: Optional[int] = None
+    # Guru's "Posted By" box
+    feedback_pct: Optional[float] = None
+    jobs_paid: Optional[int] = None
+    paid_invoices_pct: Optional[float] = None
+    outstanding_invoices: Optional[int] = None
 
 
 class PostInstruction(BaseModel):

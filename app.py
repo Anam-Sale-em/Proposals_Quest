@@ -310,7 +310,7 @@ def screen_new() -> None:
     tab_paste, tab_link, tab_kw = st.tabs(["Paste a job (any platform)", "Freelancer.com link", "Freelancer.com search"])
 
     with tab_paste:
-        st.caption("Works with jobs from **Upwork, Freelancer.com, Guru, PeopleperHour and Fiverr**. "
+        st.caption("Works with jobs from **Upwork, Freelancer.com and Guru**. "
                    "Paste the job's link, then copy the job page's text into Job details.")
         if is_sample:
             jobs = sample_jobs()
@@ -320,9 +320,9 @@ def screen_new() -> None:
                 post, box = split_client_box(j["id"], j["job_details"])
                 ss.f_link, ss.f_details, ss.f_client = j["link"], post, box
                 st.rerun()
-        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com, Guru, PeopleperHour or Fiverr")
-        st.caption("Get it from the job's **Share** button (top right of the job) → **Copy link**. "
-                   "The address of a search or feed page won't work.")
+        link = st.text_input("Job link *", key="f_link", placeholder="Link to the job post on Upwork, Freelancer.com or Guru")
+        st.caption("Use the job's own page. On **Freelancer.com**, copy it from the project's **Share** button "
+                   "(top right) → **Copy link**, since the address bar of a search page won't work.")
         details = st.text_area("Job details *", key="f_details", height=220,
                                help="The whole job post. If you copy the whole page, v2 keeps only the main post and its own client box.")
         client = st.text_area("Client history (optional)", key="f_client", height=90,
@@ -445,42 +445,53 @@ def screen_confirm() -> None:
     st.subheader("Client history")
     on_freelancer = job.platform == "freelancer"
     where = {"upwork": "below the skills and \"Activity on this job\"", "freelancer": "on the right side"}.get(job.platform, "")
+    box = "**Posted By**" if job.platform == "guru" else "**About the client**"
     if is_sample_link(job.link):
         st.caption("Sample job: the client details are filled in from its sample page.")
     else:
-        st.caption(f"Find it in the **About the client** section of the job's page{(', ' + where) if where else ''}. "
+        st.caption(f"Find it in the {box} section of the job's page{(', ' + where) if where else ''}. "
                    "Copy what it shows into the fields below; leave the rest blank.")
         link_or_note(job.link)
     pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
-    # (key, label, current value). Freelancer.com only shows payment, rating and reviews.
-    fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
-    if not on_freelancer:
-        fields += [("jobs_posted", "Jobs posted", c.jobs_posted), ("hire_rate_pct", "Hire rate %", c.hire_rate_pct),
-                   ("total_spent_usd", "Total spent (USD)", c.total_spent_usd), ("hires", "Hires", c.hires),
-                   ("active_hires", "Active hires", c.active_hires)]
+    on_guru = job.platform == "guru"
+    # (key, label, current value), per platform: each one shows a different client box.
+    if on_freelancer:
+        fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
+    elif on_guru:
+        fields = [("feedback_pct", "Feedback %", c.feedback_pct), ("total_spent_usd", "Total spend (USD)", c.total_spent_usd),
+                  ("jobs_posted", "Jobs posted", c.jobs_posted), ("jobs_paid", "Jobs paid", c.jobs_paid),
+                  ("paid_invoices_pct", "Paid invoices %", c.paid_invoices_pct),
+                  ("outstanding_invoices", "Outstanding invoices", c.outstanding_invoices)]
+    else:
+        fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews),
+                  ("jobs_posted", "Jobs posted", c.jobs_posted), ("hire_rate_pct", "Hire rate %", c.hire_rate_pct),
+                  ("total_spent_usd", "Total spent (USD)", c.total_spent_usd), ("hires", "Hires", c.hires),
+                  ("active_hires", "Active hires", c.active_hires)]
     shown = [f for f in fields if f[2] is not None]
     hidden = [f for f in fields if f[2] is None]
     vals = {}
-    if c.payment_verified is None and not shown:
+    pv = "Not shown"
+    asks_payment = not on_guru  # Guru shows paid invoices instead of a payment-verified badge
+    if not shown and (c.payment_verified is None or not asks_payment):
         st.caption("Nothing from that box came through with the post, so client trust will be Unknown unless you add it below.")
-    if c.payment_verified is not None:
+    if asks_payment and c.payment_verified is not None:
         pv = st.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
     for key, label, value in shown:
         vals[key] = num(label, value, f"c_{key}_{rec.job_key}")
-    if hidden or c.payment_verified is None:
-        title_more = ("Add client details from the job page" if on_freelancer
+    if hidden or (asks_payment and c.payment_verified is None):
+        title_more = ("Add client details from the job page" if (on_freelancer or on_guru)
                       else "Add client details the post didn't show")
         with st.expander(title_more):
             if on_freelancer:
                 st.caption("Freelancer.com's \"About the Client\" box shows the star rating, the number next to it (reviews) "
                            "and Payment verified. Those three are all v2 needs.")
-            if c.payment_verified is None:
+            if on_guru:
+                st.caption("Guru's \"Posted By\" box shows Feedback, Total Spend, Jobs Posted, Jobs Paid, "
+                           "Paid Invoices and Outstanding Invoices.")
+            if asks_payment and c.payment_verified is None:
                 pv = st.selectbox("Payment", list(pv_opts), index=0)
             for key, label, value in hidden:
                 vals[key] = num(label, value, f"c_{key}_{rec.job_key}")
-    rating, reviews = vals.get("rating"), vals.get("reviews")
-    jobs_posted, hire_rate = vals.get("jobs_posted"), vals.get("hire_rate_pct")
-    spent, hires, active = vals.get("total_spent_usd"), vals.get("hires"), vals.get("active_hires")
 
     if job.allowed_instructions or job.refused_instructions or job.ignored_instructions or job.red_flags:
         st.subheader("Instructions in the post")
@@ -508,10 +519,13 @@ def screen_confirm() -> None:
         job.skills = [s.strip() for s in skills.split(",") if s.strip()]
         job.screening_questions = [q.strip() for q in questions.splitlines() if q.strip()]
         job.user_notes = notes.strip()
-        rec.client = ClientProfile(payment_verified=pv_opts[pv], rating=rating, reviews=None if reviews is None else int(reviews),
-                                   jobs_posted=None if jobs_posted is None else int(jobs_posted), hire_rate_pct=hire_rate,
-                                   total_spent_usd=spent, total_spent_approximate=c.total_spent_approximate,
-                                   hires=None if hires is None else int(hires), active_hires=None if active is None else int(active))
+        as_int = lambda k: None if vals.get(k) is None else int(vals[k])  # noqa: E731
+        rec.client = ClientProfile(payment_verified=pv_opts[pv], rating=vals.get("rating"), reviews=as_int("reviews"),
+                                   jobs_posted=as_int("jobs_posted"), hire_rate_pct=vals.get("hire_rate_pct"),
+                                   total_spent_usd=vals.get("total_spent_usd"), total_spent_approximate=c.total_spent_approximate,
+                                   hires=as_int("hires"), active_hires=as_int("active_hires"),
+                                   feedback_pct=vals.get("feedback_pct"), jobs_paid=as_int("jobs_paid"),
+                                   paid_invoices_pct=vals.get("paid_invoices_pct"), outstanding_invoices=as_int("outstanding_invoices"))
         if job.link_status == "Warned":
             rec.events.append({"type": "link_warning_proceeded"})
         try:
