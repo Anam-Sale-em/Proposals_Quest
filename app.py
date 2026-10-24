@@ -83,7 +83,7 @@ gate()
 from proposal_v2.contracts import (Budget, ClientProfile, Profile, Project, ProposalRecord,  # noqa: E402
                                    ProposedProject)
 from proposal_v2.skills import norm  # noqa: E402
-from proposal_v2.integrations import FetchError, fetch_by_link, match_places, pdf_text, search_jobs  # noqa: E402
+from proposal_v2.integrations import FetchError, fetch_by_link, match_places, match_snippet, pdf_text, search_jobs  # noqa: E402
 from proposal_v2.links import LINK_WARNING, LinkError  # noqa: E402
 from proposal_v2.llm import LLMError, make_llm  # noqa: E402
 from proposal_v2.pipeline import DuplicateJob, Pipeline, PipelineError  # noqa: E402
@@ -347,7 +347,9 @@ def screen_new() -> None:
         details = st.text_area("Job details *", key="f_details", height=220,
                                help="The whole job post. If you copy the whole page, v2 keeps only the main post and its own client box.")
         client = st.text_area("Client history (optional)", key="f_client", height=90,
-                              help="The 'About the client' box, if it isn't in the job details. Without it, trust shows Unknown and you can still go ahead.")
+                              help="Without it, client trust shows Unknown and you can still go ahead.")
+        st.caption("Where to find it: on the job's page, the **About the client** box on the right side "
+                   "(payment verified, rating, reviews, total spent, hires). Copy that box here if your paste above doesn't include it.")
         if st.button("Check job", type="primary"):
             try:
                 rec = run(pipe.extract, link, details, client)
@@ -408,6 +410,9 @@ def screen_new() -> None:
                 tags = ", ".join(f"**{s}**" if norm(s) in hits else s for s in j.skills) or "None listed"
                 found = ", ".join(f"**{k}** ({where})" for k, where in places)
                 md(f"**{j.title}**  \n💰 {j.budget.raw_text or 'Budget not stated'}  \n🛠 {tags}  \n🔎 Matches {found}")
+                for k, where in places:
+                    if where == "description":  # show the words around it, so a mention deep in the post is visible
+                        st.caption(f"\"{match_snippet(k, j.description)}\"")
                 c1, c2 = st.columns([1, 1])
                 link_or_note(j.link, c1)
                 if c2.button("Pick", key=f"pick{i}"):
@@ -457,6 +462,9 @@ def screen_confirm() -> None:
 
     st.subheader("Client history")
     on_freelancer = job.platform == "freelancer"
+    st.caption("Find it on the job's page: the **About the client** box on the right side. "
+               "Copy what it shows into the fields below; leave the rest blank.")
+    link_or_note(job.link)
     pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
     # (key, label, current value). Freelancer.com only shows payment, rating and reviews.
     fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
@@ -468,8 +476,7 @@ def screen_confirm() -> None:
     hidden = [f for f in fields if f[2] is None]
     vals = {}
     if c.payment_verified is None and not shown:
-        st.caption("The post doesn't show the client's history, so client trust will be Unknown. "
-                   "Add it below if the job page shows it.")
+        st.caption("Nothing from that box came through with the post, so client trust will be Unknown unless you add it below.")
     if c.payment_verified is not None:
         pv = st.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
     for key, label, value in shown:
@@ -479,7 +486,8 @@ def screen_confirm() -> None:
                       else "Add client details the post didn't show")
         with st.expander(title_more):
             if on_freelancer:
-                st.caption("From \"About the Client\": the star rating, the number next to it (reviews) and Payment verified.")
+                st.caption("Freelancer.com's \"About the Client\" box shows the star rating, the number next to it (reviews) "
+                           "and Payment verified. Those three are all v2 needs.")
             if c.payment_verified is None:
                 pv = st.selectbox("Payment", list(pv_opts), index=0)
             for key, label, value in hidden:

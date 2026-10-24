@@ -77,6 +77,16 @@ def _to_jobpost(p: dict) -> JobPost:
     )
 
 
+def match_snippet(keyword: str, text: str, width: int = 60) -> str:
+    """The words around the first whole-phrase mention of the keyword, e.g. "…maintain workflows in n8n (lead pulls…"."""
+    m = re.search(r"(?<![A-Za-z0-9])" + re.escape(keyword.strip()) + r"s?(?![A-Za-z0-9])", text or "", re.I)
+    if not m:
+        return ""
+    a, b = max(0, m.start() - width), min(len(text), m.end() + width)
+    snip = " ".join(text[a:b].split())
+    return ("…" if a > 0 else "") + snip + ("…" if b < len(text) else "")
+
+
 def match_places(job: JobPost, keywords: list[str]) -> list[tuple[str, str]]:
     """(keyword, where) for each keyword the job mentions: "skills", "title" or "description"."""
     from .skills import mentioned_in

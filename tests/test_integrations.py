@@ -132,3 +132,12 @@ def test_sample_freelancer_tabs_work_offline():
     titles = [j.title for j in sample_search(["n8n", "automation"], [], 300)]
     assert titles == ["n8n workflow to sync Airtable leads into HubSpot", "Move 6 Zapier zaps to n8n"]  # INR job under the floor, logo job no match
     assert len(sample_search(["n8n", "automation"], [], None)) == 3
+
+
+def test_match_snippet_shows_where_the_keyword_is():
+    from proposal_v2.integrations import match_snippet
+    text = ("Long-term VA for a commercial realtor. Deal tracking, CRM cleanup and outreach. "
+            "Build and maintain workflows in n8n (lead pulls, CRM updates, follow up reminders). Marketing content too.")
+    s = match_snippet("n8n", text)
+    assert "workflows in n8n (lead pulls" in s and s.startswith("…")
+    assert match_snippet("Flutter", text) == ""

@@ -89,6 +89,8 @@ Add each tool as it's used: the coding assistant, Gemini and Groq inside the pro
 | 66 | Remove the "I can name the client" checkbox from projects | Me | Yes | It never reached the prompts (client names are always left out), so it only looked odd |
 | 67 | When a post asks applicants to confirm a price, rate or timeline, the draft never commits to one: it uses the figure from the freelancer's notes, or writes "[your price and timeline]", and the draft screen reminds you to fill it in. Added to the prompt only for such posts | Proxy session (a draft wrote "I confirm the fixed price of $400–$600 and a timeline of 5–7 days" on the proxy's behalf) | Yes | A price is a commitment only the freelancer can make |
 | 68 | Solution Brief shows dollar amounts correctly; the search tab's caption rewritten in plain words ("Pick one, and v2 checks it and writes the proposal") | Proxy session | Yes | The brief showed "131.65 – 131.65–394.95"; "It decides nothing; the fit check runs…" confused the proxy |
+| 69 | Say where client history comes from (the "About the client" box on the right of the job's page) on both the paste form and the confirm screen, with an Open job button right there | Proxy session (he asked what client history is); me (no way to reach the job page from the confirm screen) | Yes | Trust is only as good as the client box, and a first-time user didn't know where to find it |
+| 70 | Search cards quote the words around a keyword found only in the description (e.g. "…maintain workflows in n8n (lead pulls…") | Me (a VA job looked like it had no n8n; the mention was deep in the post) | Yes | "Matches n8n (description)" alone didn't let me check it |
 
 ## To verify by hand
 

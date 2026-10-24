@@ -139,10 +139,11 @@ _Pending: 6–10 fresh jobs, with my call written down before v2 runs._
 1. A real Upwork job (Python + OpenAI lead qualification for an existing app and CRM, $400–600 fixed), pasted.
 2. A real Freelancer.com job (a custom e-commerce storefront), fetched by link.
 
-Both went from input to a full draft and Solution Brief.
+It took him about **10 minutes** to open the app, pick a job he liked and get a proposal. He asked me two things, what "exclude terms" means and what "client history" is; everything else he handled alone.
 
 **What worked:**
 - With no projects in his library, both drafts said so honestly ("This part is new for me, here's how I'd de-risk it") instead of inventing experience.
+- The drafts used only his own profile: the storefront draft's "I usually focus on editing" comes from the skills he entered, not from the model.
 - The drafts answered the posts' own asks: three to four concrete integration steps, retries and duplicate handling, a question back to the client.
 - The Solution Brief flagged the storefront budget as far too low for the scope and suggested asking about a template or CMS.
 
@@ -154,9 +155,10 @@ Both went from input to a full draft and Solution Brief.
 | "It decides nothing; the fit check runs once you pick a job" read as jargon | Rewritten: "Find new Freelancer.com jobs by keyword. Pick one, and v2 checks it and writes the proposal" (#68) |
 | The Upwork post said "Confirm your fixed price and timeline", and the draft confirmed "$400–$600 and 5–7 days" for him | v2 never commits to a price or timeline: it uses the freelancer's own note, or writes "[your price and timeline]" with a reminder to fill it in (#67) |
 | The Solution Brief showed "131.65 – 131.65–394.95" (dollar signs read as maths) | Fixed (#68) |
+| He asked what "client history" is and where to get it | Both the paste form and the confirm screen now say it's the **About the client** box on the right side of the job's page, with an Open job button right there (#69) |
 | The post asked "Share one AI or API integration you've built"; he had none to share | Handled as designed: the draft warns that no past work is cited and names the unanswered request (F3) |
+| His storefront draft said "as I usually focus on editing" | Checked: editing is in his own skills, so the claim is grounded, not invented |
 
-**Not measured:** minutes per job for the proxy.
 
 
 ## 9. Where v2 is still weak
