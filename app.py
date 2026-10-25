@@ -15,7 +15,7 @@ from proposal_v2.config import load_config, save_env, secret
 
 st.set_page_config(page_title="Proposal Pipeline v2", page_icon="📝", layout="centered")
 from proposal_v2.prompts import budget_words  # noqa: E402
-from proposal_v2.ui_style import BRAND, CSS, chip, trust_chip, verdict_html  # noqa: E402
+from proposal_v2.ui_style import BRAND, CSS, chip, trust_chip, parse_number, verdict_html  # noqa: E402
 
 st.markdown(CSS, unsafe_allow_html=True)
 
@@ -122,7 +122,7 @@ def timing_line(rec, v) -> str:
 
 
 def summary_line(rec) -> str:
-    """e.g. "Decision: Apply · Client trust: High (64/100)" or "Fit check skipped · Client trust: Unknown"."""
+    """e.g. "Decision: Apply · Client trust: High (64/100)" or "Fit check skipped · Client trust: can't rate, details weren't shared"."""
     d = rec.decision
     if d is None:
         first = "Not decided yet"
@@ -131,7 +131,7 @@ def summary_line(rec) -> str:
     else:
         first = f"Decision: {DECISION_LABEL[d.decision]}{' (your override)' if d.overridden else ''}"
     t = rec.trust
-    trust = "—" if t is None else (t.band if t.score is None else f"{t.band} ({t.score}/100)")
+    trust = "—" if t is None else ("can't rate, details weren't shared" if t.score is None else f"{t.band} ({t.score}/100)")
     return f"{first} · Client trust: {trust}"
 
 
@@ -226,19 +226,44 @@ def num(label: str, value, key: str, help: str | None = None):
     return v
 
 
-def parse_number(raw: str):
-    """Reads one number from loose input: "USD, 300", "$1,500", "1.5k", "80%". Returns "blank",
-    the number, or None when there's no number or more than one."""
-    import re
+def client_fields(platform: str, c) -> list[tuple]:
+    """(key, label, current value) for the client box each platform shows."""
+    if platform == "freelancer":
+        return [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
+    if platform == "guru":
+        return [("feedback_pct", "Feedback %", c.feedback_pct), ("total_spent_usd", "Total spend (USD)", c.total_spent_usd),
+                ("jobs_posted", "Jobs posted", c.jobs_posted), ("jobs_paid", "Jobs paid", c.jobs_paid),
+                ("paid_invoices_pct", "Paid invoices %", c.paid_invoices_pct),
+                ("outstanding_invoices", "Outstanding invoices", c.outstanding_invoices)]
+    return [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews),
+            ("jobs_posted", "Jobs posted", c.jobs_posted), ("hire_rate_pct", "Hire rate %", c.hire_rate_pct),
+            ("total_spent_usd", "Total spent (USD)", c.total_spent_usd), ("hires", "Hires", c.hires),
+            ("active_hires", "Active hires", c.active_hires)]
 
-    s = re.sub(r"(?<=\d),(?=\d{3}\b)", "", raw or "").strip()
-    if not s:
-        return "blank"
-    found = re.findall(r"\d+(?:\.\d+)?\s*[kK]?\b", s)
-    if len(found) != 1:
-        return None
-    n = found[0].strip()
-    return float(n[:-1]) * 1000 if n[-1] in "kK" else float(n)
+
+INT_FIELDS = {"reviews", "jobs_posted", "hires", "active_hires", "jobs_paid", "outstanding_invoices"}
+PV_OPTS = {"Not shown": None, "Verified": True, "Not verified": False}
+
+
+def client_editor(rec: ProposalRecord) -> None:
+    """Edit the client's details after the check (for when they were missed), then re-score trust and the call.
+    No model call: the fit check is reused."""
+    c = rec.client
+    with st.expander("Edit client details"):
+        st.caption("Missed something from the client box? Fix it here. Client trust and v2's call update; the fit check is kept.")
+        with st.form(f"client_{rec.job_key}", enter_to_submit=False, border=False):
+            pv = None
+            if rec.job.platform != "guru":
+                pv = st.selectbox("Payment", list(PV_OPTS), index=list(PV_OPTS.values()).index(c.payment_verified))
+            vals = {k: num(label, v, f"edit_{k}_{rec.job_key}") for k, label, v in client_fields(rec.job.platform, c)}
+            if st.form_submit_button("Save and update", type="primary"):
+                data = c.model_dump()
+                data.update({k: (None if v is None else (int(v) if k in INT_FIELDS else v)) for k, v in vals.items()})
+                if pv is not None:
+                    data["payment_verified"] = PV_OPTS[pv]
+                if run(pipe.update_client, rec, ClientProfile(**data)):
+                    ss.flash_ok = "Client details saved. Client trust and v2's call are updated."
+                    st.rerun()
 
 
 def open_job_button(rec: ProposalRecord, where=st) -> None:
@@ -395,7 +420,7 @@ def screen_new() -> None:
         details = st.text_area("Job details *", key="f_details", height=220,
                                help="The whole job post. If you copy the whole page, v2 keeps only the main post and its own client box.")
         client = st.text_area("Client history (optional)", key="f_client", height=90,
-                              help="Without it, client trust shows Unknown and you can still go ahead.")
+                              help="Without it, the client isn't rated, and you can still go ahead.")
         st.caption("Where to find it: the **About the client** section of the job's page. On Upwork it's below the skills "
                    "and \"Activity on this job\"; on Freelancer.com it's on the right side. Copy it here if your paste above doesn't include it.")
         if st.button("Check job", type="primary"):
@@ -545,31 +570,19 @@ def screen_confirm() -> None:
         st.caption(f"Find it in the {box} section of the job's page{(', ' + where) if where else ''}. "
                    "Copy what it shows into the fields below; leave the rest blank.")
         link_or_note(job.link)
-    pv_opts = {"Not shown": None, "Verified": True, "Not verified": False}
+    pv_opts = PV_OPTS
     on_guru = job.platform == "guru"
-    # (key, label, current value), per platform: each one shows a different client box.
-    if on_freelancer:
-        fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews)]
-    elif on_guru:
-        fields = [("feedback_pct", "Feedback %", c.feedback_pct), ("total_spent_usd", "Total spend (USD)", c.total_spent_usd),
-                  ("jobs_posted", "Jobs posted", c.jobs_posted), ("jobs_paid", "Jobs paid", c.jobs_paid),
-                  ("paid_invoices_pct", "Paid invoices %", c.paid_invoices_pct),
-                  ("outstanding_invoices", "Outstanding invoices", c.outstanding_invoices)]
-    else:
-        fields = [("rating", "Rating", c.rating), ("reviews", "Reviews", c.reviews),
-                  ("jobs_posted", "Jobs posted", c.jobs_posted), ("hire_rate_pct", "Hire rate %", c.hire_rate_pct),
-                  ("total_spent_usd", "Total spent (USD)", c.total_spent_usd), ("hires", "Hires", c.hires),
-                  ("active_hires", "Active hires", c.active_hires)]
+    fields = client_fields(job.platform, c)
     shown = [f for f in fields if f[2] is not None]
     hidden = [f for f in fields if f[2] is None]
     vals = {}
     pv = "Not shown"
     asks_payment = not on_guru  # Guru shows paid invoices instead of a payment-verified badge
     if not shown and (c.payment_verified is None or not asks_payment):
-        st.caption("Nothing from that box came through with the post, so client trust will be Unknown. "
+        st.caption("Nothing from that box came through with the post, so the client won't be rated. "
                    "To score the client, click **Back** and paste the **About the client** box with the post."
                    if on_upwork else
-                   "Nothing from that box came through with the post, so client trust will be Unknown unless you add it below.")
+                   "Nothing from that box came through with the post, so the client won't be rated unless you add it below.")
     if asks_payment and c.payment_verified is not None:
         pv = st.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
     for key, label, value in shown:
@@ -656,13 +669,18 @@ def screen_card() -> None:
         d = rec.decision
     if ss.get("flash"):
         st.warning(ss.pop("flash"))
+    if ss.get("flash_ok"):
+        st.success(ss.pop("flash_ok"))
     recheck_result(rec)
     tone = "unchecked" if d.code == "unchecked" else d.decision
     word = decision_label(d) + (" (your override)" if d.overridden else "")
     chips = [trust_chip(rec.trust), chip(f"Budget: {rec.job.budget.raw_text or 'not stated'}")]
     if d.fit:
         chips.append(chip(f"Fit: {d.fit.band}"))
-    note = f"{d.card_note[0].upper()}{d.card_note[1:]}." if d.card_note else ""
+    card_note = d.card_note
+    if card_note == "check client manually":
+        card_note = "add them under Edit client details to rate the client"
+    note = f"{card_note[0].upper()}{card_note[1:]}." if card_note else ""
     st.markdown(verdict_html(word, tone, d.reason, chips, note), unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
@@ -681,9 +699,10 @@ def screen_card() -> None:
             if st.button("Override and write anyway"):
                 ss.card_action = (rec.job_key, "override", why)
                 st.rerun()
+    client_editor(rec)
     with st.expander("Details"):
         t = rec.trust
-        md(f"**Client trust:** {t.score if t.score is not None else '—'} · {t.band} ({t.coverage})")
+        md(f"**Client trust:** {f'{t.score}/100 · {t.band}' if t.score is not None else "Can't rate: the client's details weren't shared"} ({t.coverage})")
         for reason in t.reasons[:3]:
             md(f"- {reason}")
         md(f"**Budget:** {budget_words(rec.job.budget)} · against your minimum: {d.budget_gate.replace('_', ' ')}")
@@ -713,6 +732,8 @@ def screen_draft() -> None:
     if rec.decision.code == "unchecked" and rec.decision.card_note:
         st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
     st.caption(f"{summary_line(rec)} · Draft {v.n}")
+    if ss.get("flash_ok"):
+        st.success(ss.pop("flash_ok"))
     if timing_line(rec, v):
         st.caption(timing_line(rec, v))
     recheck_result(rec)
@@ -789,6 +810,8 @@ def screen_draft() -> None:
                 took = f" · written in {dur(old.seconds)}" if old.seconds is not None else ""
                 st.markdown(f"**v{old.n}**{took} {('· ' + old.comment) if old.comment else ''}")
                 st.text(old.text)
+
+    client_editor(rec)
 
     st.divider()
     st.subheader("Send")

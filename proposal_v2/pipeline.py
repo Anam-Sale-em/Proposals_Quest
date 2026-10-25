@@ -125,7 +125,7 @@ class Pipeline:
         return ProposalRecord(uid=self.uid, job_key=job.job_key, job=job, client=client or ClientProfile())
 
     # ------------------------------------------------------------------ decide
-    def decide(self, rec: ProposalRecord, check: bool = True) -> ProposalRecord:
+    def decide(self, rec: ProposalRecord, check: bool = True, reuse_assessment: bool = False) -> ProposalRecord:
         """Called once the user confirms the extracted fields. With check=False the user skips the
         fit check: no assessment call and no Skip, but red flags and a low budget still show as warnings."""
         t0 = time.monotonic()
@@ -149,16 +149,19 @@ class Pipeline:
             self.storage.put_proposal(rec)
             return rec
         d = pre_decision(rec.trust, gate, gate_text, red_text)
+        ran_check = False
         if d is None:
             projects = self.projects()
-            system, user = prompts.assessment(rec.job, profile, projects)
-            m = load_config()["models"]
-            runs = [self.llm.call("assess", "light", system, user, Assessment, m["temperature_extract"])]
-            for i in range(2, int(m.get("assess_votes", 1)) + 1):
-                # Separate runs (distinct prompt tail, so the cache keeps each), then the majority per fact.
-                runs.append(self.llm.call("assess", "light", system, user + f"\n\n(Independent check {i}.)",
-                                          Assessment, m.get("temperature_vote", 0.3)))
-            rec.assessment = majority(runs)
+            ran_check = not (reuse_assessment and rec.assessment)
+            if ran_check:
+                system, user = prompts.assessment(rec.job, profile, projects)
+                m = load_config()["models"]
+                runs = [self.llm.call("assess", "light", system, user, Assessment, m["temperature_extract"])]
+                for i in range(2, int(m.get("assess_votes", 1)) + 1):
+                    # Separate runs (distinct prompt tail, so the cache keeps each), then the majority per fact.
+                    runs.append(self.llm.call("assess", "light", system, user + f"\n\n(Independent check {i}.)",
+                                              Assessment, m.get("temperature_vote", 0.3)))
+                rec.assessment = majority(runs)
             by_id = {pr.id: pr for pr in projects}
             for j in rec.assessment.project_labels:  # the label comes from the facts, by rule
                 j.label = proof_label(j)
@@ -177,9 +180,30 @@ class Pipeline:
             d = decide(rec.trust, gate, gate_text, fit)
             self._pick_proof(rec)
         rec.decision = d
-        rec.check_seconds = round(time.monotonic() - t0, 1)
+        if ran_check or not reuse_assessment:
+            rec.check_seconds = round(time.monotonic() - t0, 1)
         rec.status = "skipped" if d.decision == "skip" else "decided"
         self.storage.put_proposal(rec)
+        return rec
+
+    def update_client(self, rec: ProposalRecord, client: ClientProfile) -> ProposalRecord:
+        """The user fixed the client's details after the check: re-score trust and redo the call with the
+        same fit facts (no model call). An override, a skipped fit check or a sent job keeps its call."""
+        rec.client = client
+        rec.events.append({"at": now_iso(), "type": "client_edited"})
+        d = rec.decision
+        if d is None or d.overridden or d.code == "unchecked" or rec.status == "sent":
+            flags = [f.kind for f in rec.job.red_flags]
+            rec.trust = score_client(client, flags, self.profile().trust_cutoffs or None, rec.job.platform)
+            self.storage.put_proposal(rec)
+            return rec
+        status, chosen, framing, extra = rec.status, rec.chosen_proof, rec.framing, rec.extra_proof
+        rec = self.decide(rec, check=True, reuse_assessment=True)
+        if rec.versions:  # keep the drafts' proof and status
+            rec.chosen_proof, rec.framing, rec.extra_proof = chosen, framing, extra
+            if rec.status == "decided" and status == "drafted":
+                rec.status = "drafted"
+            self.storage.put_proposal(rec)
         return rec
 
     def recheck(self, rec: ProposalRecord) -> ProposalRecord:

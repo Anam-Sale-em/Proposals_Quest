@@ -167,7 +167,26 @@ def test_new_job_page_starts_fresh_after_visiting_another_page(env):
 
 
 def test_number_fields_accept_loose_input():
-    from app import parse_number
+    from proposal_v2.ui_style import parse_number
     assert parse_number("USD, 300") == 300 and parse_number("$1,500") == 1500 and parse_number("1.5k") == 1500
     assert parse_number("80%") == 80 and parse_number("4.9") == 4.9 and parse_number("  ") == "blank"
     assert parse_number("abc") is None and parse_number("300-500") is None
+
+
+def test_edit_client_after_check_rescores_without_a_model_call(env):
+    llm = ScriptedLLM()
+    at = _open(_app(llm))
+    _sample(at)
+    _paste(at, "T03")
+    _btn(at, "Confirm and check").click().run()
+    assert any("can't rate" in m.value for m in at.markdown), [e.value for e in at.error]
+    calls = len(llm.calls)
+    for t in at.text_input:
+        if t.key and t.key.startswith("edit_rating_"):
+            t.input("4.9")
+        if t.key and t.key.startswith("edit_reviews_"):
+            t.input("40")
+    _btn(at, "Save and update").click().run()
+    assert any("Client details saved" in s.value for s in at.success), [e.value for e in at.error]
+    assert not any("can't rate" in m.value for m in at.markdown)
+    assert len(llm.calls) == calls and not at.exception

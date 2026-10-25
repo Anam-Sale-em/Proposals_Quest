@@ -205,7 +205,7 @@ BAND_DOTS = {"Red flag": 0, "Low": 1, "Medium": 2, "High": 3, "Excellent": 4}
 
 def trust_chip(trust) -> str:
     if trust is None or trust.score is None:
-        return '<span class="chip">Client trust: unknown</span>'
+        return '<span class="chip">Client trust: can\'t rate, no details shared</span>'
     on = BAND_DOTS.get(trust.band, 0)
     dots = "".join(f'<i class="{"on" if i < on else ""}"></i>' for i in range(4))
     return f'<span class="chip">Client trust: {escape(trust.band)} <span class="meter">{dots}</span> {trust.score}/100</span>'
@@ -227,3 +227,18 @@ def verdict_html(word: str, tone_key: str, why: str, chips: list[str], note: str
 
 def chip(text: str) -> str:
     return f'<span class="chip">{escape(text)}</span>'
+
+
+def parse_number(raw: str):
+    """Reads one number from loose input: "USD, 300", "$1,500", "1.5k", "80%". Returns "blank",
+    the number, or None when there's no number or more than one."""
+    import re
+
+    s = re.sub(r"(?<=\d),(?=\d{3}\b)", "", raw or "").strip()
+    if not s:
+        return "blank"
+    found = re.findall(r"\d+(?:\.\d+)?\s*[kK]?\b", s)
+    if len(found) != 1:
+        return None
+    n = found[0].strip()
+    return float(n[:-1]) * 1000 if n[-1] in "kK" else float(n)

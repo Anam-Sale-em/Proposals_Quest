@@ -97,9 +97,10 @@ def decide(trust: TrustResult, gate: str, gate_text: str, fit: FitResult) -> Dec
         return Decision(decision="apply_with_questions", code="unclear", budget_gate=gate, fit=fit, card_note=note,
                         reason="Apply with questions: the post doesn't say enough to plan the work.")
     band_word = {"Excellent": "an excellent", "High": "a strong", "Medium": "a decent",
-                 "Low": "a weak", "Unknown": "an unknown"}[trust.band if trust.band in TABLE["High"] else "Unknown"]
+                 "Low": "a weak", "Unknown": None}[trust.band if trust.band in TABLE["High"] else "Unknown"]
     return Decision(decision="apply", code="apply", budget_gate=gate, fit=fit, card_note=note,
-                    reason=f"Apply: {fit.band.lower()} fit and {band_word} client.")
+                    reason=(f"Apply: {fit.band.lower()} fit and {band_word} client." if band_word else
+                            f"Apply: {fit.band.lower()} fit. The client can't be rated: their details weren't shared."))
 
 
 def proof_label(j) -> str:
