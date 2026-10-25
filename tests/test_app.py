@@ -94,6 +94,7 @@ def test_paste_to_send_on_a_sample_job(env):
     assert any('class="verdict"' in m.value and ">Apply<" in m.value for m in at.markdown), [e.value for e in at.error]
     _btn(at, "Write proposal").click().run()
     assert any("Checked against your projects" in m.value for m in at.markdown), [w.value for w in at.warning]
+    assert any("Fit check:" in c.value and "Writing the draft:" in c.value for c in at.caption)
     _btn(at, "Mark as sent").click().run()
     assert any(m.value.startswith("Sent ") for m in at.success), [w.value for w in at.warning]
     at.sidebar.radio(key="page").set_value("My jobs").run()

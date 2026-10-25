@@ -296,6 +296,7 @@ class ProposalVersion(BaseModel):
     screening_answers: list[ScreeningAnswer] = Field(default_factory=list)
     validation: ValidationReport
     comment: str = ""  # the revise comment that produced it, if any
+    seconds: Optional[float] = None  # how long v2 took to write this version
 
 
 class Outcome(BaseModel):
@@ -315,6 +316,7 @@ class ProposalRecord(BaseModel):
     job_key: str
     created_at: str = Field(default_factory=now_iso)
     status: Literal["extracted", "decided", "drafted", "sent", "skipped"] = "extracted"
+    check_seconds: Optional[float] = None  # how long the last fit check took
     job: JobPost
     client: ClientProfile = Field(default_factory=ClientProfile)
     trust: Optional[TrustResult] = None

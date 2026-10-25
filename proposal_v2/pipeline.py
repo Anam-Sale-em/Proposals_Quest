@@ -7,6 +7,7 @@ Every step that can stop the job raises an error with a plain message for the us
 from __future__ import annotations
 
 import difflib
+import time
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -127,6 +128,7 @@ class Pipeline:
     def decide(self, rec: ProposalRecord, check: bool = True) -> ProposalRecord:
         """Called once the user confirms the extracted fields. With check=False the user skips the
         fit check: no assessment call and no Skip, but red flags and a low budget still show as warnings."""
+        t0 = time.monotonic()
         profile = self.profile()
         flags = [f.kind for f in rec.job.red_flags]
         rec.trust = score_client(rec.client, flags, profile.trust_cutoffs or None, rec.job.platform)
@@ -175,6 +177,7 @@ class Pipeline:
             d = decide(rec.trust, gate, gate_text, fit)
             self._pick_proof(rec)
         rec.decision = d
+        rec.check_seconds = round(time.monotonic() - t0, 1)
         rec.status = "skipped" if d.decision == "skip" else "decided"
         self.storage.put_proposal(rec)
         return rec
@@ -248,6 +251,7 @@ class Pipeline:
     def write(self, rec: ProposalRecord, project_id: Optional[str] = "auto", comment: str = "",
               extra_ids: Optional[list[str]] = None) -> ProposalRecord:
         """Solution Brief, then the proposal, then the claim check with one retry."""
+        t0 = time.monotonic()
         profile = self.profile()
         if project_id == "auto":
             project_id, framing = rec.chosen_proof, rec.framing or "plan_only"
@@ -286,13 +290,14 @@ class Pipeline:
         rec.versions.append(ProposalVersion(n=len(rec.versions) + 1, framing=framing, project_id=project_id, mode=mode,
                                             extra_project_ids=[x.id for x in extras],
                                             text=draft.text, screening_answers=draft.screening_answers,
-                                            validation=report, comment=comment))
+                                            validation=report, comment=comment, seconds=round(time.monotonic() - t0, 1)))
         rec.status = "drafted"
         self.storage.put_proposal(rec)
         return rec
 
     def revise(self, rec: ProposalRecord, comment: str, current_text: Optional[str] = None) -> ProposalRecord:
         """Rewrites only what the comment asks, then re-runs the claim check."""
+        t0 = time.monotonic()
         v = rec.latest()
         if not v:
             raise PipelineError("Write a draft first.")
@@ -305,7 +310,7 @@ class Pipeline:
         rec.versions.append(ProposalVersion(n=len(rec.versions) + 1, framing=v.framing, project_id=v.project_id, mode=v.mode,
                                             extra_project_ids=v.extra_project_ids,
                                             text=draft.text, screening_answers=draft.screening_answers,
-                                            validation=report, comment=comment))
+                                            validation=report, comment=comment, seconds=round(time.monotonic() - t0, 1)))
         self.storage.put_proposal(rec)
         return rec
 

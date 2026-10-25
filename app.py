@@ -98,6 +98,29 @@ def decision_label(d) -> str:
     return "Fit check skipped" if d.code == "unchecked" else DECISION_LABEL[d.decision]
 
 
+def dur(sec) -> str:
+    """12 → "12s", 95 → "1 min 35s"."""
+    sec = round(sec)
+    return f"{sec}s" if sec < 60 else f"{sec // 60} min" + (f" {sec % 60}s" if sec % 60 else "")
+
+
+def timing_line(rec, v) -> str:
+    """How long v2 took: the fit check, this draft, all drafts, and the time since the job was added."""
+    parts = []
+    if rec.check_seconds is not None:
+        parts.append(f"Fit check: {dur(rec.check_seconds)}")
+    if v.seconds is not None:
+        parts.append(f"{'This draft' if len(rec.versions) > 1 else 'Writing the draft'}: {dur(v.seconds)}")
+    timed = [x.seconds for x in rec.versions if x.seconds is not None]
+    if len(timed) > 1:
+        parts.append(f"All {len(timed)} drafts: {dur(sum(timed))}")
+    if rec.status != "sent":
+        from datetime import datetime, timezone
+        since = (datetime.now(timezone.utc) - datetime.fromisoformat(rec.created_at)).total_seconds()
+        parts.append(f"Since you added the job: {dur(since)}")
+    return ("⏱ " + " · ".join(parts)) if parts else ""
+
+
 def summary_line(rec) -> str:
     """e.g. "Decision: Apply · Client trust: High (64/100)" or "Fit check skipped · Client trust: Unknown"."""
     d = rec.decision
@@ -512,8 +535,12 @@ def screen_confirm() -> None:
     on_freelancer = job.platform == "freelancer"
     where = {"upwork": "below the skills and \"Activity on this job\"", "freelancer": "on the right side"}.get(job.platform, "")
     box = "**Posted By**" if job.platform == "guru" else "**About the client**"
+    on_upwork = not on_freelancer and job.platform != "guru"
     if is_sample_link(job.link):
         st.caption("Sample job: the client details are filled in from its sample page.")
+    elif on_upwork:
+        st.caption("Read from the **About the client** box you pasted with the post (on the job page it's below the skills "
+                   "and \"Activity on this job\"). Fix a number here if it came through wrong.")
     else:
         st.caption(f"Find it in the {box} section of the job's page{(', ' + where) if where else ''}. "
                    "Copy what it shows into the fields below; leave the rest blank.")
@@ -539,14 +566,16 @@ def screen_confirm() -> None:
     pv = "Not shown"
     asks_payment = not on_guru  # Guru shows paid invoices instead of a payment-verified badge
     if not shown and (c.payment_verified is None or not asks_payment):
-        st.caption("Nothing from that box came through with the post, so client trust will be Unknown unless you add it below.")
+        st.caption("Nothing from that box came through with the post, so client trust will be Unknown. "
+                   "To score the client, click **Back** and paste the **About the client** box with the post."
+                   if on_upwork else
+                   "Nothing from that box came through with the post, so client trust will be Unknown unless you add it below.")
     if asks_payment and c.payment_verified is not None:
         pv = st.selectbox("Payment", list(pv_opts), index=list(pv_opts.values()).index(c.payment_verified))
     for key, label, value in shown:
         vals[key] = num(label, value, f"c_{key}_{rec.job_key}")
-    if hidden or (asks_payment and c.payment_verified is None):
-        title_more = ("Add client details from the job page" if (on_freelancer or on_guru)
-                      else "Add client details the post didn't show")
+    if not on_upwork and (hidden or (asks_payment and c.payment_verified is None)):  # Upwork: the box is pasted with the post
+        title_more = "Add client details from the job page"
         with st.expander(title_more):
             if on_freelancer:
                 st.caption("Freelancer.com's \"About the Client\" box shows the star rating, the number next to it (reviews) "
@@ -684,6 +713,8 @@ def screen_draft() -> None:
     if rec.decision.code == "unchecked" and rec.decision.card_note:
         st.warning(f"Fit check skipped. Heads-up: {rec.decision.card_note}.")
     st.caption(f"{summary_line(rec)} · Draft {v.n}")
+    if timing_line(rec, v):
+        st.caption(timing_line(rec, v))
     recheck_result(rec)
     recheck_button(rec, "Check the fit now" if rec.decision.code == "unchecked" else "Check the fit again")
 
@@ -755,7 +786,8 @@ def screen_draft() -> None:
     if len(rec.versions) > 1:
         with st.expander(f"Earlier versions ({len(rec.versions) - 1})"):
             for old in rec.versions[:-1]:
-                st.markdown(f"**v{old.n}** {('· ' + old.comment) if old.comment else ''}")
+                took = f" · written in {dur(old.seconds)}" if old.seconds is not None else ""
+                st.markdown(f"**v{old.n}**{took} {('· ' + old.comment) if old.comment else ''}")
                 st.text(old.text)
 
     st.divider()
