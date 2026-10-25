@@ -4,7 +4,13 @@ v2 is an AI OS Mini for freelance job triage. Paste a job, and it checks the lin
 
 ## For non-developers: just open the link
 
-Open the app link you were given and enter the passphrase. Nothing to install. To try it without your own jobs, pick **Sample workspace → Load sample data**: a sample freelancer with 3 projects, 12 test jobs, and sample Freelancer.com jobs for the link and search tabs.
+Nothing to install.
+
+1. Open **https://proposalsquest-ziiaqxdgbmuguhpzntuyjf.streamlit.app/**. If it says the app is asleep, click **Yes, get this app back up** and wait about a minute.
+2. Type the passphrase **`UnknownEntity`** and click **Open**.
+3. In the sidebar, pick **Sample workspace → Load sample data**. You get a sample freelancer with 3 projects, the 12 test jobs, and sample Freelancer.com jobs for the link and search tabs. Pick a test job under **New job**, click **Fill the form**, then **Check job**.
+
+**My workspace** holds my own projects and jobs, so please try things in the Sample workspace. The live app resets its files when it restarts; nothing you do there is permanent.
 
 Running it locally instead? If `.env` has no keys yet, the app shows a one-time screen to paste them.
 
@@ -39,8 +45,8 @@ Limits: the app sleeps after 12 hours without visitors (open the link and click 
 
 1. **New job:** paste the job link (the job's own page; on Freelancer.com use the project's **Share → Copy link**) and the whole job post from Upwork, Freelancer.com or Guru (copying the whole page is fine; v2 keeps only the main post and its own client box). Freelancer.com jobs can also come in by link or keyword search. **Check if this job is a good fit first** is ticked by default; untick it to go straight to the draft (red flags and a low budget still show as warnings). Pasting a job you already have offers Open, New version or Check again.
 2. **Confirm the details:** check what v2 took from the post, fix anything wrong (budget type, client history), then **Confirm and check**. Client history is the **About the client** section of the job's page: below the skills and activity on Upwork, on the right side on Freelancer.com (Open job is right there). For Freelancer.com jobs, copy the rating, review count and payment status; for Guru, the **Posted By** box (feedback, total spend, jobs posted, jobs paid, paid and outstanding invoices). Add anything the proposal must say under **Anything you want in the proposal?** (your own words; v2 treats them as true). Under **Proof**, let v2 pick the best project, choose up to 3 yourself, or cite none.
-3. **Decision card:** one decision, one reason, client trust, budget and fit. **Apply with questions** means it's worth applying, but the post is vague or the budget looks unreal, so the proposal leads with questions. Changed your skills, rates or projects? **Check the fit again** reruns it. **Write proposal**, or **Override** a Skip (logged). **Details** shows the trust score with its top reasons, the four fit answers, whether the three checks agreed, the skill tags and the link check.
-4. **Draft:** your best project is pre-selected as proof. Pick up to 3 (the first is the main one), or none for plan only, then **Rewrite with this proof**. Edit the text, answer the screening questions, fix any line the claim check flags, or revise with a comment (it changes only what you ask).
+3. **Decision card:** one decision, one reason, client trust, budget and fit. **Apply with questions** means it's worth applying, but the post is vague or the budget looks unreal, so the proposal leads with questions. Changed your skills, rates or projects? **Check the fit again** reruns it. **Write proposal**, or **Override** a Skip (logged). Forgot the client's details? **Edit client details** updates trust and the decision without rerunning the fit check; a client with no details reads "can't rate". **Details** shows the trust score with its top reasons, the four fit answers, whether the three checks agreed, the skill tags and the link check.
+4. **Draft:** your best project is pre-selected as proof. Pick up to 3 (the first is the main one), or none for plan only, then **Rewrite with this proof**. Edit the text, answer the screening questions, fix any line the claim check flags, or revise with a comment (it changes only what you ask). The line under the title shows how long the fit check and each draft took.
 5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap. My jobs → **Download sent log (Excel)** keeps the record.
 
 ## Run the tests and evals

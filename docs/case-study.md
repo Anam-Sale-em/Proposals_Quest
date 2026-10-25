@@ -8,6 +8,7 @@ I rebuilt my own freelance proposal workflow as a small AI OS. You paste a job; 
 - In four fully live eval runs, it got every decision and trust score right (48 of 48).
 - The final code passed 12 of 12 and 11 of 12 in two live runs.
 - In the last run, 8 of 9 drafts passed the rubric, with zero unsupported claims.
+- On 6 real jobs from Upwork, Freelancer.com and Guru, a proposal took 10 minutes median (7–14), against about 57 with plain ChatGPT.
 - It runs from a live link with nothing to install.
 
 ## 1. User and problem
@@ -114,6 +115,7 @@ Paste / Freelancer.com link / Freelancer.com search
 | Writes the Solution Brief and the proposal | Adds anything the proposal must say, in their own words; picks or switches the proof project; edits the draft |
 | Lists every claim in the draft | Fixes anything the claim check flags |
 | | Overrides any Skip (logged with a reason) |
+| | Fixes the client's details at any point; trust and the call update |
 | | Sends. v2 never submits anything |
 
 Every screen shows why: the reason for the decision, the trust score and how many fields it rests on, whether the three checks agreed, and the exact lines the claim check doubts.
@@ -130,6 +132,8 @@ Every screen shows why: the reason for the decision, the trust score and how man
 | F4 | "API" flagged on a post asking for REST APIs | No plurals; generic words treated as tools | Plural matching, generic-word list |
 | F5 | My honest "this is new for me" was flagged | v2 asked for honesty, then flagged it | Only past-work sentences are checked |
 | F6 | $40–150/hour judged as a $150 total | The model saw "$40 – $150" without "Hourly" | Budget sent in plain words |
+| F7 | Real job: "I did nearly this" from a booking chatbot on an SEO content job | Sharing a tool (n8n) counted as evidence | Open: platform alone won't make "similar" |
+| F8 | Real jobs: "My goal…", "to shipped", a repeated phrase | The claim check checks facts, not wording | Open: a code check plus the automatic retry |
 | E1–E3 | Eval decisions and proof wording flipped between runs | Judgments left to the model | Rules in code, a vote over three checks, an evidence rule |
 
 **Evaluation (12 frozen test cases):**
@@ -166,16 +170,19 @@ Every screen shows why: the reason for the decision, the trust score and how man
 | Pipeline time per drafted job | ~30 s per answer | ~3 min per generation | ~1.5–2 min on the free tier, mostly rate-limit waits; a Skip takes seconds |
 | LLM calls | 1 + 3 revisions | Full chain + images | Drafted: 7. Red-flag or below-minimum Skip: 1 |
 | Errors absorbed | — | — | 57 per run, by retries and fallbacks; no case lost |
-| Minutes per proposal, open → send-ready | ~57 | 65–85+ | _from the real-job check_ |
+| Minutes per proposal, open → send-ready | ~57 (estimate) | 65–85+ | **10 median (7–14)** on 5 real jobs, measured |
+| Revision rounds | 3+ | 2–3 | 0–1 (1 on 3 of 5 real jobs) |
+
+**Real jobs (Day 5):** six open jobs, timed by stopwatch. v2 said Apply on three and Skip on three (a healthcare SaaS build, a Figma-only design job, a Laravel code audit). I agreed with one Skip and overrode two to get a draft. Asked to "exaggerate my project", the revision added adjectives but no new facts. On the Guru job the draft left the price for me. Full table in `evals/day4-results.md`, section 7.
 
 **Limitations:**
-- **The biggest one:** "how close is my past project to this job?" is still the weakest call. The claim check can't catch an overstated "I did nearly this", because the project behind it is real. The vote and the evidence rule bring it down to 0–1 misses per run.
+- **The biggest one:** "how close is my past project to this job?" is still the weakest call. The claim check can't catch an overstated "I did nearly this", because the project behind it is real. The vote and the evidence rule bring it down to 0–1 misses per eval run, but a real job still got one (F7): a shared tool was enough.
 - Vague posts get honest but generic "questions first" drafts (T04 fails the rubric).
-- Small style slips in passing drafts, such as "My goal" instead of "Your goal".
+- Wording slips pass the claim check (F8), and the drafts read alike: each opens "Your goal is to…".
 - The free tier sets the speed, and sometimes which model answers.
 - Freelancer.com shares no client history through its API, so trust there rests on what the user copies in.
 - The live app forgets on restart, so the sent log has to be downloaded.
-- 12 synthetic test cases on one sample profile.
+- 12 synthetic test cases on one sample profile, and 6 real jobs: enough to time it, not enough to measure skip accuracy.
 
 ## 7. Non-developer handoff
 
@@ -194,8 +201,8 @@ Every screen shows why: the reason for the decision, the trust score and how man
 | Metric | Why | Where it comes from |
 | --- | --- | --- |
 | Proposals sent through v2 vs outside it | Adoption | Sent log vs my Upwork history |
-| Median minutes, paste → sent | The time claim | Logged at Mark as sent |
-| Share of each draft edited before sending | Draft quality and voice | Logged at Mark as sent |
+| Median minutes from adding a job to sending it | The time claim | Logged at Mark as sent |
+| How much of each draft I change before sending (%) | Draft quality and voice | Logged at Mark as sent |
 | Skips I overrode, and why | Are the rules right? | Override log |
 | Reply rate by decision and trust band | Does the triage pick better jobs? | One-tap outcomes |
 | Unsupported claims per draft | The guardrail stays at zero | Hand count, weekly sample |
@@ -203,7 +210,8 @@ Every screen shows why: the reason for the decision, the trust score and how man
 ## 9. Next two weeks
 
 **Week 1: steadier calls, measured on real work**
-- Apply the evidence rule to "same records": the record type has to appear in both the post and the project.
+- Apply the evidence rule to "same records": the record type has to appear in both the post and the project, and a shared platform alone can't make "similar" (F7).
+- A code check for "My goal…" and repeated phrases, sent to the automatic retry (F8).
 - Move the four fit questions to facts plus rules, the way the proof label already works.
 - A better "questions first" draft for vague posts.
 - Grow the real-job set to 30 jobs, with my call recorded before v2's.
@@ -212,4 +220,4 @@ Every screen shows why: the reason for the decision, the trust score and how man
 **Week 2: close the loop with outcomes**
 - Persistent storage, so the live app keeps jobs across restarts, with a workspace per user.
 - Use the logged outcomes to see which decisions and proof framings win, before changing any rule.
-- Learn my voice from my edits; the edit share is already logged per draft.
+- Learn my voice from my edits; how much of each draft I change is already logged.

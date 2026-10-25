@@ -1,8 +1,8 @@
 # Day 4 results: evaluate, break, harden
 
-**Short answer:** across four fully live runs, v2 got **every decision and every trust score right (48 of 48)**. The one unstable part was how it describes the proof: "I did nearly this" versus "same skills". Two code changes (a vote over three checks, and an evidence rule) cut that from 2 misses per run to 0–1. The final code, run live twice, passed **12 of 12** and **11 of 12** (23 of 24 cases, 399 of 400 checks). Drafts pass the rubric **8 of 9** in the last run, with **0** unsupported claims. Six live failures (F1–F6) and three eval failures (E1–E3) are written up with root causes.
+**Short answer:** across four fully live runs, v2 got **every decision and every trust score right (48 of 48)**. The one unstable part was how it describes the proof: "I did nearly this" versus "same skills". Two code changes (a vote over three checks, and an evidence rule) cut that from 2 misses per run to 0–1. The final code, run live twice, passed **12 of 12** and **11 of 12** (23 of 24 cases, 399 of 400 checks). Drafts pass the rubric **8 of 9** in the last run, with **0** unsupported claims.
 
-Still to add: real-job timing against the baseline.
+On **6 real jobs** from Upwork, Freelancer.com and Guru, a proposal took **10 minutes median (7–14)** from opening the job to send-ready, against about 57 with plain ChatGPT. Eight failures (F1–F8) and three eval failures (E1–E3) are written up with root causes.
 
 ## 1. Test-set results
 
@@ -88,13 +88,14 @@ Scored against the [rubric](rubric.md): pass = 4 of 5 with item 3 (honest proof)
 | Quality | Rubric pass rate | 3 of 3 (T01–T03) | 0 of 5 (agency format) | **8 of 9** in the last run (7 of 9 in the two before) |
 | Quality | Unsupported or overstated claims | 0 (+1 borderline) | 5–7 per draft | **0 in 9 drafts** in the last run (2, then 1, in the two before) |
 | Quality | Claim check | None | None | 9 of 9 drafts pass; 1 fixed by the automatic retry (T03); 0 left "needs review" |
-| Speed | Minutes per proposal, open → send-ready | ~57 (estimate) | 65–85+ | _from the real-job check_ |
+| Speed | Minutes per proposal, open → send-ready | ~57 (estimate) | 65–85+ | **10 median (7–14)** on 5 real drafted jobs, stopwatch, one revision included on 3 |
 | Speed | Pipeline time per job | ~30 s per answer | ~3 min per generation | **Drafted job: p50 ~100–116 s** across the two final runs (87–153 s; outliers of 247 s and 343 s under rate limits). **Skip: 7–35 s** |
 | Cost | LLM calls per job | 1 chat + 3+ revisions | Full chain + images | Drafted: 7 (9 with the claim retry). Work-type Skip: 4. Red-flag or below-minimum Skip: 1 |
 | Cost | Tokens per drafted job | Subscription | No figure | ~6,500–10,200 in and ~2,300–3,300 out; the 2,000-word spec ~24,000 in / 6,600 out. The vote adds about 40%. **$0 on the free tier** |
 | Reliability | Model errors absorbed | — | Token expiry under load | 57 busy or rate-limit errors in each final run, every one retried or sent to the fallback; 0 cases lost |
 | Human input | Before the first draft | Job + background written per job | 10 fields | One paste or link, then confirm |
 | Human input | Approvals | — | 1 | 2 (confirm details, then the draft); v2 never sends |
+| Human input | Revision rounds per draft | 3+ | 2–3 | 0 or 1 on the real jobs (1 on 3 of 5) |
 
 Most of the ~2 minutes is waiting on the free tier: Gemini 3.8 Flash allows 5 calls a minute and about 20 a day, so the client throttles itself, and busy or quota errors move calls down the chain.
 
@@ -110,6 +111,8 @@ Full write-ups in [failures.md](failures.md).
 | F4 | "API" flagged on a post asking for REST APIs | Names check: no plurals, generic words treated as tools | Plural matching, generic-word list |
 | F5 | The draft's honest "new for me" was flagged | v2 told the draft to be honest, then the claim check flagged it | Claim check judges only past-work sentences |
 | F6 | $40–150/hour judged as a $150 total | The model saw the raw budget text without "Hourly" | Budget given in plain words; hourly judged as a rate |
+| F7 | Real job: "I did nearly this" from a booking chatbot on an SEO content job | Same tool (n8n) counted as evidence; the deliverable never compared | Open. Next: platform alone can't make "similar"; records or deliverable must match too |
+| F8 | Real jobs: "My goal…", "to shipped", a repeated phrase | Proof line pasted from project text; the claim check checks facts, not wording | Open. Next: code check for these, sent to the automatic retry |
 | E1 | T04's decision flipped between runs | The placeholder rule lived only in the prompt | Enforced in code (#55) |
 | E2 | Proof framing flipped with every rewording | One holistic label from a small model | Four facts plus a rule in code (#57, #58) |
 | E3 | Fully live runs: single facts flipped ("same platform", "same records") | One guess per fact, with nothing to check it against | Majority of three checks, confidence shown (#59); "similar" needs a specific tool named in both texts (#60). Still open: "same records" (T02) |
@@ -129,7 +132,30 @@ Full write-ups in [failures.md](failures.md).
 
 ## 7. Real-job check (fresh jobs)
 
-_Pending: 6–10 fresh jobs, with my call written down before v2 runs._
+Six jobs open on Day 5: two from Upwork (pasted), three from Freelancer.com (two by link, one from keyword search) and one from Guru (pasted). All run on the live link with my own projects. Minutes are by stopwatch, from opening the job to a draft I'd send, including any revision.
+
+| # | Job | Platform | Client trust | v2's call | What I did | Proof cited | Revisions | Minutes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Senior Laravel & AI Engineer, code audit ($500–1k fixed) | Guru | Medium (45) | Skip: not the kind of work I do | Overrode, wrote the draft | Chosen by me, led with my AI chatbot agent: "Different domain, same core work" | 0 | 10 |
+| 2 | SEO autopilot on n8n + Sanity CMS | Freelancer.com, link | High (5.0, 14 reviews) | Apply | Wrote the draft | v2's pick, AI chatbot agent: "I did nearly this" | 1 ("more professionally") | 7 |
+| 3 | Full-stack AI developer, healthcare SaaS ($25–30/hr) | Upwork | — | Skip | Agreed, no draft | — | — | — |
+| 4 | AI agent & n8n automation specialist ($20–35/hr) | Upwork | $1.9K spent, 5 hires | Apply | Wrote the draft | v2's pick, my proposal-generation app: "Different domain, same core work" | 1 (more detail, "exaggerate") | 11 |
+| 5 | Mobile booking app UX/UI designer ($25–50/hr) | Freelancer.com, link | Can't rate (0 reviews) | Skip | Overrode, wrote the draft | v2's pick, React Native apps: "Different domain, same core work" | 1 ("warmer and friendly") | 14 |
+| 6 | AI marketplace MVP (₹12,500–37,500) | Freelancer.com, search | Can't rate (0 reviews) | Apply: medium fit | Wrote the draft | v2's pick, React Native apps: "Different domain, same core work" | 0 | 7 |
+
+**Time:** 10 minutes median over the 5 drafted jobs (7, 7, 10, 11, 14), against about 57 with plain ChatGPT and 65–85+ with v1. The ChatGPT figure is my per-step estimate from Day 1; the v2 figures are measured. The proxy user also got his first proposal in about 10 minutes.
+
+**What held up:**
+- **The Skips match the posts.** A healthcare SaaS build, a Figma-only design job and a Laravel code audit are not the work I do, and v2 said so in one line each. I overrode two of them to get a draft; both drafts could only offer "different domain" proof, which is the honest framing.
+- **No invented facts, even when asked.** On job 4 I asked the revision to "exaggerate my project". It added adjectives ("expertly", "meticulous") but no new numbers, tools or clients.
+- **No price set for me.** The Guru client asked for a fixed-price quote; the draft left "[your price and timeline]" for me to fill in.
+- **The client box per platform worked:** Guru's paid jobs and invoices gave Medium (45), Freelancer.com's 5.0 and 14 reviews gave High, and the two Freelancer.com clients with no reviews read "can't rate" instead of a guess.
+- **Revisions changed only what I asked.** Each revised draft kept the plan and the project and changed the tone.
+
+**What didn't** (write-ups in [failures.md](failures.md)):
+- **F7, overstated proof on job 2.** "I did nearly this" for a booking chatbot cited on an SEO content pipeline. Both use n8n, so the evidence rule let it through; the revision made it "I completed a similar architecture". This is the same weak spot as E3, now on a real job.
+- **F8, sentence slips in the drafts.** Job 6 opens "My goal is to build…" and says "I used React Native to shipped four apps". Job 4 repeats the project's result phrase twice in one sentence. The claim check passes all three, because every fact in them is real.
+- **The drafts read alike.** All five open with "Your goal is to…" and end with a question and "Let us discuss". Fine for a first draft, but a client reading many proposals would notice.
 
 ## 8. Proxy user
 
@@ -169,4 +195,6 @@ It took him about **10 minutes** to open the app, pick a job he liked and get a 
 - **Free-tier limits set the speed.** About 2 minutes per drafted job, mostly waiting, and some drafts come from the fallback model when the daily quota runs out.
 - **Client data is thin on some platforms.** Freelancer.com's API gives no client history, so trust there rests on what the user copies in.
 - **The live app forgets.** Streamlit Cloud resets local files on restart; the sent log has to be downloaded as an Excel file.
-- **Small test set.** 12 synthetic cases on one sample profile; the real-job check is the outside test.
+- **Small test set.** 12 synthetic cases on one sample profile, plus 6 real jobs. The real-job set is too small to give a skip accuracy; that needs 30 jobs with my call written down before v2's.
+- **Proof built from a shared tool.** Sharing n8n with a past project is enough for "I did nearly this" (F7). Platform alone shouldn't count.
+- **Sentence-level slips** pass the claim check (F8). The freelancer still has to read every draft before sending, which is why v2 never sends.

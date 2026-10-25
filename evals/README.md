@@ -23,7 +23,7 @@ Results: [day4-results.md](day4-results.md) · failures: [failures.md](failures.
 | Core cases | 12 | Synthetic, frozen | Decisions, drafts, validators and failure handling; v1 against v2 |
 | Trust examples | 16 | From the plan | Unit tests for the trust scorer, with no LLM |
 | Decision table | 15 cells, both gates and every budget rule | From the plan | Unit tests for the decision function, with no LLM |
-| Fresh jobs | 6–10 | Real Upwork jobs pasted on Day 4, kept private | Skip accuracy, trust agreement, jobs rightly skipped, and 3 timed v2 runs |
+| Fresh jobs | 6 | Real jobs from Upwork, Freelancer.com and Guru, run on the live link on Day 5 | Minutes per proposal by stopwatch, v2's call and my override, client trust per platform, draft problems |
 
 ## Running the evals
 
@@ -44,16 +44,10 @@ Results land in `evals/results/<prompt_version>_<time>/`: `results.csv`, `summar
 - Every run logs prompt_version, the git commit, model, latency, tokens, validation results and the decision. Before-and-after tables are keyed by prompt_version.
 - Three timed runs each way is directional evidence, so every run is shown, not just the medians.
 
-## Day 4 fresh jobs: calls before v2
+## Fresh jobs
 
-On Day 4 I open 6–10 new Upwork jobs, at least 3 of which I'd skip. For each job, before running v2 on it, I write down three calls in `private/day4_calls.csv` (header in [`../labels/day4_calls_template.csv`](../labels/day4_calls_template.csv)):
+Six open jobs, run on the live link with my own projects: two pasted from Upwork, three from Freelancer.com (two links, one keyword search), one pasted from Guru. For each I timed opening the job to a draft I'd send, and noted v2's call, what I did with it, the proof it cited and any revision. Results are in [day4-results.md](day4-results.md), section 7; the job posts stay private.
 
-1. **Glance call**, from the title and budget only: Apply or Skip.
-2. **Considered call**, after reading the whole post: Apply, Apply with questions or Skip.
-3. **Trust call**, from the client box: would I work with this client? Yes, Unsure or No.
+Six jobs show the time and the draft problems. They're too few for a skip accuracy. The next set is 30 jobs, with my own call written down before v2 runs (template: [`../labels/day4_calls_template.csv`](../labels/day4_calls_template.csv)), so v2 can't influence it.
 
-Then I paste the job into v2 and record its decision and trust band next to my calls. Because my calls come before v2's answer on each job, v2 can't influence them. Three of the Apply jobs similar to T01–T03 are also timed with a stopwatch.
-
-Trust calls map to bands like this, fixed today: Yes = Medium or above, Unsure = Low or Unknown, No = Red flag.
-
-The trust thresholds stay at the plan's values, checked by the 16 worked examples; they aren't tuned on extra labels.
+The trust thresholds stay at the plan's values, checked by the 16 worked examples; they aren't tuned on the real jobs.
