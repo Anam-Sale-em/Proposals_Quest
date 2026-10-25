@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "Restates the goal (daily Shopify to Sheets) and covers all explicit requirements including specific columns, duplicate skipping, logging, scheduling, and rate limits."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "Uses specific details from the post such as 'fulfilment status', 'previous day's orders', and the requirement to 'skip orders that are already in the sheet'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "Claims of past work (Shopify-to-PostgreSQL sync, n8n automations) are directly supported by projects P2 and P1 in the profile; no unverified claims are made."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "Names concrete first steps like using date filters/pagination for Shopify, checking existing order numbers for duplicates, and setting up a cron job or cloud job."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "Ends with one clear question about the execution environment (server vs. recommendation) and fits within standard length limits."
+   }
+  ]
+ }
+}

@@ -28,6 +28,32 @@ PAST_CLAIM = re.compile(r"\b(I've|I have|I had|I've been|I was|I built|I used|I 
 ATTACHMENT = re.compile(r"(video walkthrough|recorded (?:a|an)\b[^.]{0,30}\bvideo|personali[sz]ed video|see attached|attached (?:is|are)|loom video)", re.I)
 
 
+BROKEN_VERB = re.compile(r"\bto (shipped|built|created|developed|led|owned|automated|designed|delivered|launched|reduced|cut)\b", re.I)
+STOP = {"the", "a", "an", "and", "or", "to", "of", "for", "in", "on", "with", "your", "my", "i", "you", "we", "is", "it", "that", "this", "as", "at", "by", "be", "will"}
+
+
+def repeated_phrases(text: str, n: int = 5) -> list[str]:
+    """Phrases of n+ words that appear twice, ignoring ones made only of small words. The model sometimes
+    pastes a project's result twice into one sentence (F8). Overlapping matches are merged into one phrase."""
+    words = re.findall(r"[a-z0-9~%$]+", text.lower())
+    first, starts = {}, []
+    for i in range(len(words) - n + 1):
+        gram = tuple(words[i:i + n])
+        if sum(w not in STOP for w in gram) < 3:
+            continue
+        if gram in first and i - first[gram] >= n:
+            starts.append(i)
+        first.setdefault(gram, i)
+    out, run = [], []
+    for i in starts + [None]:
+        if run and (i is None or i != run[-1] + 1):
+            out.append(" ".join(words[run[0]:run[-1] + n]))
+            run = []
+        if i is not None:
+            run.append(i)
+    return out
+
+
 def number_values(text: str) -> set[str]:
     """Every number in the text, normalized, including the K-expanded form."""
     values: set[str] = set()
@@ -171,6 +197,22 @@ def validate(
         else:
             r.notes.append(f"Check by hand: the post says \"{ins.text}\".")
 
+    # Wording a client would notice and the fact checks can't see (F8).
+    opener = re.sub(r"^[\s\"'“‘*_#>-]+", "", text)
+    opener = re.sub(r"^(hi|hello|hey|dear)\b[^.!?\n]*[,.!\n]\s*", "", opener, flags=re.I)
+    if re.match(r"my goal\b", opener, re.I):
+        r.style_failures.append("It opens with \"My goal\"; open with the client's goal (\"Your goal…\").")
+    for m in BROKEN_VERB.finditer(text):
+        r.style_failures.append(f"Broken verb: \"{m.group(0)}\" in \"{_sentences_with(text, m.group(0))}\".")
+    content = lambda s: " ".join(w for w in re.findall(r"[a-z0-9~%$]+", s.lower()) if w not in STOP)  # noqa: E731
+    post_words = content(job_text(job))
+    for phrase in repeated_phrases(text):
+        if content(phrase) in post_words:  # small words aside: "the form to Google Sheets" = "a form to Google Sheets"
+            continue  # the client's own terms (a field list, a workflow name) can fairly appear twice
+        r.style_failures.append(f"The phrase \"{phrase}\" appears twice; say it once.")
+    for s in r.style_failures:
+        r.notes.append(f"Wording: {s}")
+
     # A price or timeline the freelancer still has to fill in. A reminder, not a failure.
     if "[your price" in full_text.lower():
         r.notes.append("Fill in [your price and timeline] before sending: the post asks for it, and only you can commit to it.")
@@ -185,7 +227,7 @@ def validate(
             r.notes.append(f"{len(r.screening_failures)} screening question(s) have no answer yet.")
 
     r.ok = r.length_ok and not (r.number_failures or r.name_failures or r.experience_failures
-                                or r.instruction_failures or r.voice_failures or r.screening_failures)
+                                or r.instruction_failures or r.voice_failures or r.screening_failures or r.style_failures)
     r.status = "pass" if r.ok else "needs_review"
     return r
 
@@ -201,4 +243,5 @@ def failures_for_retry(r: ValidationReport) -> list[str]:
     items += [f"Write in first person as the freelancer, with no team or video/attachment claims: {s}" for s in r.voice_failures]
     items += [f"Follow the post's instruction: {s}" for s in r.instruction_failures]
     items += [f"Answer this screening question: {q}" for q in r.screening_failures]
+    items += [f"Fix the wording: {s}" for s in r.style_failures]
     return items

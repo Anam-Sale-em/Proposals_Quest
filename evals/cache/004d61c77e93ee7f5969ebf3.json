@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "openai/gpt-oss-20b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "Does not cover all explicit requirements such as companion portal, admin dashboard, AI layer, tests, documentation."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "Uses multiple details from the job post."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "Claims trace to profile; no unsubstantiated claims."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "Specifies concrete first steps: architecture selection, schema design, app development, payment integration."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "Ends with a clear question about payment gateways."
+   }
+  ]
+ }
+}

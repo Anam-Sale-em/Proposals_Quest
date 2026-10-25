@@ -1,0 +1,22 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "tools_named": [
+   "Gmail",
+   "Airtable",
+   "Gmail API",
+   "AI model",
+   "Python",
+   "Gemini API"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this: built a Python job that reads new messages from Gmail, classifies them with the Gemini API, writes them to Airtable and leaves low-confidence ones for a person to review, resulting in about 300 emails a week sorted into 6 categories with low-confidence ones going to a person.",
+    "maps_to": "P3"
+   }
+  ]
+ }
+}

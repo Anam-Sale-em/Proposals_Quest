@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal fails to address the explicit fixed price of $5.00, which is a critical constraint given the freelancer's minimum fixed price is $200."
+   },
+   {
+    "item": 2,
+    "passed": false,
+    "reason": "The proposal only references the freelancer's own past project details, not specific details from the job post (such as the client's location, hire rate, or specific budget)."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the 'Lead intake automation with n8n' project accurately reflects the details in the freelancer's profile (P1)."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The proposed first step is to 'review the specific tools... to be shared,' which is a generic process rather than a concrete action the freelancer can take immediately."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with two questions, whereas the rubric requires exactly one clear question or next step."
+   }
+  ]
+ }
+}

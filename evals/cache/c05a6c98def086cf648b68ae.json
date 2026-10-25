@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the two-way sync goal and covers all five scope items including the 5-minute latency, lifecycle stage write-back, conflict logging, and README requirement."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post such as 'lifecycle stage' and the requirement for a 'short README' for the developer."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the Shopify/PostgreSQL project matches Project P2 in the profile exactly, and the proposal correctly frames it as similar past work ('I did nearly this') rather than claiming it is the current HubSpot project."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete technical steps: implementing a PostgreSQL webhook/polling mechanism for signups, configuring HubSpot webhooks/polling for lifecycle stages, and building a specific conflict resolution module."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a single, clear question about the server environment, which is a logical next step for a server-side deployment, and fits within standard length limits."
+   }
+  ]
+ }
+}

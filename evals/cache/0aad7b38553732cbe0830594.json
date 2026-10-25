@@ -1,0 +1,96 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "goal": "Capture partnership requests from the Partners Gmail label, summarize them with an AI model, and add sender, company, request type, a 2-sentence summary, and a priority flag to Airtable while leaving low confidence requests for human review.",
+  "plan": [
+   {
+    "step": "Write a Python script to authenticate with the Gmail API, fetch new messages from the Partners label, and extract sender and body content.",
+    "tools": [
+     "Python",
+     "Gmail API"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Integrate an AI model to classify the email content, extract company information, request type, generate a 2-sentence summary, assign a priority flag, and determine a confidence score.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "OpenAI API",
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Implement logic to route low-confidence classifications for human review and filter them from automatic creation.",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Write the processed lead data including sender, company, request type, summary, and priority flag to Airtable.",
+    "tools": [
+     "Python",
+     "Airtable"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Gmail Extraction and AI Processing",
+    "deliverable": "Working Python script connecting to Gmail, extracting emails, and processing them with an AI model for summarization and classification.",
+    "budget_share": "50 percent"
+   },
+   {
+    "name": "Airtable Integration and Review Workflow",
+    "deliverable": "Fully tested pipeline writing records to Airtable and correctly routing low-confidence items for human review.",
+    "budget_share": "50 percent"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Write a Python script to authenticate with the Gmail API, fetch new messages from the Partners label, and extract sender and body content.",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Integrate an AI model to classify the email content, extract company information, request type, generate a 2-sentence summary, assign a priority flag, and determine a confidence score.",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Implement logic to route low-confidence classifications for human review and filter them from automatic creation.",
+    "project_id": "P3",
+    "gap": false
+   },
+   {
+    "step": "Write the processed lead data including sender, company, request type, summary, and priority flag to Airtable.",
+    "project_id": "P3",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Hourly budget constraints might limit extensive testing of edge cases in email formatting.",
+    "mitigation": "Focus on standard partnership email templates first and handle edge cases as they arise."
+   },
+   {
+    "risk": "AI model may frequently return low-confidence flags for ambiguous partnership requests.",
+    "mitigation": "Tune the prompt parameters and define clear classification criteria to minimize false positives."
+   }
+  ],
+  "questions": [
+   "What is the exact schema or table structure required in Airtable for the partnership requests?",
+   "Which specific AI model (e.g., OpenAI API or Gemini API) do you prefer to use for the summarization?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials to the Gmail account and the Airtable base.",
+   "The project will be billed hourly within the stated $35\u2013$55 per hour rate."
+  ]
+ }
+}

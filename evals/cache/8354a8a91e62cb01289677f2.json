@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "Restates the goal of moving to self-hosted n8n and covers all explicit requirements: rebuilding the 6 specific workflows, testing with the client, and handing over a short doc."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "Uses specific details from the post: 'form to Google Sheets', 'Sheets to Slack alerts', 'Stripe payment to an email receipt', and 'three small Gmail filters'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the lead intake client traces directly to Project P1 in the profile, and the result matches the profile's stated outcome."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "Names concrete first steps: auditing the 6 existing Zapier workflows and then rebuilding the form-to-Sheets and Sheets-to-Slack workflows in the self-hosted instance."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "Ends with one clear question about custom code actions, is within length limits, and follows the post's format."
+   }
+  ]
+ }
+}

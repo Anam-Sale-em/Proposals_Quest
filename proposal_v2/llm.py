@@ -69,7 +69,8 @@ class LLM:
     # ------------------------------------------------------------------ public
     def call(self, step: str, role: str, system: str, user: str, schema: Type[T], temperature: float = 0.0) -> T:
         cfg = load_config()
-        model = cfg["models"][role]
+        m = cfg["models"]
+        model = (m.get("judges") or [m.get("judge")])[0] if role == "judge" else m[role]  # the judge is a list
         key = self._key(role, model, system, user, schema)
         cached = self._read_cache(key, schema)
         if cached is not None and self.mode in ("cache_first", "replay"):
@@ -79,7 +80,6 @@ class LLM:
             raise ReplayMiss(f"Replay mode has no saved response for the {step} step. Run once with LLM_MODE=live or the eval runner with --record.")
 
         errors = []
-        m = cfg["models"]
         waits = list(cfg.get("retries", {}).get("waits_s", [3, 8]))
         if role == "judge":
             providers = [("groq", j, []) for j in m.get("judges", [m.get("judge")]) if j]

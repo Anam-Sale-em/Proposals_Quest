@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python, PostgreSQL, and REST APIs, covering the core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The job asks for a data sync script and API integration, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "An $800 fixed price is reasonable for a focused two-way sync script.",
+  "clear_yes": true,
+  "clear_reason": "The requirements explicitly state the sync rules, platforms, and deliverables for a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles leads and n8n instead of PostgreSQL and contacts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It builds a Python sync script with PostgreSQL, but for inventory and Shopify rather than HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python to sync records, but for support emails rather than HubSpot contacts."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

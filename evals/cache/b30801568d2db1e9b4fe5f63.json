@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "text": "Your goal is to get each new email in your Partners Gmail label summarized by an AI model and added to Airtable. You need to read new emails from the Partners Gmail label using the Gmail API, summarize and extract sender, company, request type, a 2-sentence summary and a priority flag using an AI model, and add the parsed lead data into Airtable and route low-confidence items for human review. To do this, I will connect to your Gmail API to read new emails from the Partners Gmail label, configure the script to summarize and extract the required fields using an AI model, and write the parsed lead data into Airtable while routing low-confidence items for human review. I did nearly this: built a Python job that reads new messages from Gmail, classifies them with the Gemini API, writes them to Airtable and leaves low-confidence ones for a person to review, resulting in about 300 emails a week sorted into 6 categories with low-confidence ones going to a person. What is the exact schema or table structure required in Airtable?",
+  "screening_answers": []
+ }
+}

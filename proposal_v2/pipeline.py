@@ -49,10 +49,12 @@ def _tags_in_project(tags: list[str], project: Project) -> int:
 
 
 def _specific_tags_in_project(job: JobPost, project: Project) -> int:
-    """Specific (non-generic) tools named in the post that the project also names."""
-    from .skills import is_generic
+    """Specific tools named in the post that the project also names: not generic words, and not the tools a
+    freelancer builds with (n8n, Python...), which say nothing about the client's systems or records (F7)."""
+    from .skills import is_generic, norm
 
-    tags = [t for t in [*job.skills, *job.client_tools] if t.strip() and not is_generic(t)]
+    build = {norm(t) for t in load_config()["skills"].get("build_tools", [])}
+    tags = [t for t in [*job.skills, *job.client_tools] if t.strip() and not is_generic(t) and norm(t) not in build]
     return _tags_in_project(tags, project)
 
 
@@ -297,15 +299,17 @@ class Pipeline:
         system, user = prompts.brief(rec.job, profile, project, framing, extras)
         rec.brief = self.llm.call("brief", "draft", system, user, Brief, temp)
         mode = "questions_first" if rec.decision and rec.decision.decision == "apply_with_questions" else "full"
+        outside = bool(rec.decision and rec.decision.overridden and rec.decision.code == "work_type")
         max_words = cfg["length"]["questions_first_max_words" if mode == "questions_first" else "proposal_max_words"]
 
-        system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words, extras=extras)
+        system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words, extras=extras,
+                                        outside_work=outside)
         draft = self.llm.call("proposal", "draft", system, user, ProposalDraft, temp)
         report = self._check(draft, rec.job, project, profile, mode, extras)
         if not report.ok:
             fails = failures_for_retry(report)
             system, user = prompts.proposal(rec.job, profile, project, framing, rec.brief, mode, max_words, fails, draft.text,
-                                            extras=extras)
+                                            extras=extras, outside_work=outside)
             draft = self.llm.call("proposal_retry", "draft", system, user, ProposalDraft, temp)
             report = self._check(draft, rec.job, project, profile, mode, extras)
             report.retried = True

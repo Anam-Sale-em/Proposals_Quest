@@ -35,7 +35,12 @@ CSS = """
 
 /* Streamlit chrome off: no Deploy button, menu or footer */
 header[data-testid="stHeader"] { background: transparent; }
-[data-testid="stToolbar"], [data-testid="stDecoration"], #MainMenu, footer { display: none !important; }
+/* Hide Streamlit's menu and deploy buttons, but keep the toolbar: it holds the button that opens the sidebar
+   (the only way to reach the menu on a phone, where the sidebar starts closed). */
+[data-testid="stToolbarActions"], [data-testid="stMainMenu"], [data-testid="stAppDeployButton"], [data-testid="stDecoration"], #MainMenu, footer { display: none !important; }
+[data-testid="stExpandSidebarButton"] { background: var(--harbor-deep) !important; border-radius: 10px; padding: .3rem .7rem !important; width: auto !important; }
+[data-testid="stExpandSidebarButton"], [data-testid="stExpandSidebarButton"] * { color: #fff !important; fill: #fff !important; }
+[data-testid="stExpandSidebarButton"]::after { content: "Menu"; font-size: .85rem; font-weight: 600; margin-left: .35rem; }
 /* No link icon next to headings */
 [data-testid="stHeaderActionElements"], .stApp h1 a, .stApp h2 a, .stApp h3 a { display: none !important; }
 

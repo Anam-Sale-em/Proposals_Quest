@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python, Shopify API, Google Sheets API, and REST API skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires a data sync script, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250-$750 for a daily Shopify to Google Sheets script is realistic.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: fetch orders via Shopify API, filter/check against existing rows in Google Sheets, append new rows, and log the run.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles leads and uses n8n rather than Python for Shopify orders."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves a Python script syncing Shopify data, though to PostgreSQL instead of Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python for a data pipeline script, but handles Gmail and Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

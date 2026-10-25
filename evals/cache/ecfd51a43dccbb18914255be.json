@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, JavaScript, and Google Sheets API well.",
+  "work_type_yes": true,
+  "work_type_reason": "Fixing and improving workflow automation is a core deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $250 is very reasonable for debugging an n8n batch issue.",
+  "clear_yes": true,
+  "clear_reason": "The task asks to fix batching/rate limits in Google Sheets nodes with retries and Slack alerts.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets, and webhooks/data handling."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It covers Shopify and PostgreSQL inventory syncing."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It covers LLM classification and support email triage."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "openai/gpt-oss-20b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "Restates client goal and covers all explicit requirements."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "Mentions two Typeform forms and Slack channel details unique to the post."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "Claims trace to project P1 in profile; no unsubstantiated claims."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "Lists concrete steps: kickoff, build workflow, duplicate check, Slack notification, error handling, testing, handover."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "Ends with a clear question about email service for failure notifications."
+   }
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n and Airtable in their core skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The task is workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly budget range is realistic for an n8n automation task.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear 3-step plan: read Airtable orders, filter for yesterday's urgent/new orders with totals, and post to Slack at 8:00 AM using n8n.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation and records processing, though the target platform differs."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is an automation and data sync task handling records, but uses Python and Shopify instead of n8n and Airtable."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It automates data processing and notification tasks involving Airtable records."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

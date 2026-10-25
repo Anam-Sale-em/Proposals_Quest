@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Airtable, and Slack in their skills list.",
+  "work_type_yes": true,
+  "work_type_reason": "The project asks for workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $30-$50 is appropriate for an n8n automation task.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: set up a scheduled trigger for 8 AM skipping weekends, fetch records from Airtable filtered by date, format the summary of orders, and post it to Slack.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation and sending data to Slack, but deals with leads instead of orders."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "similar",
+    "reason": "It involves syncing records on a schedule, but uses Python and PostgreSQL instead of Airtable and n8n."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "similar",
+    "reason": "It automates data processing and syncing to Airtable, but uses Python instead of n8n."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

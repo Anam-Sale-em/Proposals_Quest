@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal to automate the daily Airtable digest with specific details on content, timing, and platform preference."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It uses specific details from the post such as the '8:00' time, 'skip weekends' constraint, and the specific data points 'total value' and 'urgent' orders."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the lead intake automation and the specific result (2 hours to 10 minutes) matches Project P1 in the freelancer profile exactly."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps including configuring the scheduled trigger and setting up the Airtable integration for specific data fields."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a clear, specific question about the Airtable table structure and field names, which is a necessary next step."
+   }
+  ]
+ }
+}

@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Shopify API, Google Sheets API, and REST APIs.",
+  "work_type_yes": true,
+  "work_type_reason": "The task is a data sync script, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget range of $250 to $750 is realistic for a straightforward daily Shopify-to-Sheets script.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly specifies the source platform, destination, frequency, fields, and deduplication logic.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles leads and Google Sheets via n8n rather than Shopify orders via Python."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and the Shopify API for inventory records instead of orders."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python for data movement but handles support emails and Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

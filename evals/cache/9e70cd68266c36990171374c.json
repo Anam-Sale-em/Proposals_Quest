@@ -1,0 +1,80 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "goal": "Get each new email in our Partners Gmail label summarized by an AI model and added to Airtable with sender, company, request type, a 2-sentence summary and a priority flag, with low confidence items reviewed by a person.",
+  "plan": [
+   {
+    "step": "Read new emails from the Partners Gmail label using the Gmail API",
+    "tools": [
+     "Gmail API"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   },
+   {
+    "step": "Summarize and extract sender, company, request type, 2-sentence summary and priority flag using an AI model",
+    "tools": [
+     "OpenAI API"
+    ],
+    "suggested_tools": [
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Add the parsed lead data into Airtable and route low-confidence items for human review",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": [
+     "Python"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Gmail and Airtable integration script with AI extraction",
+    "budget_share": "100%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Read new emails from the Partners Gmail label using the Gmail API",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Summarize and extract sender, company, request type, 2-sentence summary and priority flag using an AI model",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Add the parsed lead data into Airtable and route low-confidence items for human review",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Incorrect data extraction due to unstructured partnership emails",
+    "mitigation": "Include confidence scoring in the AI prompt to route low-confidence leads to manual review."
+   },
+   {
+    "risk": "Hourly rate budget lacks a total project cap",
+    "mitigation": "Establish a weekly hour limit to control spending."
+   }
+  ],
+  "questions": [
+   "What is the exact schema or table structure required in Airtable?",
+   "What criteria should define a low confidence priority flag?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials for Gmail and Airtable.",
+   "Python will be used as the implementation language."
+  ]
+ }
+}

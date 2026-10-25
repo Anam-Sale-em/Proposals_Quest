@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Shopify API, and Google Sheets API.",
+  "work_type_yes": true,
+  "work_type_reason": "This is a data sync script, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is reasonable for a simple daily data sync script.",
+  "clear_yes": true,
+  "clear_reason": "The requirements are fully specified to write a 3-step execution plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Handles leads/records and uses automation skills, but different platform and deliverable."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Built in Python around Shopify API handling records, but syncs to PostgreSQL instead of Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Uses Python to sync records to a spreadsheet-like database, but different platform and tool."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

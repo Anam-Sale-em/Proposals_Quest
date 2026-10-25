@@ -10,7 +10,7 @@ Nothing to install.
 2. Type the passphrase **`UnknownEntity`** and click **Open**.
 3. In the sidebar, pick **Sample workspace → Load sample data**. You get a sample freelancer with 3 projects, the 12 test jobs, and sample Freelancer.com jobs for the link and search tabs. Pick a test job under **New job**, click **Fill the form**, then **Check job**.
 
-**My workspace** holds my own projects and jobs, so please try things in the Sample workspace. The live app resets its files when it restarts; nothing you do there is permanent.
+**My workspace** holds my own projects and jobs, and everyone with the passphrase shares it, so please try things in the Sample workspace. Nothing you do on the live app is permanent: see [Where your data lives](#where-your-data-lives).
 
 Running it locally instead? If `.env` has no keys yet, the app shows a one-time screen to paste them.
 
@@ -28,7 +28,7 @@ Open the link Streamlit prints and enter your passphrase. Then set your minimum 
 
 ### Sent log
 
-My jobs → **Download sent log (Excel)** gives every sent proposal with v2's call, client trust, proof, minutes from adding the job to sending it, how much of the draft you changed (0% = sent as written) and the outcome. It opens in Excel or Google Sheets. On the live link, download it now and then: the app's files reset when it restarts.
+My jobs → **Download sent log (Excel)** gives every sent proposal with v2's call, client trust, proof, minutes from adding the job to sending it, how much of the draft you changed (0% = sent as written) and the outcome. It opens in Excel or Google Sheets. On the live link it's the only record that survives a restart, so download it now and then.
 
 ### Live link (Streamlit Community Cloud, free)
 
@@ -39,12 +39,37 @@ My jobs → **Download sent log (Excel)** gives every sent proposal with v2's ca
 
 Online, the key setup screen never appears: until the Secrets are set, visitors only see "This app isn't set up yet".
 
-Limits: the app sleeps after 12 hours without visitors (open the link and click the wake-up button; wake it before a demo), and its local files reset whenever it restarts or you push a change. That clears saved jobs and settings, so download the sent log (CSV) from My jobs now and then.
+Limits: the app sleeps after 12 hours without visitors (open the link and click the wake-up button; wake it before a demo). Waking up, a reboot or a push restarts it, and a restart clears everything saved in the app (next section).
+
+## Where your data lives
+
+There is one storage model: **JSON files on the disk of whatever machine runs the app**, under `data/users/<workspace>/`. There is no database. On your own computer that disk is yours and keeps everything. On Streamlit Community Cloud the disk belongs to the app's container, and a restart replaces the container with a fresh copy of the repo.
+
+| Data | Where it's stored | Survives a restart on the live link? | Who can see it on the live link |
+| --- | --- | --- | --- |
+| Profile: rates, skills, kinds of work | `data/users/me/settings/profile.json` | No | Everyone with the passphrase (one shared "My workspace") |
+| Settings change log | `data/users/me/settings_log.jsonl` | No | Same |
+| Projects | `data/users/me/projects/*.json` | No | Same |
+| Jobs: post, client details, decision, drafts, timings, sent status, outcome | `data/users/me/proposals/*.json` | No | Same |
+| Sample workspace | `data/users/sample/`, built from `fixtures/` by **Load sample data** | No, but one click rebuilds it | Everyone with the passphrase |
+| Model call logs | `logs/runs/<date>.jsonl` | No | Only the app's operator, not shown in the app |
+| Model response cache | `evals/cache/` | Only what's committed to the repo (the eval cache) | Not shown in the app |
+| Screen in progress (an unconfirmed job, form fields) | Your browser tab's session | No: also lost when you refresh the page | Only you |
+| Passphrase and API keys | Streamlit **Secrets** (online) or `.env` (local), never in the repo | Yes | Only the app's owner |
+| Sent log | The Excel file you download from My jobs | Yes: it's on your computer | Only you |
+
+**What isolation there is:** two workspaces, My workspace and Sample workspace, kept in separate folders. There are no per-person accounts. On the live link, two people using My workspace see and change the same jobs and projects. To have a workspace of your own, run the app on your own computer (3 steps above). Each copy keeps its data on its own disk.
+
+**What's lost, and when:** on the live link, a reboot, a wake-up from sleep or a new push starts the app from the repo again. That clears both workspaces, the logs and anything new in the cache. Only Secrets and files you downloaded are kept. On your own computer nothing is lost on restart. Data goes only when you use Settings → **Delete all data in this workspace** or delete the `data/` folder.
+
+**Checked:**
+- **Restart on a local run (25 Oct 2026).** I loaded the sample data and checked one job in one process, then started a fresh process on the same `data/` folder. The job, its decision and the 3 projects were all still there.
+- **Restart on the live link.** Open the Sample workspace, click **Load sample data**, then **Reboot app** from the Streamlit Cloud menu. Open the link again: the Sample workspace is empty and My workspace has no jobs. Download the sent log before you try this.
 
 ## Using it
 
 1. **New job:** paste the job link (the job's own page; on Freelancer.com use the project's **Share → Copy link**) and the whole job post from Upwork, Freelancer.com or Guru (copying the whole page is fine; v2 keeps only the main post and its own client box). Freelancer.com jobs can also come in by link or keyword search. **Check if this job is a good fit first** is ticked by default; untick it to go straight to the draft (red flags and a low budget still show as warnings). Pasting a job you already have offers Open, New version or Check again.
-2. **Confirm the details:** check what v2 took from the post, fix anything wrong (budget type, client history), then **Confirm and check**. Client history is the **About the client** section of the job's page: below the skills and activity on Upwork, on the right side on Freelancer.com (Open job is right there). For Freelancer.com jobs, copy the rating, review count and payment status; for Guru, the **Posted By** box (feedback, total spend, jobs posted, jobs paid, paid and outstanding invoices). Add anything the proposal must say under **Anything you want in the proposal?** (your own words; v2 treats them as true). Under **Proof**, let v2 pick the best project, choose up to 3 yourself, or cite none.
+2. **Confirm the details:** check what v2 took from the post, fix anything wrong (budget type, client history), then **Confirm and check**. Client history is the **About the client** section of the job's page: below the skills and activity on Upwork, on the right side on Freelancer.com (Open job is right there). For Freelancer.com jobs, copy the rating, review count and payment status; for Guru, the **Posted By** box (feedback, total spend, jobs posted, jobs paid, paid and outstanding invoices). If the post asks for a quote or timeline, a **Your price and timeline** field appears; fill it in, or the draft leaves "[your price and timeline]" for you. Add anything the proposal must say under **Anything you want in the proposal?** (your own words; v2 treats them as true). Under **Proof**, let v2 pick the best project, choose up to 3 yourself, or cite none.
 3. **Decision card:** one decision, one reason, client trust, budget and fit. **Apply with questions** means it's worth applying, but the post is vague or the budget looks unreal, so the proposal leads with questions. Changed your skills, rates or projects? **Check the fit again** reruns it. **Write proposal**, or **Override** a Skip (logged). Forgot the client's details? **Edit client details** updates trust and the decision without rerunning the fit check; a client with no details reads "can't rate". **Details** shows the trust score with its top reasons, the four fit answers, whether the three checks agreed, the skill tags and the link check.
 4. **Draft:** your best project is pre-selected as proof. Pick up to 3 (the first is the main one), or none for plan only, then **Rewrite with this proof**. Edit the text, answer the screening questions, fix any line the claim check flags, or revise with a comment (it changes only what you ask). The line under the title shows how long the fit check and each draft took.
 5. **Send:** Open job, paste, **Mark as sent**, then record the outcome with one tap. My jobs → **Download sent log (Excel)** keeps the record.
@@ -97,7 +122,7 @@ Logs: `logs/runs/<date>.jsonl` has one line per LLM call (step, model, provider,
 
 ## Data and privacy
 
-- Your data stays in your workspace (`data/users/me/` locally, or Firestore). The sample workspace is separate.
+- Your data stays in your workspace's folder (`data/users/me/`). The sample workspace is separate. See [Where your data lives](#where-your-data-lives) for what's shared and what's lost on the live link.
 - Settings → **Delete all data in this workspace** removes it. Download the sent log first if you want to keep it.
 - Leave confidential client details and NDA work out of your projects.
 - Gemini's free tier may use content to improve Google's products. Use a paid key for anyone else's data.
@@ -106,5 +131,5 @@ Logs: `logs/runs/<date>.jsonl` has one line per LLM call (step, model, provider,
 ## Results and docs
 
 - [Case study](docs/case-study.md) · [AI collaboration note](docs/ai-collaboration-note.md)
-- [Day 4 results](evals/day4-results.md): four fully live eval runs, every decision and trust score right (48 of 48); final code 12/12 and 11/12 live; 8 of 9 drafts pass the rubric with zero unsupported claims in the last run
+- [Day 4 results](evals/day4-results.md): four fully live eval runs, every decision and trust score right (48 of 48); final code 12/12 and 11/12 live; 8 of 9 drafts pass the rubric by my scoring (6 of 9 by an AI judge) with zero unsupported claims in the last run
 - [Failures](evals/failures.md) · [Architecture](docs/architecture.md) · [Decision log](docs/decision-log.md)

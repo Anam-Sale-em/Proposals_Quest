@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "text": "Your goal is a two-way sync of contacts between HubSpot and your PostgreSQL users table. You need new signups to appear in HubSpot within 5 minutes, sales changes to lifecycle stage to write back to PostgreSQL, conflicts resolved by the most recent update winning with logged conflicts, and the solution running on your server with a short README. To achieve this, I will implement the PostgreSQL webhook or polling mechanism to capture new signups and push them to HubSpot, configure HubSpot webhooks or API polling to detect changes to the lifecycle stage and write them back to your PostgreSQL users table, and build a conflict resolution module ensuring the most recent update wins and every conflict is logged. I did nearly this: wrote a Python service that listens to Shopify inventory webhooks, reconciles counts against PostgreSQL on a schedule, and logs every change. Stock synced every 15 minutes, with no oversold orders in the first month. Which specific server environment will this run on?",
+  "screening_answers": []
+ }
+}

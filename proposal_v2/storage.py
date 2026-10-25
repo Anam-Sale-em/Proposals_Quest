@@ -1,6 +1,5 @@
-"""Storage behind one interface. Local JSON and Firestore use the same paths:
-users/{uid}/proposals/{job_key}, users/{uid}/projects/{id}, users/{uid}/settings/profile,
-users/{uid}/settings_log/{ts}. Adding login later doesn't change the data model."""
+"""Storage behind one interface: local JSON files under data/users/{uid}/ (proposals/, projects/,
+settings/profile, settings_log). A database can replace it by implementing the same Storage protocol."""
 from __future__ import annotations
 
 import hashlib
@@ -15,7 +14,7 @@ from .contracts import Profile, Project, ProposalRecord, now_iso
 
 
 def doc_id(key: str) -> str:
-    """Firestore- and filename-safe id for a job key, stable and collision-free."""
+    """Filename-safe id for a job key, stable and collision-free."""
     safe = re.sub(r"[^A-Za-z0-9~_-]", "_", key)[:80]
     return f"{safe}-{hashlib.sha1(key.encode()).hexdigest()[:8]}"
 
@@ -113,72 +112,5 @@ def _diff(old: Optional[Profile], new: Profile) -> dict:
     return {k: {"from": o.get(k), "to": v} for k, v in n.items() if o.get(k) != v}
 
 
-class FirestoreStorage:
-    """Same interface on Firestore (firebase-admin + a service-account). First thing cut if time runs short."""
-
-    def __init__(self):
-        import firebase_admin
-        from firebase_admin import credentials, firestore
-
-        if not firebase_admin._apps:
-            info = secret("FIREBASE_SERVICE_ACCOUNT_JSON")
-            path = secret("FIREBASE_SERVICE_ACCOUNT_FILE")
-            if info:
-                cred = credentials.Certificate(json.loads(info))
-            elif path:
-                cred = credentials.Certificate(path)
-            else:
-                raise RuntimeError("Firestore is on, but no FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_SERVICE_ACCOUNT_FILE is set.")
-            firebase_admin.initialize_app(cred)
-        self.db = firestore.client()
-
-    def _u(self, uid):
-        return self.db.collection("users").document(uid)
-
-    def get_proposal(self, uid, job_key):
-        d = self._u(uid).collection("proposals").document(doc_id(job_key)).get()
-        return ProposalRecord.model_validate(d.to_dict()) if d.exists else None
-
-    def put_proposal(self, rec):
-        self._u(rec.uid).collection("proposals").document(doc_id(rec.job_key)).set(rec.model_dump(mode="json"))
-
-    def delete_proposal(self, uid, job_key):
-        self._u(uid).collection("proposals").document(doc_id(job_key)).delete()
-
-    def list_proposals(self, uid):
-        recs = [ProposalRecord.model_validate(d.to_dict()) for d in self._u(uid).collection("proposals").stream()]
-        return sorted(recs, key=lambda r: r.created_at, reverse=True)
-
-    def get_projects(self, uid):
-        return sorted((Project.model_validate(d.to_dict()) for d in self._u(uid).collection("projects").stream()), key=lambda p: p.id)
-
-    def put_project(self, uid, p):
-        self._u(uid).collection("projects").document(p.id).set(p.model_dump(mode="json"))
-
-    def delete_project(self, uid, project_id):
-        self._u(uid).collection("projects").document(project_id).delete()
-
-    def get_profile(self, uid):
-        d = self._u(uid).collection("settings").document("profile").get()
-        return Profile.model_validate(d.to_dict()) if d.exists else None
-
-    def put_profile(self, uid, profile, changed_by="user"):
-        old = self.get_profile(uid)
-        self._u(uid).collection("settings").document("profile").set(profile.model_dump(mode="json"))
-        changes = _diff(old, profile)
-        if changes:
-            self._u(uid).collection("settings_log").add({"at": now_iso(), "by": changed_by, "changes": json.loads(json.dumps(changes, default=str))})
-
-    def settings_log(self, uid):
-        return sorted((d.to_dict() for d in self._u(uid).collection("settings_log").stream()), key=lambda d: d.get("at", ""))
-
-    def clear_user(self, uid):
-        for coll in ("proposals", "projects", "settings", "settings_log"):
-            for d in self._u(uid).collection(coll).stream():
-                d.reference.delete()
-
-
 def make_storage() -> Storage:
-    if load_config()["storage"]["backend"] == "firestore" or secret("STORAGE_BACKEND") == "firestore":
-        return FirestoreStorage()
     return JsonStorage()

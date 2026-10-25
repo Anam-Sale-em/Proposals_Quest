@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, PostgreSQL, Google Sheets, Slack, and REST APIs, which covers all technical requirements of the job.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires building a workflow automation and data sync system in n8n, which matches the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 is reasonable for a well-scoped n8n automation project of this size.",
+  "clear_yes": true,
+  "clear_reason": "The post provides exceptionally clear requirements, tech stack details, deliverables, and milestones.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involved lead intake automation, webhooks, duplicate checking, Google Sheets, and Slack alerts in n8n."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It used PostgreSQL and webhooks for data synchronization and reliable logging."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It handled email processing and routing into structured storage using similar backend logic."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

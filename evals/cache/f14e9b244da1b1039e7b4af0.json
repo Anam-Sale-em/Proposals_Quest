@@ -1,0 +1,23 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "text": "Your goal is to build an n8n-based lead routing system that automates intake from website demo forms, pricing-page chat, webinar CSVs, and partner referral emails, cleans and validates leads, merges duplicates in PostgreSQL, enriches them, assigns them to reps via round-robin or enterprise rules, notifies reps in Slack with escalation, and maintains a Google Sheet mirror. Please read the full brief before applying. You need intake from all four sources automatically, validation and normalization, duplicate handling in PostgreSQL, enrichment via API, routing rules for enterprise accounts and region-based round-robins, Slack notifications and timers, PostgreSQL storage with a Google Sheet mirror, error handling with dead-letter retry queues, logging and monitoring, security credentials in n8n, configuration tables in PostgreSQL, and staging tests. I will build n8n intake workflows for website demo form webhooks, chat tool webhooks, Google Drive webinar CSV polling, and partner referral inbox parsing. I will implement validation, normalization, and duplicate handling logic to merge existing leads or treat old closed lost leads as fresh. I will set up Slack notifications, 30-minute claim/reassignment timers, Google Sheet real-time mirroring, error handling, dead-letter retry queues, and daily digests. I did nearly this for a B2B sales team: lead entry dropped from about 2 hours a week to under 10 minutes. What specific email parsing rules or keywords should be prioritized for the 15 different partner referral formats?",
+  "screening_answers": [
+   {
+    "question": "How would you keep the round-robin fair and correct when two leads arrive in the same second?",
+    "answer": "I would store the round-robin pointer securely in PostgreSQL with proper locking or atomic updates to prevent race conditions."
+   },
+   {
+    "question": "How would you parse partner referral emails that don't follow a fixed format, and what would go to the review queue?",
+    "answer": "I would route unparsable emails into a dedicated review queue and handle them gracefully without dropping any leads."
+   },
+   {
+    "question": "Which part of this project do you see as the biggest risk, and how would you reduce it in the first milestone?",
+    "answer": "Partner referral emails arriving in 15 different unformatted structures is the biggest risk, which I would mitigate by routing unparsable emails into a dedicated review queue."
+   }
+  ]
+ }
+}

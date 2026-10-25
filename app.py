@@ -14,7 +14,7 @@ import streamlit as st
 from proposal_v2.config import load_config, save_env, secret
 
 st.set_page_config(page_title="Proposal Pipeline v2", page_icon="📝", layout="centered")
-from proposal_v2.prompts import budget_words  # noqa: E402
+from proposal_v2.prompts import asks_for_price, budget_words  # noqa: E402
 from proposal_v2.ui_style import BRAND, CSS, chip, trust_chip, parse_number, verdict_html  # noqa: E402
 
 st.markdown(CSS, unsafe_allow_html=True)
@@ -532,7 +532,17 @@ def screen_confirm() -> None:
     if job.screening_questions:
         questions = st.text_area("Questions the client asks applicants (v2 answers each one)", questions,
                                  help="Taken from the post. Edit or remove any that aren't real questions; one per line.")
-    notes = st.text_area("Anything you want in the proposal? (optional)", job.user_notes,
+    PRICE_TAG = "My price and timeline:"
+    note_lines = job.user_notes.splitlines()
+    old_price = next((l[len(PRICE_TAG):].strip() for l in note_lines if l.startswith(PRICE_TAG)), "")
+    other_notes = "\n".join(l for l in note_lines if not l.startswith(PRICE_TAG))
+    price = ""
+    if asks_for_price(job):
+        price = st.text_input("Your price and timeline (the client asks for them)", old_price,
+                              placeholder="e.g. $750 fixed, delivered within 5 business days",
+                              help="v2 never sets a price for you. Leave it blank and the draft says "
+                                   "[your price and timeline] for you to fill in before sending.")
+    notes = st.text_area("Anything you want in the proposal? (optional)", other_notes,
                          placeholder="e.g. I can start Monday · mention I've built 3 Shopify apps · ask about their CRM",
                          help="Your own words. v2 works them into the proposal and treats them as true, so only write what is.")
 
@@ -540,8 +550,10 @@ def screen_confirm() -> None:
     my_projects = pipe.projects()
     proof_modes = {"auto": "Let v2 pick the best match", "manual": "I'll choose", "none": "No past project for this job"}
     if not my_projects:
-        st.caption("You have no projects yet, so this draft will be a plan without past work. "
-                   "Add your work under **Projects** to cite it.")
+        st.info("You have no projects yet, so this draft would be a plan without past work. "
+                "Add one here and v2 can cite it. You stay on this job.")
+        with st.expander("+ Add a project", expanded=False):
+            project_form(None, key=f"confirm_{rec.job_key}")
         proof_mode, proof_pick = "none", []
     else:
         proof_mode = st.radio("Which past work should the proposal cite?", list(proof_modes), horizontal=True,
@@ -626,7 +638,7 @@ def screen_confirm() -> None:
                             approximate=job.budget.approximate, raw_text=job.budget.raw_text)
         job.skills = [s.strip() for s in skills.split(",") if s.strip()]
         job.screening_questions = [q.strip() for q in questions.splitlines() if q.strip()]
-        job.user_notes = notes.strip()
+        job.user_notes = "\n".join(x for x in [notes.strip(), f"{PRICE_TAG} {price.strip()}" if price.strip() else ""] if x)
         if proof_mode == "manual" and not proof_pick:
             st.error("Pick at least one project, or choose another option under Proof.")
             return

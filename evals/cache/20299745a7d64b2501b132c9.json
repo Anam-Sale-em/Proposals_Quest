@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the client's goal and lists every explicit requirement including triggers, duplicate check, row fields, Slack message, and failure emails."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal uses specific details from the post such as 'two Typeform forms', '#sales Slack channel', and the specific row fields 'name, email, company, form name and timestamp'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about a similar workflow ('form webhooks, field validation, a duplicate check by email...') traces directly to Project P1 in the profile, and the results match the profile's stated outcome."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps: configuring Typeform triggers, querying the Google Sheet for duplicates, and adding the new row with specific fields."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with one clear question about the email service preference, which is a valid next step and fits within standard length limits."
+   }
+  ]
+ }
+}

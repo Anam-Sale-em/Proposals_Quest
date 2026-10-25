@@ -1,0 +1,26 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "PostgreSQL",
+   "Slack",
+   "Google Sheet",
+   "Google Drive",
+   "API",
+   "Webhooks",
+   "Google Sheets API",
+   "Slack API",
+   "JavaScript"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a B2B sales team: lead entry dropped from about 2 hours a week to under 10 minutes.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

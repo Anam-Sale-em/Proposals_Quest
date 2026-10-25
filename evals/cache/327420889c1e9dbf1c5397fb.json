@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Airtable, and Slack skills listed.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is an hourly rate range which is suitable for this skill level.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly defines filtering Airtable orders and posting a daily summary to Slack via n8n.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation, leads, and n8n with Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data synchronization and webhooks."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves automated processing and Airtable integration."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

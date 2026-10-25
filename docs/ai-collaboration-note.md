@@ -2,7 +2,7 @@
 
 **Anam Saleem · Proposal Pipeline v2**
 
-I used AI heavily to build this. The decisions, the checks on its output, and what stayed or went were mine. The decision log (`docs/decision-log.md`, 95 rows) records who proposed each change, me or the AI, and what I decided.
+I used AI heavily to build this. The decisions, the checks on its output, and what stayed or went were mine. The decision log (`docs/decision-log.md`, 97 rows) records who proposed each change, me or the AI, and what I decided.
 
 ## 1. AI tools and the role of each
 
@@ -32,7 +32,8 @@ I used AI heavily to build this. The decisions, the checks on its output, and wh
 - **With tests that run without a model.** 112 tests cover every rule. I ran them before every push. Once a push went through with a failing test; I traced it to leftover files from the removed login and deleted them.
 - **By checking facts the AI stated.** Before relying on a model name, I ran `check_models.py`, which showed the AI's first Groq fallback wasn't available to my key (F1). I checked the Freelancer.com API's claims against the live job page (no client data, the budget shown).
 - **By hand-scoring.** I scored ChatGPT's and v1's drafts against the rubric myself, and checked the AI's first-pass scores on v2's drafts. Unsupported claims are counted by hand, never by the claim check alone. That's how the two "I did nearly this" overstatements were found: the claim check passes them, because the project is real.
-- **On six real jobs, by stopwatch.** On Day 5 I ran fresh Upwork, Freelancer.com and Guru jobs and read every draft before calling it send-ready. That found two problems the tests passed: an overstated "I did nearly this" built on a shared tool (F7), and wording slips like "to shipped" (F8).
+- **On seven real jobs, by stopwatch.** On Day 5 I ran fresh Upwork, Freelancer.com and Guru jobs and read every draft before calling it send-ready. That found two problems the tests passed: an overstated "I did nearly this" built on a shared tool (F7), and wording slips like "to shipped" (F8).
+- **Against my own estimate.** My Day 1 baseline of about 57 minutes was a per-step estimate. On Day 5 I timed plain ChatGPT on three of the same real jobs. It was faster to a first draft than I'd estimated (7–12 minutes), so I rewrote the time claims to match. The case for v2 now rests on a send-ready draft and the Skip, not on a big time gap.
 - **With a fully live rerun.** When a cached run said 12/12, I reran with fresh model calls instead of trusting it. It scored 10/12. After two more fixes, the final code scored 11/12 and then 12/12 in two live runs, and I report both, not just the best.
 
 ## 4. Important results I rejected or corrected

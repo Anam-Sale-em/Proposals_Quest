@@ -124,7 +124,7 @@ def brief(job: JobPost, profile: Profile, project: Optional[Project], framing: s
     system = f"""You write a Solution Brief that plans this exact job. {UNTRUSTED}
 Sections:
 1. goal: the client's outcome in their own terms; no facts that aren't in the post.
-2. plan: 3-6 steps from kickoff to delivery, using the tools the client named; any other tool goes in suggested_tools.
+2. plan: 3-6 concrete steps that together cover every deliverable the post lists. Each step is an action on something the post names (its tools, data, records or deliverables), e.g. "map the form fields to HubSpot contacts". The first step is real work, never "kickoff", "requirements gathering" or "design the architecture"; what you still need to know goes in questions. Use the tools the client named; any other tool goes in suggested_tools.
 3. milestones: 2-4, sized to the stated budget and timeline. A missing budget becomes an assumption; a mismatch gets flagged in risks.
 4. proof_map: each plan step mapped to the chosen project id, or gap true when the project doesn't cover it.
 5. risks: 2-3, each with a mitigation.
@@ -157,19 +157,29 @@ def asks_for_price(job: JobPost) -> bool:
 
 
 def proposal(job: JobPost, profile: Profile, project: Optional[Project], framing: str, brief_obj: Brief,
-             mode: str, max_words: int, failures: Optional[list[str]] = None, previous: str = "", extras=()) -> tuple[str, str]:
+             mode: str, max_words: int, failures: Optional[list[str]] = None, previous: str = "", extras=(),
+             outside_work: bool = False) -> tuple[str, str]:
     fmt = PLATFORM_FORMAT.get(job.platform, "a proposal message")
     if mode == "questions_first":
-        shape = (f"Write {fmt} that leads with questions: the goal as you understand it, 2-3 scoping questions "
-                 f"from the brief, and one proof line. At most {max_words} words.")
+        shape = (f"Write {fmt} in this order: the client's goal as you understand it (\"Your goal…\" or their project's name; "
+                 f"never \"My goal\"), one proof line, the one concrete first step you'd take, then 2-3 scoping questions "
+                 f"from the brief, ending on the most important one. At most {max_words} words.")
     else:
-        shape = (f"Write {fmt}: the client's goal, the first 2-3 plan steps, one proof, one question and a call to action. "
-                 f"Keep the full plan for the call. At most {max_words} words.")
+        shape = (f"Write {fmt} in this order: (1) the client's goal in your own words (\"Your goal…\" or their project's name; "
+                 f"never \"My goal\"); (2) every deliverable or requirement the post lists, a short clause each; "
+                 f"(3) the first 2-3 plan steps from the brief, each a concrete action on the client's own tools, data or "
+                 f"deliverables, never \"kickoff\" or \"requirements gathering\"; (4) one proof; (5) end with one clear "
+                 f"question as the last sentence. At most {max_words} words.")
     framing_rule = {
-        "similar": "Proof framing: \"I did nearly this for a [client type]: [result]\", using the chosen project.",
+        "similar": ("Proof framing: \"I did nearly this: [what the chosen project was, in a few words, naming its own systems]. "
+                    "[Its result, if it has one].\" Never name a client type, team or industry the project doesn't state, and "
+                    "don't blur how it differs from this job: name its systems, not the post's."),
         "same_skills": "Proof framing: \"Different domain, same core work: in [project] I used [shared skills] to [outcome]\".",
         "plan_only": "Proof framing: no past project. Say \"here's how I'd do it\" and \"this part is new for me, here's how I'd de-risk it\".",
     }[framing]
+    if framing != "plan_only":
+        framing_rule += (" Write the proof as one grammatical sentence of your own from the project's fields: "
+                         "never paste a field word for word, and never repeat its result.")
     allowed = [i.text for i in job.allowed_instructions]
     refused = [i.text for i in job.refused_instructions]
     system = f"""You write a freelance proposal from a Solution Brief. {UNTRUSTED}
@@ -183,6 +193,10 @@ Answer every screening question in screening_answers, briefly and with the same 
         # Added only for posts that ask for a price or timeline, so every other prompt stays the same.
         system += (f"\nThe post asks you to confirm a price, rate or timeline. Never commit to one yourself: use the figure from the "
                    f"freelancer's notes if they give one, otherwise write exactly {PRICE_PLACEHOLDER} where it belongs.")
+    if outside_work:
+        # Only when the freelancer overrode a "not your kind of work" Skip, so other prompts stay the same.
+        system += ("\nThis job is outside the freelancer's usual kind of work, and they chose to apply anyway. Say so plainly "
+                   "in one sentence, then say what does transfer. Never imply they have done this kind of work before.")
     proj = json.dumps(_project_json(project), ensure_ascii=False) if project else "none (plan only)"
     user = (f"Freelancer profile: {_profile_block(profile)}\nChosen project: {proj}{_extras_block(extras)}\n\n"
             f"Solution Brief:\n{brief_obj.model_dump_json(indent=1)}\n\n{_job_block(job)}")

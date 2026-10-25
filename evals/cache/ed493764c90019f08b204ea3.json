@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n and Google Sheets API well.",
+  "work_type_yes": true,
+  "work_type_reason": "Debugging and fixing workflow automation is a standard deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $250 is reasonable for a small workflow fix.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly defines the error, the tool, and the expected behavior.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses n8n and Google Sheets to handle leads/data."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles inventory and PostgreSQL via Python."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles email triage via Gemini and Airtable."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

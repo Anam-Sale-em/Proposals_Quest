@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal of summarizing emails in the Partners label and lists all required fields (sender, company, request type, summary, priority) and the low-confidence review process."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post, including the 'Partners' Gmail label, the requirement for a '2-sentence summary', and the specific fields 'sender, company, request type'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('built a Python job...') accurately reflects Project P3 in the profile, and the proposal does not make false claims about experience or availability."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete technical steps: writing a Python script, using the Gmail API to read the specific label, configuring the Gemini API for extraction, and saving to Airtable."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a single, clear question about the Airtable schema and is concise enough to fit within standard platform limits."
+   }
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has the required Python, Gmail API, and Airtable skills, and handles AI integrations.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is an LLM-powered workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $35-$55 is realistic for a Python and AI integration task.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: 1) Connect to Gmail API to monitor the 'Partners' label, 2) Pass email content to an AI model for summarization and classification, 3) Write the parsed details to Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Handles leads and uses similar automation concepts, but different platform and tools."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "Different platform and kind of records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Uses Gmail API, Airtable, and LLMs for email processing."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

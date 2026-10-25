@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal of two-way sync and addresses all five scope items including the 5-minute latency, lifecycle stage write-back, conflict logging, and README requirement."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post such as the 'PostgreSQL users table', 'lifecycle stage' changes, and the '5 minutes' latency requirement."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claims about past work (Shopify-to-PostgreSQL sync, n8n lead intake) accurately reflect the projects listed in the freelancer's profile without exaggeration or fabrication."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete technical steps like detecting new signups, capturing lifecycle edits, comparing timestamps for conflicts, and providing a specific README structure, rather than generic process language."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with two clear, specific questions regarding the database schema and webhook preference, which serves as a clear next step within the platform's format."
+   }
+  ]
+ }
+}

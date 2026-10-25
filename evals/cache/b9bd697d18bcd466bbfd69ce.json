@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal of migrating 6 Zaps to self-hosted n8n and covers the requirements to rebuild, test, and provide documentation."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post, including the 'Stripe payment to an email receipt' workflow and the 'three small Gmail filters'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the lead intake workflow matches Project P1 in the profile, and the phrasing 'I did nearly this' appropriately frames it as relevant past work rather than claiming it is the current project."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps, specifically auditing and mapping the existing workflows before rebuilding them."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a single, clear question regarding error handling and logging requirements."
+   }
+  ]
+ }
+}

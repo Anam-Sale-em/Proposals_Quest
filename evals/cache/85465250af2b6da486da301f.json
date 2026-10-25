@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal restates the goal but fails to address the explicit requirement to answer the three specific questions in the proposal body, instead appending them as a separate section which may violate format instructions or be seen as incomplete integration."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "Uses specific details from the post such as '15 different partner referral formats' and '30-minute claim/reassignment timers'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('lead entry dropped from about 2 hours a week to under 10 minutes') traces directly to Project P1 in the freelancer profile."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The plan lists generic tasks ('I will build...', 'I will implement...') rather than concrete first steps or a specific technical approach for the initial setup."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with a question, but it is placed before the required answers to the client's three questions, and the answers themselves are generic and do not clearly demonstrate the 'clear' answers required for shortlisting, potentially failing the 'clear question or next step' criterion if the format is strict about the ending."
+   }
+  ]
+ }
+}

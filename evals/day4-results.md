@@ -1,8 +1,8 @@
 # Day 4 results: evaluate, break, harden
 
-**Short answer:** across four fully live runs, v2 got **every decision and every trust score right (48 of 48)**. The one unstable part was how it describes the proof: "I did nearly this" versus "same skills". Two code changes (a vote over three checks, and an evidence rule) cut that from 2 misses per run to 0–1. The final code, run live twice, passed **12 of 12** and **11 of 12** (23 of 24 cases, 399 of 400 checks). Drafts pass the rubric **8 of 9** in the last run, with **0** unsupported claims.
+**Short answer:** across four fully live runs, v2 got **every decision and every trust score right (48 of 48)**. The one unstable part was how it describes the proof: "I did nearly this" versus "same skills". Two code changes (a vote over three checks, and an evidence rule) cut that from 2 misses per run to 0–1. The final code, run live twice, passed **12 of 12** and **11 of 12** (23 of 24 cases, 399 of 400 checks). Drafts pass the rubric **8 of 9** in the last run by my scoring and **6 of 9** by an independent AI judge, with **0** unsupported claims.
 
-On **6 real jobs** from Upwork, Freelancer.com and Guru, a proposal took **10 minutes median (7–14)** from opening the job to send-ready, against about 57 with plain ChatGPT. Eight failures (F1–F8) and three eval failures (E1–E3) are written up with root causes.
+On **7 real jobs** from Upwork, Freelancer.com and Guru, v2 got to a draft I'd send in **10 minutes median (7–14)** from the open job. Plain ChatGPT, timed on 3 of the same jobs, gave a first draft in 7–12 minutes, but **I wouldn't send any of the three**, and it said Apply on a job v2 rightly skipped. So the speed gain to a first draft is small; the gain is that v2's draft is the one I send, and the Skip comes before any writing. Eight failures (F1–F8) and three eval failures (E1–E3) are written up with root causes.
 
 ## 1. Test-set results
 
@@ -78,6 +78,15 @@ Scored against the [rubric](rubric.md): pass = 4 of 5 with item 3 (honest proof)
 - **Style issues on passing drafts:** a repeated opening (T07), "My goal" where it should be "Your goal" (T04, T07), and odd client wording ("for a warehouse database"). Small, but a freelancer would fix them before sending; the edit share logged at send time measures this.
 - **Against the baseline:** plain ChatGPT's raw drafts passed 3 of 3 on T01–T03 with 0 unsupported claims. v2 passed 3 of 3 with 0 in the 00:05 run, but 2 of 3 in the two runs before it. Quality now holds, but not every run.
 
+**Checked by an AI judge.** My scores above were a first pass by AI that I checked, not blind. So the same 12 drafts (9 from v2 in the 00:05 run, 3 from ChatGPT) were scored by the judge in `scripts/judge.py`: a Groq model from a different family than the drafting models, with no labels.
+
+| | Me | AI judge |
+| --- | --- | --- |
+| v2 drafts passing | 8 of 9 | **6 of 9** |
+| ChatGPT drafts passing | 3 of 3 | 3 of 3 |
+
+Agreement per rubric item: goal 92%, specific 100%, honest proof 92%, plan 83%, ask 83%. The pass/fail call matched on 10 of 12 drafts. Every item clears the 80% bar the rubric set for trusting the judge. The two disagreements are both v2 drafts I passed and the judge failed, so the judge is the stricter scorer. The fair reading of v2's draft quality on the test set is **6–8 of 9**, not 8 of 9.
+
 ## 4. Metrics
 
 | Category | Metric | Plain ChatGPT | v1 | v2 (final code, live) |
@@ -85,17 +94,19 @@ Scored against the [rubric](rubric.md): pass = 4 of 5 with item 3 (honest proof)
 | Quality | Decisions right on the 12 cases | No decision step | No decision step | **12 of 12** in all four live runs (48 of 48) |
 | Quality | Trust scores right | No client check | No client check | **12 of 12** in all four live runs |
 | Quality | Proof framing right | — | — | **23 of 24** over the final code's two live runs (10 of 12 per run before #59–#60) |
-| Quality | Rubric pass rate | 3 of 3 (T01–T03) | 0 of 5 (agency format) | **8 of 9** in the last run (7 of 9 in the two before) |
+| Quality | Rubric pass rate | 3 of 3 (T01–T03), me and the AI judge | 0 of 5 (agency format) | **8 of 9 by me, 6 of 9 by the AI judge** in the last run (7 of 9 by me in the two before) |
 | Quality | Unsupported or overstated claims | 0 (+1 borderline) | 5–7 per draft | **0 in 9 drafts** in the last run (2, then 1, in the two before) |
 | Quality | Claim check | None | None | 9 of 9 drafts pass; 1 fixed by the automatic retry (T03); 0 left "needs review" |
-| Speed | Minutes per proposal, open → send-ready | ~57 (estimate) | 65–85+ | **10 median (7–14)** on 5 real drafted jobs, stopwatch, one revision included on 3 |
+| Speed | Minutes from the open job to a draft | **7–12, median 10** (3 real jobs, measured); none send-ready | 65–85+ (estimate) | **10 median (7–14)** to send-ready on 6 real jobs, measured, one revision on 3 |
+| Speed | Same jobs, side by side | Laravel audit 12 · marketplace MVP 10 | — | Laravel audit 10 · marketplace MVP 7 |
+| Quality | Fit call on the same 3 real jobs | Apply on both it was asked about, incl. the healthcare build I'd skip | No fit check | Skip, Skip, Apply: I agreed on the healthcare Skip and overrode the Laravel one |
 | Speed | Pipeline time per job | ~30 s per answer | ~3 min per generation | **Drafted job: p50 ~100–116 s** across the two final runs (87–153 s; outliers of 247 s and 343 s under rate limits). **Skip: 7–35 s** |
 | Cost | LLM calls per job | 1 chat + 3+ revisions | Full chain + images | Drafted: 7 (9 with the claim retry). Work-type Skip: 4. Red-flag or below-minimum Skip: 1 |
 | Cost | Tokens per drafted job | Subscription | No figure | ~6,500–10,200 in and ~2,300–3,300 out; the 2,000-word spec ~24,000 in / 6,600 out. The vote adds about 40%. **$0 on the free tier** |
 | Reliability | Model errors absorbed | — | Token expiry under load | 57 busy or rate-limit errors in each final run, every one retried or sent to the fallback; 0 cases lost |
 | Human input | Before the first draft | Job + background written per job | 10 fields | One paste or link, then confirm |
 | Human input | Approvals | — | 1 | 2 (confirm details, then the draft); v2 never sends |
-| Human input | Revision rounds per draft | 3+ | 2–3 | 0 or 1 on the real jobs (1 on 3 of 5) |
+| Human input | Revision rounds per draft | 3+ | 2–3 | 0 or 1 on the real jobs (1 on 3 of 6) |
 
 Most of the ~2 minutes is waiting on the free tier: Gemini 3.8 Flash allows 5 calls a minute and about 20 a day, so the client throttles itself, and busy or quota errors move calls down the chain.
 
@@ -132,7 +143,7 @@ Full write-ups in [failures.md](failures.md).
 
 ## 7. Real-job check (fresh jobs)
 
-Six jobs open on Day 5: two from Upwork (pasted), three from Freelancer.com (two by link, one from keyword search) and one from Guru (pasted). All run on the live link with my own projects. Minutes are by stopwatch, from opening the job to a draft I'd send, including any revision.
+Seven jobs open on Day 5: two from Upwork (pasted), four from Freelancer.com (three by link, one from keyword search) and one from Guru (pasted). All run on the live link with my own projects. Minutes are by stopwatch, from opening the job to a draft I'd send, including any revision.
 
 | # | Job | Platform | Client trust | v2's call | What I did | Proof cited | Revisions | Minutes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -142,8 +153,19 @@ Six jobs open on Day 5: two from Upwork (pasted), three from Freelancer.com (two
 | 4 | AI agent & n8n automation specialist ($20–35/hr) | Upwork | $1.9K spent, 5 hires | Apply | Wrote the draft | v2's pick, my proposal-generation app: "Different domain, same core work" | 1 (more detail, "exaggerate") | 11 |
 | 5 | Mobile booking app UX/UI designer ($25–50/hr) | Freelancer.com, link | Can't rate (0 reviews) | Skip | Overrode, wrote the draft | v2's pick, React Native apps: "Different domain, same core work" | 1 ("warmer and friendly") | 14 |
 | 6 | AI marketplace MVP (₹12,500–37,500) | Freelancer.com, search | Can't rate (0 reviews) | Apply: medium fit | Wrote the draft | v2's pick, React Native apps: "Different domain, same core work" | 0 | 7 |
+| 7 | Complete n8n workflow automation ($750–1,500) | Freelancer.com, link | Payment verified, 0 reviews | Apply | Wrote the draft | Diu, my content automation project: "Different domain, same core work" | 0 | 10 |
 
-**Time:** 10 minutes median over the 5 drafted jobs (7, 7, 10, 11, 14), against about 57 with plain ChatGPT and 65–85+ with v1. The ChatGPT figure is my per-step estimate from Day 1; the v2 figures are measured. The proxy user also got his first proposal in about 10 minutes.
+**Time:** 10 minutes median over the 6 drafted jobs (7, 7, 10, 10, 11, 14), from the open job to a draft I'd send. Finding the job isn't included: 5–7 minutes on the platform either way, about 3 through v2's Freelancer.com search. The proxy user also got his first proposal in about 10 minutes.
+
+**Against plain ChatGPT on the same jobs** (stopwatch, full steps in [baseline.md](baseline.md#measured-on-real-jobs-day-5)):
+
+| Job | ChatGPT | v2 |
+| --- | --- | --- |
+| Laravel code audit (Guru) | 12 min, one revision, still not one I'd send; no fit check because I forgot to ask | 10 min to a draft I'd send (after overriding the Skip) |
+| Healthcare SaaS build (Upwork) | 7 min: "Apply, 6.5/10" and a draft | Skip in one line, which I agreed with |
+| AI marketplace MVP (Freelancer.com) | 10 min, reads AI-written, not like me | 7 min to a draft I'd send |
+
+My Day 1 estimate of about 57 minutes was too high for a first draft: ChatGPT gets one in 7–12. It assumed 3+ revision rounds to reach send-ready, and in the measured runs I stopped before that because the drafts still didn't sound like me. v2 is a little faster to a draft, and its draft is the one I'd send.
 
 **What held up:**
 - **The Skips match the posts.** A healthcare SaaS build, a Figma-only design job and a Laravel code audit are not the work I do, and v2 said so in one line each. I overrode two of them to get a draft; both drafts could only offer "different domain" proof, which is the honest framing.
@@ -152,10 +174,39 @@ Six jobs open on Day 5: two from Upwork (pasted), three from Freelancer.com (two
 - **The client box per platform worked:** Guru's paid jobs and invoices gave Medium (45), Freelancer.com's 5.0 and 14 reviews gave High, and the two Freelancer.com clients with no reviews read "can't rate" instead of a guess.
 - **Revisions changed only what I asked.** Each revised draft kept the plan and the project and changed the tone.
 
+**Draft quality on the real jobs, by the AI judge.** The same judge and rubric, run on the real posts with only the projects I gave each draft (`python scripts/judge.py --real private/real_jobs.json`; the posts and projects stay in `private/`). The judge doesn't know which tool wrote which draft. Rubric items in order: goal, specific, honest proof, plan, ask.
+
+| Job | v2 | Plain ChatGPT |
+| --- | --- | --- |
+| Laravel code audit (v2 had said Skip; I overrode it) | Y Y – Y – · **fail** | – – Y Y Y · **fail** |
+| Mobile booking app designer | Y Y Y Y Y · **pass** | not drafted |
+| AI marketplace MVP | – Y Y Y Y · **pass** | – Y Y – – · **fail** |
+| Complete n8n workflow automation | Y Y Y – Y · **pass** | not drafted |
+| **Pass** | **3 of 4** | **0 of 2** |
+
+On the two jobs both drafted, the judge failed ChatGPT's drafts on the goal item both times (restating the client's goal and covering every requirement), plus specifics on the Laravel draft and plan and ask on the marketplace one. v2's one fail is the Laravel audit, the job v2 itself said to Skip. Its proof was "different domain" from the start, and the judge failed it on honest proof and on the ask. Four drafts against two is a small sample, and it's one judge. I read it as "v2 holds up on real posts", not as "v2 beats ChatGPT".
+
+**Draft quality on the real jobs, scored by the AI judge.** Same judge and rubric as the test set, run with `python scripts/judge.py --real private/real_jobs.json`. The posts and my projects stay in `private/`. Each draft was checked only against the projects given for that job. Four jobs had a full post and a known proof project; two of them also had a plain-ChatGPT draft.
+
+| Job | v2 (goal, specific, proof, plan, ask) | ChatGPT |
+| --- | --- | --- |
+| Laravel code audit (v2 said Skip; I overrode) | fail: Y Y – Y – | fail: – – Y Y Y |
+| Mobile booking app designer (v2 said Skip; I overrode) | **pass**: all five | not run |
+| AI marketplace MVP | **pass**: – Y Y Y Y | fail: – Y Y – – |
+| Complete n8n workflow | **pass**: Y Y Y – Y | not run |
+| **Passing** | **3 of 4** | **0 of 2** |
+
+Why each failed, from the judge's reasons (`private/real_judge.csv`):
+- **ChatGPT, both jobs:** it never restated the client's goal. The Laravel draft skipped the requested quote and the confidentiality agreement and used no detail unique to the post. The marketplace draft's plan was generic ("get the core flow right") and it ended on "Looking forward to hearing more" instead of a question.
+- **v2, Laravel audit:** failed on proof and ask, both for the same reason: the post asked for a fixed-price quote, and v2 wrote "[your price and timeline]" for me to fill in. That placeholder is deliberate, because v2 never sets a price, but scored as generated, the draft doesn't answer the ask.
+- **v2, the passing drafts' weak spots:** the marketplace draft didn't cover the portal, admin dashboard, AI layer and tests (item 1). The n8n draft's plan, "kickoff and requirements gathering, then design the architecture", was generic (item 4).
+
+Four drafts on real jobs is a small sample. It points the same way as the test set, and nothing more.
+
 **What didn't** (write-ups in [failures.md](failures.md)):
 - **F7, overstated proof on job 2.** "I did nearly this" for a booking chatbot cited on an SEO content pipeline. Both use n8n, so the evidence rule let it through; the revision made it "I completed a similar architecture". This is the same weak spot as E3, now on a real job.
-- **F8, sentence slips in the drafts.** Job 6 opens "My goal is to build…" and says "I used React Native to shipped four apps". Job 4 repeats the project's result phrase twice in one sentence. The claim check passes all three, because every fact in them is real.
-- **The drafts read alike.** All five open with "Your goal is to…" and end with a question and "Let us discuss". Fine for a first draft, but a client reading many proposals would notice.
+- **F8, sentence slips in the drafts.** Job 6 opens "My goal is to build…" and says "I used React Native to shipped four apps". Job 4 repeats the project's result phrase twice in one sentence. Job 7's proof line is empty: "I used Automation to build systems that operate reliably", where "Automation" is the only shared skill and "operate reliably" isn't in the project. The claim check passes all four, because nothing in them names a fact that isn't there.
+- **The drafts read alike.** Five of the six open with "Your goal is to…", and all end with a question and "Let us discuss". Fine for a first draft, but a client reading many proposals would notice.
 
 ## 8. Proxy user
 
@@ -195,6 +246,6 @@ It took him about **10 minutes** to open the app, pick a job he liked and get a 
 - **Free-tier limits set the speed.** About 2 minutes per drafted job, mostly waiting, and some drafts come from the fallback model when the daily quota runs out.
 - **Client data is thin on some platforms.** Freelancer.com's API gives no client history, so trust there rests on what the user copies in.
 - **The live app forgets.** Streamlit Cloud resets local files on restart; the sent log has to be downloaded as an Excel file.
-- **Small test set.** 12 synthetic cases on one sample profile, plus 6 real jobs. The real-job set is too small to give a skip accuracy; that needs 30 jobs with my call written down before v2's.
+- **Small test set.** 12 synthetic cases on one sample profile, plus 7 real jobs. The real-job set is too small to give a skip accuracy; that needs 30 jobs with my call written down before v2's.
 - **Proof built from a shared tool.** Sharing n8n with a past project is enough for "I did nearly this" (F7). Platform alone shouldn't count.
 - **Sentence-level slips** pass the claim check (F8). The freelancer still has to read every draft before sending, which is why v2 never sends.

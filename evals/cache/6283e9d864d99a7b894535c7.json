@@ -1,0 +1,81 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "goal": "Connect a few tools using automation",
+  "plan": [
+   {
+    "step": "Review the specific tools and integration requirements to be shared by the client",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "REST APIs"
+    ]
+   },
+   {
+    "step": "Map the data flow and triggers between the client tools",
+    "tools": [],
+    "suggested_tools": [
+     "Webhooks"
+    ]
+   },
+   {
+    "step": "Build and test the automation workflow",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Discovery and Mapping",
+    "deliverable": "Integration plan and data flow mapping",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Implementation and Testing",
+    "deliverable": "Fully functioning automation workflow",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Review the specific tools and integration requirements to be shared by the client",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Map the data flow and triggers between the client tools",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build and test the automation workflow",
+    "project_id": "P1",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The budget is listed as a $5 placeholder.",
+    "mitigation": "Discuss and agree upon a realistic budget after reviewing the tool details."
+   },
+   {
+    "risk": "Tool details are not specified in the job post.",
+    "mitigation": "Request the list of tools and specific automation requirements before starting work."
+   }
+  ],
+  "questions": [
+   "What specific tools do you need to connect?",
+   "What is the desired trigger and outcome for the automation workflow?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials and details for the tools to be integrated.",
+   "The actual project budget will be negotiated after discussing the specific requirements."
+  ]
+ }
+}

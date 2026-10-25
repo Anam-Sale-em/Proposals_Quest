@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal and covers all five scope items including the 5-minute latency, lifecycle stage sync, conflict logging, and README requirement."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post such as 'new signups appear in HubSpot within 5 minutes' and 'changes to lifecycle stage in HubSpot are written back to PostgreSQL'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the Shopify to PostgreSQL inventory sync traces directly to Project P2 in the profile, and the proposed work is clearly framed as new implementation."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps: analyzing the PostgreSQL users table schema and HubSpot contact properties to define mapping fields, rather than using generic process language."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with one clear question about the hosting environment/OS, is within length limits, and follows the standard proposal format."
+   }
+  ]
+ }
+}

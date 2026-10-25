@@ -1,0 +1,50 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets, Slack, and APIs required for the migration work.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow migration and automation building match the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $450 for 6 simple workflows is a reasonable scope for an experienced n8n developer.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly lists the 6 workflows to migrate, testing requirements, and documentation handover.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, Google Sheets, and Slack for lead intake automation."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It uses Python and webhooks for data synchronization, but different platforms and records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "same_skills",
+    "reason": "It processes incoming emails and logs them, but uses different tools like Gemini and Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "shares_core_skills"
+  ]
+ }
+}

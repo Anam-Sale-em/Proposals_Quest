@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets API, Slack API, and workflow automation skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Building an n8n workflow for data sync and alerts matches the workflow automation work type.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is standard and pays per hour worked.",
+  "clear_yes": true,
+  "clear_reason": "The steps to ingest from Typeform, check duplicates in Google Sheets, and notify Slack are explicit.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves an n8n workflow for lead intake from forms into Google Sheets and Slack with duplicate checks."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It syncs inventory to PostgreSQL using Python rather than form automation."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It sorts emails using an LLM instead of handling lead forms."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

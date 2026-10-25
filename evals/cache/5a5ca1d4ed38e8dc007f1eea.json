@@ -1,0 +1,99 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "goal": "Fix the n8n workflow so the full file of about 5,000 rows lands every night in Google Sheets without failing due to rate limits, including retries and a Slack message if it still fails.",
+  "plan": [
+   {
+    "step": "Analyze the existing n8n workflow and Google Sheets node configuration to identify the rate limit (429) trigger points during the 5,000 row import.",
+    "tools": [
+     "n8n",
+     "Google Sheets"
+    ],
+    "suggested_tools": [
+     "Postman"
+    ]
+   },
+   {
+    "step": "Implement batching or rate-limiting logic within the n8n workflow to handle large data imports without exceeding Google Sheets API limits.",
+    "tools": [
+     "n8n",
+     "Google Sheets"
+    ],
+    "suggested_tools": [
+     "JavaScript"
+    ]
+   },
+   {
+    "step": "Configure built-in error handling and automatic retry mechanisms for the Google Sheets node inside the n8n workflow.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Add a Slack notification node to alert the team if the workflow still fails after retries.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Slack API"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Diagnostic and Fix Implementation",
+    "deliverable": "Updated n8n workflow with batching, rate-limit handling, and retries.",
+    "budget_share": "70%"
+   },
+   {
+    "name": "Testing and Slack Alert Integration",
+    "deliverable": "Fully tested import of the 5,000 row CSV and verified Slack failure alerts.",
+    "budget_share": "30%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Analyze the existing n8n workflow and Google Sheets node configuration to identify the rate limit (429) trigger points during the 5,000 row import.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement batching or rate-limiting logic within the n8n workflow to handle large data imports without exceeding Google Sheets API limits.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure built-in error handling and automatic retry mechanisms for the Google Sheets node inside the n8n workflow.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Add a Slack notification node to alert the team if the workflow still fails after retries.",
+    "project_id": "P1",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Google Sheets API write quotas might still restrict high-frequency batch requests even with throttling.",
+    "mitigation": "Implement structured delays between batch chunks or switch to appending rows in optimized larger arrays rather than individual requests."
+   },
+   {
+    "risk": "The CSV structure or source file format may have changed causing parsing issues alongside the rate limit.",
+    "mitigation": "Inspect the raw CSV input structure prior to running test imports."
+   }
+  ],
+  "questions": [
+   "What is the exact structure of the incoming CSV file and how is it currently being read into n8n?",
+   "Which Slack channel should the failure alert notifications be sent to?"
+  ],
+  "assumptions": [
+   "The client has provided or will provide access to the existing n8n instance and Google Sheets document.",
+   "The client has a Slack workspace set up where the webhook or integration app can post failure messages."
+  ]
+ }
+}

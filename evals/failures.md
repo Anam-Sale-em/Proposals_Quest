@@ -1,6 +1,6 @@
 # Failure analysis
 
-Real failures found while running v2, each with its root cause, the fix and how the fix is checked. F1–F6 come from live use on Days 3–4, F7–F8 from the six real jobs on Day 5. The eval-run failures (E1–E3) are in [day4-results.md](day4-results.md).
+Real failures found while running v2, each with its root cause, the fix and how the fix is checked. F1–F6 come from live use on Days 3–4, F7–F8 from the seven real jobs on Day 5. The eval-run failures (E1–E3) are in [day4-results.md](day4-results.md).
 
 ## F1 · First live run: every model failed · 2026-10-22
 
@@ -19,7 +19,7 @@ Real failures found while running v2, each with its root cause, the fix and how 
 - When everything is busy, the message now says so in plain words ("The AI models are busy right now…"), separately from key or model problems.
 - `scripts/check_models.py` lists which configured models each key can use, without spending generation quota.
 
-**How it's checked:** two new tests. One simulates a 503 on both Gemini models and a 404 on the first Groq model, and asserts the exact order tried before the second Groq model answers. The other asserts the "busy" message when every model is busy. Since the fix, each final eval run absorbed 57 busy or rate-limit errors with no case lost, and all six real jobs on Day 5 completed.
+**How it's checked:** two new tests. One simulates a 503 on both Gemini models and a 404 on the first Groq model, and asserts the exact order tried before the second Groq model answers. The other asserts the "busy" message when every model is busy. Since the fix, each final eval run absorbed 57 busy or rate-limit errors with no case lost, and all seven real jobs on Day 5 completed.
 
 **Lesson:** fallbacks need their own check at startup, not just a name in config.
 
@@ -55,7 +55,7 @@ Real failures found while running v2, each with its root cause, the fix and how 
 
 **Fix:** names now match singular or plural, and a list of generic words in `config.toml` (API, app, UI, backend, database and others) is skipped by the names pass. Specific tools are still checked.
 
-**How it's checked:** a unit test asserts "API" matches "APIs", generic words pass, and "Salesforce" is still treated as a tool. Not seen again in the six real jobs on Day 5.
+**How it's checked:** a unit test asserts "API" matches "APIs", generic words pass, and "Salesforce" is still treated as a tool. Not seen again in the seven real jobs on Day 5.
 
 **Lesson:** false alarms cost trust as much as misses. A "needs review" on an honest draft trains the user to ignore the check.
 
@@ -67,7 +67,7 @@ Real failures found while running v2, each with its root cause, the fix and how 
 
 **Fix:** the experience pass now judges only sentences that claim past work (I've built, I used, experience with, in a past project and so on). Sentences that say the work is new, or only describe a plan, are skipped. The claim-list prompt says the same (prompt v2.0.2).
 
-**How it's checked:** a unit test passes the honest sentence and a plan sentence, and asserts that only an invented "I've built this exact setup for three clients" is flagged. Not seen again in the six real jobs on Day 5.
+**How it's checked:** a unit test passes the honest sentence and a plan sentence, and asserts that only an invented "I've built this exact setup for three clients" is flagged. Not seen again in the seven real jobs on Day 5.
 
 **Lesson:** a check has to agree with the writer's instructions. Here v2 told the draft to be honest, then punished the honesty.
 
@@ -79,7 +79,7 @@ Real failures found while running v2, each with its root cause, the fix and how 
 
 **Fix:** the prompts now state the budget in plain words from the confirmed fields ("hourly rate of $40–$150 per hour (paid per hour worked, not a total)"), and the realistic check is told to judge an hourly rate as a rate (prompt v2.0.3). The Details panel keeps dollar signs literal and shows the same plain budget line. The skill line now reads "0 of 2 skill tags on the post are in your profile (missing: HubSpot, Lead Generation)", so it no longer looks like it contradicts "Skills: Yes".
 
-**How it's checked:** a unit test asserts the plain budget wording for hourly, fixed-range and missing budgets. Not seen again in the six real jobs on Day 5.
+**How it's checked:** a unit test asserts the plain budget wording for hourly, fixed-range and missing budgets. Not seen again in the seven real jobs on Day 5.
 
 **Lesson:** give the model the fact in the form the decision needs, not the raw text it came from.
 
@@ -95,10 +95,11 @@ Real failures found while running v2, each with its root cause, the fix and how 
 
 ## F8 · Sentence slips that the claim check can't see · 2026-10-25
 
-**What happened:** three drafts from the real jobs had wording a client would notice:
+**What happened:** four drafts from the real jobs had wording a client would notice:
 - "My goal is to build a 30-day MVP…" (it should be the client's goal);
 - "I used React Native to shipped four apps";
-- one sentence repeating the project's result phrase twice.
+- one sentence repeating the project's result phrase twice;
+- an empty proof line: "I used Automation to build systems that operate reliably" (the only shared skill is "Automation", and the project never says "reliably").
 
 **Root cause:** the proof sentence is filled from a template ("in [project] I used [skills] to [outcome]") with the project's own text, which is written as a past-tense sentence. The claim check confirms that every fact traces to a project, so it passes. Nothing checks grammar or repetition. "My goal" was already seen on two eval drafts (T04, T07).
 

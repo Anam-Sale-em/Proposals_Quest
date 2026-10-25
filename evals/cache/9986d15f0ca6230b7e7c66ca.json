@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "text": "blue whale. Your goal is to automate a daily Airtable digest of yesterday's new orders, total value, and urgent orders, posting to Slack at 8:00 while skipping weekends. You need an automated workflow that lists yesterday's new orders, summarizes their total value, highlights urgent orders, posts the message to #ops in Slack, and skips weekends using n8n. To build this, I will configure the n8n schedule trigger to run at 8:00 every weekday, excluding weekends. Next, I will query Airtable to fetch yesterday's new orders and filter for total value and urgent order markers. After that, I will format the retrieved orders into a summary digest message using JavaScript. I did nearly this for a sales team: lead entry dropped from about 2 hours a week to under 10 minutes. What is the exact table name and field structure in Airtable for the orders and urgent status?",
+  "screening_answers": []
+ }
+}

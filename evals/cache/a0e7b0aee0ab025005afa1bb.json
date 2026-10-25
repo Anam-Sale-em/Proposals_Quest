@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires Logo Design, Adobe Illustrator, and Brand Identity, which are not in the freelancer's technical skill set.",
+  "work_type_yes": false,
+  "work_type_reason": "The job is a logo design task, which does not match the freelancer's work types of automation and integrations.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $300 for a logo is acceptable as a placeholder.",
+  "clear_yes": true,
+  "clear_reason": "The instructions ask for a modern minimal logo and brand mark, allowing a 3-step plan to be written.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "This project is about lead intake automation, not design."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "This project is about inventory synchronization, not design."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "This project is about email triage, not design."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The project requires n8n, PostgreSQL, Google Sheets, Slack, and REST APIs, all of which are in the freelancer's listed skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The post asks for a complete workflow automation and data sync system built in n8n, matching the freelancer's core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $3,500 for a well-scoped 3-milestone n8n and PostgreSQL automation project is realistic.",
+  "clear_yes": true,
+  "clear_reason": "The requirements outline clear intake, storage, routing, and notification steps to build a 3-step project plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Both projects involve lead intake automation, deduplication, Google Sheets, and Slack alerts using n8n."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Both handle webhook-driven sync workflows involving PostgreSQL, but P2 focuses on inventory rather than leads."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "similar",
+    "reason": "Both process incoming messages and route/store records, though P3 uses Python and Gmail instead of n8n."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal and lists all five specific requirements: triggers, duplicate check, row fields, Slack message, and failure email."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It uses two details unique to the post: the specific field list (name, email, company, form name, timestamp) and the specific Slack channel name (#sales)."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the lead intake project (2 hours to 10 minutes) matches Project P1 in the profile, and the freelancer correctly identifies it as past work ('I did nearly this')."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps: configuring Typeform triggers, implementing the duplicate check logic, and mapping specific fields to the sheet."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with one clear question about the email node preference and is concise, fitting within standard platform limits."
+   }
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets, Slack, and general workflow migration skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Migrating workflows between automation platforms is direct workflow automation work.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $450 for 6 small workflows is reasonable for a fixed-price migration project.",
+  "clear_yes": true,
+  "clear_reason": "The project lists the exact workflows to migrate and the deliverables clearly.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation, form webhooks, Google Sheets, and Slack alerts."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves backend integration work, though using a different platform and record type."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves processing inbox/email events and writing to records."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

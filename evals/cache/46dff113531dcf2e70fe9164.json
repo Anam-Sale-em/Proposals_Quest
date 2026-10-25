@@ -1,0 +1,114 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "goal": "Build a two-way contact sync between HubSpot and the PostgreSQL users table so new signups appear in HubSpot within 5 minutes, HubSpot lifecycle stage changes write back to PostgreSQL, and conflicts are resolved by most recent update and logged.",
+  "plan": [
+   {
+    "step": "Analyze the PostgreSQL users table schema and HubSpot contact properties to define the mapping fields for the two-way sync",
+    "tools": [
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "HubSpot API"
+    ]
+   },
+   {
+    "step": "Write a Python service to handle new signups from PostgreSQL and push them to HubSpot within 5 minutes",
+    "tools": [
+     "Python",
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "HubSpot API"
+    ]
+   },
+   {
+    "step": "Implement webhook listeners and polling logic to capture lifecycle stage changes in HubSpot and write them back to PostgreSQL",
+    "tools": [
+     "Python",
+     "PostgreSQL"
+    ],
+    "suggested_tools": [
+     "HubSpot Webhooks"
+    ]
+   },
+   {
+    "step": "Implement most-recent-update-wins conflict resolution logic with a dedicated conflict logging table",
+    "tools": [
+     "Python",
+     "PostgreSQL"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Containerize or script the service to run on the client server and author a short README for maintenance",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "Docker"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "PostgreSQL-to-HubSpot signup sync and initial database mapping schema",
+    "budget_share": "$400"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "HubSpot-to-PostgreSQL lifecycle stage write-back, conflict logging, and README",
+    "budget_share": "$400"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Analyze the PostgreSQL users table schema and HubSpot contact properties to define the mapping fields for the two-way sync",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Write a Python service to handle new signups from PostgreSQL and push them to HubSpot within 5 minutes",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement webhook listeners and polling logic to capture lifecycle stage changes in HubSpot and write them back to PostgreSQL",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement most-recent-update-wins conflict resolution logic with a dedicated conflict logging table",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Containerize or script the service to run on the client server and author a short README for maintenance",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Rate limits on the HubSpot API during high volume signups",
+    "mitigation": "Implement exponential backoff and batching where appropriate"
+   },
+   {
+    "risk": "Clock drift between the server and HubSpot timestamps causing incorrect conflict resolution",
+    "mitigation": "Use HubSpot server-side modification timestamps as the source of truth for update times"
+   }
+  ],
+  "questions": [
+   "What specific hosting environment or operating system is running on your server?",
+   "Do you have existing HubSpot private apps or API keys configured for this integration?"
+  ],
+  "assumptions": [
+   "The client will provide HubSpot API credentials and database access for testing",
+   "The timeline is 1 to 3 months as indicated in the job listing"
+  ]
+ }
+}

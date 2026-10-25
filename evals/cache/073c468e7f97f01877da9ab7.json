@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Gmail API, and Airtable, which cover the core technical stack.",
+  "work_type_yes": true,
+  "work_type_reason": "The task involves building an API integration and LLM-powered workflow automation.",
+  "realistic_yes": true,
+  "realistic_reason": "An hourly rate of $35-$55 is appropriate for this type of integration and AI workflow development.",
+  "clear_yes": true,
+  "clear_reason": "The job post clearly describes reading labeled emails, summarizing via AI, and adding records to Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles leads from webhooks to Google Sheets rather than Gmail to Airtable."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It synchronizes Shopify inventory to PostgreSQL using Python."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It reads Gmail messages, processes them with an AI model, and writes them to Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

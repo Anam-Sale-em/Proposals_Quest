@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal and covers all requirements: n8n/Make, yesterday's orders, total value, urgent flag, 8:00 AM #ops, and weekend skip."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It uses specific details from the post: 'yesterday's new orders', 'total value', 'urgent' flag, '8:00 in #ops', and 'skip weekends'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('built an n8n workflow...') accurately reflects Project P1 in the profile, and the phrasing 'I did nearly this' appropriately frames it as relevant prior experience rather than claiming this specific task was done before."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "It names concrete first steps: configuring the scheduled trigger for weekdays at 8:00 AM and querying Airtable for specific fields."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "It ends with one clear question about the Airtable schema and includes the required 'blue whale' phrase at the start."
+   }
+  ]
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the client's goal and covers all three functional requirements (data movement, alerts, record creation) mentioned in the post."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post, such as 'field maps,' 'preferred timing,' and the specific mix of 'data sync, notifications, and record creation.'"
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the 'Diu' project traces directly to the provided profile, and the proposal honestly frames it as 'different domain, same core work' rather than claiming direct n8n experience."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The plan is generic ('kickoff and requirements gathering,' 'design architecture') and does not name concrete first steps or specific technical actions beyond restating the client's own inputs."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a clear, specific question about the initial release stack and a next step to discuss in chat, fitting the platform's format."
+   }
+  ]
+ }
+}

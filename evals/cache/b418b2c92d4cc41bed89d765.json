@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has general automation and API integration skills matching the post.",
+  "work_type_yes": true,
+  "work_type_reason": "Connecting tools is standard workflow automation and API integration work.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so budget is assumed to be acceptable.",
+  "clear_yes": false,
+  "clear_reason": "The job post is extremely vague and provides no specific tools, steps, or requirements.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation for leads, but the platform is general rather than specific."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data synchronization and API integration, but uses specific tools."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves connecting email and records via automation."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

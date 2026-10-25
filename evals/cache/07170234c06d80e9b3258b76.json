@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal fails to answer the three mandatory questions in the main body as required by the post's format instructions, placing them in a separate section instead."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post, such as the '15 different unstructured formats' for partner emails and the 'database-backed round-robin pointers' requirement."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('lead intake automation with n8n') and the result ('2 hours to 10 minutes') directly match Project P1 in the freelancer's profile."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps, including reviewing routing rules, setting up PostgreSQL tables, and building specific intake workflows for webhooks and CSVs."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with a call to action ('Let's get started on Milestone 1') rather than a single clear question or next step, and the structure is disjointed with questions appended at the end."
+   }
+  ]
+ }
+}

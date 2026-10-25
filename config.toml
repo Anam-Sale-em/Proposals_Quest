@@ -1,7 +1,7 @@
 # Proposal Pipeline v2: every threshold and limit lives here.
 # Secrets never go in this file: they live in .env (local) or st.secrets (cloud).
 
-prompt_version = "v2.0.6"
+prompt_version = "v2.0.8"
 
 [models]
 # Brief, proposal and revisions: the stronger Flash model.
@@ -58,12 +58,15 @@ questions_first_max_words = 150
 # Alias map for skill overlap and the names check: alias = canonical name.
 aliases = { "gsheets" = "google sheets", "google sheets api" = "google sheets", "sheets" = "google sheets", "js" = "javascript", "node" = "node.js", "nodejs" = "node.js", "postgres" = "postgresql", "slack api" = "slack", "gmail api" = "gmail", "shopify api" = "shopify", "rest apis" = "rest api", "api integration" = "rest api", "webhook" = "webhooks", "gemini api" = "gemini", "openai api" = "openai", "rn" = "react native" }
 
+# Tools a freelancer builds with, not systems a client's work lives in. Sharing one of these with a past
+# project isn't evidence for "I did nearly this" (F7): an n8n booking agent isn't an n8n content pipeline.
+build_tools = ["n8n", "make", "zapier", "python", "javascript", "typescript", "node.js", "webhooks", "rest api", "llms", "llm apis", "openai", "gemini", "react native", "flutter", "react", "next.js", "php", "laravel", "django", "fastapi", "automation", "ai chatbots", "tool calling"]
+
 # Generic words the names check never treats as tools.
 generic_terms = ["api", "rest api", "app", "mobile app", "web app", "ui", "ux", "ui/ux", "backend", "frontend", "database", "dashboard", "integration", "automation", "workflow", "cloud", "server", "script", "sdk", "website", "ios", "android"]
 
 [storage]
-# "json" (local files) or "firestore". Firestore is first to cut.
-backend = "json"
+# Local JSON files only. On Streamlit Cloud they live on the app's disk and are lost when it restarts.
 json_root = "data"
 
 [outcomes]

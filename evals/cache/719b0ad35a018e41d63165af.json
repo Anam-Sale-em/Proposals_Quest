@@ -1,0 +1,52 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, JavaScript, and Google Sheets API required for the fix.",
+  "work_type_yes": true,
+  "work_type_reason": "Debugging and fixing workflow automation falls directly under workflow automation.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250 for fixing an n8n batch processing and rate-limit issue is realistic.",
+  "clear_yes": true,
+  "clear_reason": "The steps are clear: diagnose the 429 error, implement batching or rate limiting with retries in n8n, and add a Slack failure alert.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses n8n and Google Sheets and handles records, but it is lead intake rather than fixing batch rate limits."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It involves Shopify and PostgreSQL data syncs with Python, which is different."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on email triage using Python, Gemini API, and Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": [
+   "same_kind_of_work",
+   "same_platform",
+   "same_records",
+   "shares_core_skills"
+  ]
+ }
+}

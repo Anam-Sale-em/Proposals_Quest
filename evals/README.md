@@ -23,7 +23,7 @@ Results: [day4-results.md](day4-results.md) · failures: [failures.md](failures.
 | Core cases | 12 | Synthetic, frozen | Decisions, drafts, validators and failure handling; v1 against v2 |
 | Trust examples | 16 | From the plan | Unit tests for the trust scorer, with no LLM |
 | Decision table | 15 cells, both gates and every budget rule | From the plan | Unit tests for the decision function, with no LLM |
-| Fresh jobs | 6 | Real jobs from Upwork, Freelancer.com and Guru, run on the live link on Day 5 | Minutes per proposal by stopwatch, v2's call and my override, client trust per platform, draft problems |
+| Fresh jobs | 7 | Real jobs from Upwork, Freelancer.com and Guru, run on the live link on Day 5 | Minutes per proposal by stopwatch, v2's call and my override, client trust per platform, draft problems |
 
 ## Running the evals
 
@@ -31,7 +31,9 @@ Results: [day4-results.md](day4-results.md) · failures: [failures.md](failures.
 python scripts/run_evals.py              # every case; cached responses when present, otherwise live
 python scripts/run_evals.py --replay     # cached responses only (same result every time, offline)
 python scripts/run_evals.py --record     # call the APIs and refresh the cache
-python scripts/judge.py evals/results/<run> --hand evals/hand_scores.csv
+python scripts/judge.py evals/results/<run> --hand evals/rubric_scores_live_v2.0.6.csv   # AI judge + agreement with my scores
+python scripts/blind_pack.py make evals/results/<run>       # blind pack for a second human scorer
+python scripts/blind_pack.py compare evals/results/<run>    # their scores vs mine, per item
 ```
 
 Results land in `evals/results/<prompt_version>_<time>/`: `results.csv`, `summary.md` and `drafts/`. Fill the rubric and unsupported-claim columns by hand, then run the judge.
@@ -46,8 +48,8 @@ Results land in `evals/results/<prompt_version>_<time>/`: `results.csv`, `summar
 
 ## Fresh jobs
 
-Six open jobs, run on the live link with my own projects: two pasted from Upwork, three from Freelancer.com (two links, one keyword search), one pasted from Guru. For each I timed opening the job to a draft I'd send, and noted v2's call, what I did with it, the proof it cited and any revision. Results are in [day4-results.md](day4-results.md), section 7; the job posts stay private.
+Seven open jobs, run on the live link with my own projects: two pasted from Upwork, four from Freelancer.com (three links, one keyword search), one pasted from Guru. For each I timed opening the job to a draft I'd send, and noted v2's call, what I did with it, the proof it cited and any revision. Results are in [day4-results.md](day4-results.md), section 7; the job posts stay private.
 
-Six jobs show the time and the draft problems. They're too few for a skip accuracy. The next set is 30 jobs, with my own call written down before v2 runs (template: [`../labels/day4_calls_template.csv`](../labels/day4_calls_template.csv)), so v2 can't influence it.
+Seven jobs show the time and the draft problems. They're too few for a skip accuracy. The next set is 30 jobs, with my own call written down before v2 runs (template: [`../labels/day4_calls_template.csv`](../labels/day4_calls_template.csv)), so v2 can't influence it.
 
 The trust thresholds stay at the plan's values, checked by the 16 worked examples; they aren't tuned on the real jobs.

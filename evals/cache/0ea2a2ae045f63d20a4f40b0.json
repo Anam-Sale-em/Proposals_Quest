@@ -1,0 +1,51 @@
+{
+ "step": "extract",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "title": "HubSpot and PostgreSQL two-way contact sync (Python or Node)",
+  "description": "HubSpot and PostgreSQL two-way contact sync (Python or Node)\n\nPosted 5 hours ago \u00b7 Worldwide\n\nWe run our product on PostgreSQL and our sales team lives in HubSpot. Contacts drift apart: new signups don't reach HubSpot for days, and edits made by sales never come back to our database.\n\nScope:\n1. Two-way sync of contacts between HubSpot and our PostgreSQL users table\n2. New signups appear in HubSpot within 5 minutes\n3. Changes to lifecycle stage in HubSpot are written back to PostgreSQL\n4. Conflicts: the most recent update wins, and every conflict is logged\n5. Runs on our server, with a short README so our developer can maintain it\n\nFixed price: $800.00\nIntermediate\n1 to 3 months\n\nSkills and expertise: HubSpot \u00b7 PostgreSQL \u00b7 Python \u00b7 API Integration",
+  "budget": {
+   "kind": "fixed",
+   "amount_usd": 800.0,
+   "min_usd": null,
+   "max_usd": null,
+   "approximate": false,
+   "raw_text": "$800.00"
+  },
+  "skills": [
+   "HubSpot",
+   "PostgreSQL",
+   "Python",
+   "API Integration"
+  ],
+  "screening_questions": [],
+  "explicit_requirements": [
+   "Two-way sync of contacts between HubSpot and our PostgreSQL users table",
+   "New signups appear in HubSpot within 5 minutes",
+   "Changes to lifecycle stage in HubSpot are written back to PostgreSQL",
+   "Conflicts: the most recent update wins, and every conflict is logged",
+   "Runs on our server, with a short README so our developer can maintain it"
+  ],
+  "client_tools": [],
+  "client": {
+   "payment_verified": true,
+   "rating": 5.0,
+   "reviews": 2,
+   "jobs_posted": 4,
+   "hire_rate_pct": 75.0,
+   "total_spent_usd": 1500.0,
+   "total_spent_approximate": false,
+   "hires": 3,
+   "active_hires": 1,
+   "feedback_pct": null,
+   "jobs_paid": null,
+   "paid_invoices_pct": null,
+   "outstanding_invoices": null
+  },
+  "instructions": [],
+  "red_flags": [],
+  "ignored_sections": []
+ }
+}

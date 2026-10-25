@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The core skills required are general automation and API integration, which match the freelancer profile.",
+  "work_type_yes": true,
+  "work_type_reason": "Connecting tools is standard workflow automation and API integration work.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so budget is assumed realistic.",
+  "clear_yes": false,
+  "clear_reason": "The post is too vague with no specific tools or details mentioned to write a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves connecting a form to a sheet and slack, matching general automation work."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves API integrations and data sync scripts using Shopify and webhooks."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves connecting email messages and writing records to Airtable using Python."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

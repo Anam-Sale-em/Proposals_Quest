@@ -7,8 +7,8 @@ I rebuilt my own freelance proposal workflow as a small AI OS. You paste a job; 
 **Results in brief:**
 - In four fully live eval runs, it got every decision and trust score right (48 of 48).
 - The final code passed 12 of 12 and 11 of 12 in two live runs.
-- In the last run, 8 of 9 drafts passed the rubric, with zero unsupported claims.
-- On 6 real jobs from Upwork, Freelancer.com and Guru, a proposal took 10 minutes median (7–14), against about 57 with plain ChatGPT.
+- In the last run, 8 of 9 drafts passed the rubric by my scoring and 6 of 9 by an independent AI judge (agreement 83–100% per item), with zero unsupported claims.
+- On 7 real jobs from Upwork, Freelancer.com and Guru, v2 got to a draft I'd send in 10 minutes median (7–14). Plain ChatGPT, timed on 3 of the same jobs, gave a first draft in 7–12 minutes, but I wouldn't send any of the three, and it said Apply on a job v2 skipped.
 - It runs from a live link with nothing to install.
 
 ## 1. User and problem
@@ -18,13 +18,13 @@ I rebuilt my own freelance proposal workflow as a small AI OS. You paste a job; 
 **Job to be done:** "When a job catches my eye, tell me quickly if it's worth applying to, and give me a proposal I'd actually send: specific to the post, and claiming only work I've done."
 
 **Why it matters:**
-- **Time:** about 57 minutes per proposal with plain ChatGPT, and 65–85+ with v1. These are my per-step estimates; v1's come from testing it on 100+ jobs.
+- **Time:** finding a job takes 5–7 minutes, then plain ChatGPT needs 7–12 more for a first draft (measured on 3 real jobs), and that draft still isn't one I'd send. My Day 1 estimate, with the revision rounds to make it sound like me, was about 57 minutes. v1 took 65–85+ (from testing it on 100+ jobs).
 - **Money:** every Upwork proposal costs Connects. Skipping a bad job saves the Connects and the hour.
 - **Trust:** a freelancer is hired on their own work, so every claim has to be real.
 
 ## 2. Existing workflow and bottleneck
 
-**Plain ChatGPT (main baseline):**
+**Plain ChatGPT (main baseline), my Day 1 estimate.** The Day 5 stopwatch runs are in section 6.
 
 | Step | Minutes |
 | --- | --- |
@@ -165,15 +165,22 @@ Every screen shows why: the reason for the decision, the trust score and how man
 | | Plain ChatGPT | v1 | v2 |
 | --- | --- | --- | --- |
 | Decisions and trust scores right | No decision step | No decision step | 48 / 48 over 4 runs |
-| Rubric pass | 3 / 3 (T01–T03) | 0 / 5 (agency format) | 8 / 9 last run (7 / 9 the two before) |
+| Rubric pass | 3 / 3 (T01–T03) | 0 / 5 (agency format) | 8 / 9 by me, 6 / 9 by an AI judge, last run (7 / 9 the two before) |
 | Unsupported or overstated claims | 0 | 5–7 per draft | 0 in 9 drafts last run (2, then 1, before) |
 | Pipeline time per drafted job | ~30 s per answer | ~3 min per generation | ~1.5–2 min on the free tier, mostly rate-limit waits; a Skip takes seconds |
 | LLM calls | 1 + 3 revisions | Full chain + images | Drafted: 7. Red-flag or below-minimum Skip: 1 |
 | Errors absorbed | — | — | 57 per run, by retries and fallbacks; no case lost |
-| Minutes per proposal, open → send-ready | ~57 (estimate) | 65–85+ | **10 median (7–14)** on 5 real jobs, measured |
-| Revision rounds | 3+ | 2–3 | 0–1 (1 on 3 of 5 real jobs) |
+| Minutes from the open job to a draft | 7–12 on 3 real jobs, measured; none I'd send | 65–85+ (estimate) | **10 median (7–14)** on 6 real jobs, measured, to a draft I'd send |
+| Same jobs side by side | Laravel audit 12 · marketplace MVP 10 | — | Laravel audit 10 · marketplace MVP 7 |
+| Revision rounds | 3+ | 2–3 | 0–1 (1 on 3 of 6 real jobs) |
 
-**Real jobs (Day 5):** six open jobs, timed by stopwatch. v2 said Apply on three and Skip on three (a healthcare SaaS build, a Figma-only design job, a Laravel code audit). I agreed with one Skip and overrode two to get a draft. Asked to "exaggerate my project", the revision added adjectives but no new facts. On the Guru job the draft left the price for me. Full table in `evals/day4-results.md`, section 7.
+**Real jobs (Day 5):** seven open jobs, timed by stopwatch. v2 said Apply on four and Skip on three (a healthcare SaaS build, a Figma-only design job, a Laravel code audit). I agreed with one Skip and overrode two to get a draft. Asked to "exaggerate my project", the revision added adjectives but no new facts. On the Guru job the draft left the price for me. Full table in `evals/day4-results.md`, section 7.
+
+**Judged on the real jobs:** the same AI judge passed 3 of v2's 4 real-job drafts and 0 of ChatGPT's 2. v2's one fail is the Laravel audit, a job v2 had said to Skip. Small sample, one judge; full table in `evals/day4-results.md`, section 7.
+
+**Scored by the AI judge on real jobs:** v2 passed 3 of 4 drafts, and plain ChatGPT 0 of 2 on the same posts. v2's one fail was the Laravel audit (a Skip I overrode), because the client asked for a quote and v2 leaves "[your price and timeline]" for me to fill in.
+
+**Against plain ChatGPT on three of the same jobs:** ChatGPT was quick to a first draft, 7–12 minutes. But it said Apply on both jobs I asked it about, including the healthcare build, and none of its three drafts sounded like me. The honest reading: v2 is only a little faster to a draft. The real difference is that v2's draft is the one I send, and it skips before any writing.
 
 **Limitations:**
 - **The biggest one:** "how close is my past project to this job?" is still the weakest call. The claim check can't catch an overstated "I did nearly this", because the project behind it is real. The vote and the evidence rule bring it down to 0–1 misses per eval run, but a real job still got one (F7): a shared tool was enough.
@@ -182,7 +189,7 @@ Every screen shows why: the reason for the decision, the trust score and how man
 - The free tier sets the speed, and sometimes which model answers.
 - Freelancer.com shares no client history through its API, so trust there rests on what the user copies in.
 - The live app forgets on restart, so the sent log has to be downloaded.
-- 12 synthetic test cases on one sample profile, and 6 real jobs: enough to time it, not enough to measure skip accuracy.
+- 12 synthetic test cases on one sample profile, and 7 real jobs: enough to time it, not enough to measure skip accuracy.
 
 ## 7. Non-developer handoff
 

@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal fails to address the specific technical constraints and requirements such as the 15-minute processing limit for webinar CSVs, the 180-day duplicate rule, or the specific Slack notification content restrictions."
+   },
+   {
+    "item": 2,
+    "passed": false,
+    "reason": "The proposal only uses one detail specific to the post (the four sources) and relies on generic descriptions; it does not cite specific details like the '15 partner companies' or the '19 hours median time' to demonstrate deep reading."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('Built an n8n workflow...') accurately reflects Project P1 in the freelancer's profile, and no other unverified claims are made."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The proposal does not name concrete first steps (e.g., setting up the staging database, defining the schema) and instead only answers the three specific questions without outlining an execution plan."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal does not end with a clear question or next step; it ends abruptly after the third answer without proposing a kickoff or next action."
+   }
+  ]
+ }
+}

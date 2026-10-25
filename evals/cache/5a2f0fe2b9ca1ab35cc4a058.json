@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL, which are core requirements for this integration work.",
+  "work_type_yes": true,
+  "work_type_reason": "The post asks for a two-way contact sync script, which matches the freelancer's data sync scripts and API integrations work types.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $800 for an intermediate two-way sync script is reasonable and realistic.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear scope with explicit requirements for syncing contacts, conflict resolution, and deployment.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves data flow automation and record sync, sharing skills like webhooks and JavaScript, but different main platform."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves syncing database records with an external platform via Python, but uses Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves building a Python integration script handling records between systems, but lacks the HubSpot platform."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

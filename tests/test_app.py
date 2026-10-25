@@ -24,6 +24,8 @@ def env(tmp_path, monkeypatch):
 
 
 def _app(llm=None):
+    import streamlit as st
+    st.cache_resource.clear()  # storage() is cached; each test has its own data folder
     at = AppTest.from_file("../app.py", default_timeout=30)
     at.session_state["llm"] = llm or ScriptedLLM()
     return at.run()
@@ -190,3 +192,48 @@ def test_edit_client_after_check_rescores_without_a_model_call(env):
     assert any("Client details saved" in s.value for s in at.success), [e.value for e in at.error]
     assert not any("can't rate" in m.value for m in at.markdown)
     assert len(llm.calls) == calls and not at.exception
+
+
+def test_confirm_screen_can_add_a_project_without_leaving_the_job(env):
+    """My workspace starts with no projects; the confirm screen offers to add one and stays on the job."""
+    import json
+    from pathlib import Path
+    job = json.loads((Path(__file__).resolve().parent.parent / "fixtures" / "jobs" / "T01.json").read_text(encoding="utf-8"))
+    at = _open(_app())
+    _btn(at, "Save and start").click().run()
+    at.text_input(key="f_link").input(job["pastes"][0]["link"])
+    at.text_area(key="f_details").input(job["pastes"][0]["job_details"])
+    _btn(at, "Check job").click().run()
+    assert at.title[0].value == "Confirm the details"
+    assert any("no projects yet" in i.value for i in at.info)
+    [t for t in at.text_input if t.label == "Title *"][-1].input("Lead intake bot")  # the job's own title comes first
+    [t for t in at.text_area if t.label == "Problem *"][0].input("Leads waited a day for a reply")
+    [t for t in at.text_area if t.label == "What I did *"][0].input("Built an n8n flow that scores and routes leads")
+    [t for t in at.text_input if t.label == "Skills *"][-1].input("n8n, Slack")
+    [s for s in at.selectbox if s.label == "Your role *"][0].set_value("solo")
+    _btn(at, "Save").click().run()
+    assert at.title[0].value == "Confirm the details", [e.value for e in at.error]
+    assert any(r.label == "Which past work should the proposal cite?" for r in at.radio)
+    assert not at.exception
+
+
+def test_price_field_appears_when_the_post_asks_for_a_quote(env, monkeypatch):
+    import json
+    import proposal_v2.prompts as prompts
+    monkeypatch.setattr(prompts, "asks_for_price", lambda job: True)  # the scripted posts never ask for a quote
+    from pathlib import Path
+    job = json.loads((Path(__file__).resolve().parent.parent / "fixtures" / "jobs" / "T01.json").read_text(encoding="utf-8"))
+    at = _open(_app())
+    _btn(at, "Save and start").click().run()
+    at.text_input(key="f_link").input(job["pastes"][0]["link"])
+    at.text_area(key="f_details").input(job["pastes"][0]["job_details"])
+    _btn(at, "Check job").click().run()
+    assert at.title[0].value == "Confirm the details", [e.value for e in at.error]
+    price = [t for t in at.text_input if t.label.startswith("Your price and timeline")]
+    assert price, "price field missing"
+    price[0].input("$600 fixed, 5 days")
+    _btn(at, "Confirm and check").click().run()
+    from proposal_v2.storage import JsonStorage
+    rec = JsonStorage().list_proposals("me")[0]
+    assert "My price and timeline: $600 fixed, 5 days" in rec.job.user_notes, rec.job.user_notes
+    assert not at.exception

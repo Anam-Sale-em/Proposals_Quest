@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python and Airtable skills, and handles API integrations.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is a workflow automation and API integration deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is appropriate for the required skills and scope.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly defines reading from Gmail, AI summarization, and writing to Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves lead capture and data routing, sharing some core automation skills."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves backend data synchronization using Python and webhooks."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It processes inbox messages, uses an AI model, and saves data to Airtable."
+   }
+  ],
+  "votes": 4,
+  "split_facts": []
+ }
+}

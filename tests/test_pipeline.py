@@ -291,3 +291,17 @@ def test_confirm_screen_proof_choice_is_respected(pipe):
     j = _job("T03")
     rec = pipe.write(pipe.decide(pipe.extract(j["link"], j["job_details"])))
     assert rec.latest().project_id == "P2"
+
+
+def test_judge_role_uses_the_judges_list(tmp_path):
+    """config has models.judges (a list); the judge call must not need a models.judge key."""
+    from proposal_v2.contracts import JudgeScore
+    from proposal_v2.llm import LLM, LLMError
+    llm = LLM(mode="live", cache_dir=tmp_path, log_dir=None)
+    llm._groq = lambda *a, **k: (_ for _ in ()).throw(LLMError("no network in tests"))  # noqa: E731
+    try:
+        llm.call("judge", "judge", "s", "u", JudgeScore, 0.0)
+    except LLMError:
+        pass  # reaching a provider means the model lookup worked
+    except KeyError as e:
+        raise AssertionError(f"judge lookup failed: {e}")

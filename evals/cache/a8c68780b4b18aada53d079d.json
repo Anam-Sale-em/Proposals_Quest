@@ -1,0 +1,21 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "Typeform",
+   "Google Sheet",
+   "Google Sheets",
+   "Slack"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this: built an n8n workflow with form webhooks, field validation, a duplicate check by email, a new Google Sheets row and a Slack alert to the sales channel, which reduced manual entry from about 2 hours a week to under 10 minutes.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

@@ -1,0 +1,49 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Shopify API, Google Sheets API, and REST APIs, matching all core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "Building data sync scripts and API integrations matches the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed price budget of $250-$750 is reasonable for a simple daily Shopify-to-Google-Sheets sync script.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear 3-step plan: fetch orders via Shopify API, check against and append to Google Sheets, and log the execution.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data intake and Google Sheets, though using n8n instead of a direct script."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and Shopify API to handle orders and inventory records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "not_relevant",
+    "reason": "It involves email triage and AI classification rather than order data sync."
+   }
+  ],
+  "votes": 2,
+  "split_facts": [
+   "same_platform"
+  ]
+ }
+}

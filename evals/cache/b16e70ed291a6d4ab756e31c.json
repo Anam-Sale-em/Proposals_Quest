@@ -1,0 +1,24 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "tools_named": [
+   "Python",
+   "Shopify",
+   "Google Sheet",
+   "Google Sheets",
+   "cron",
+   "GitHub Actions",
+   "warehouse database",
+   "PostgreSQL"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this for a warehouse database: I wrote a Python service that listens to Shopify inventory webhooks, reconciles counts against PostgreSQL on a schedule and logs every change, resulting in stock synced every 15 minutes, with no oversold orders in the first month.",
+    "maps_to": "P2"
+   }
+  ]
+ }
+}

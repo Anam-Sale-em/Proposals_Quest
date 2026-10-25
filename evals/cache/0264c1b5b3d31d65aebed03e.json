@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.6",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal of migrating 6 specific workflows (form to Sheets, Sheets to Slack, Stripe to email, Gmail filters) and includes the requirements for testing and documentation."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post, such as the 'Stripe payment to an email receipt' workflow and the 'three small Gmail filters,' which are unique to this job description."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the lead intake automation (2 hours to 10 minutes) matches Project P1 in the profile, and the freelancer correctly frames it as a similar past task ('I did nearly this') rather than claiming this specific migration was done before."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps, specifically 'Audit existing Zapier workflows and map them out for n8n implementation,' rather than using generic language like 'we will discuss requirements.'"
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a clear, specific question about admin access and account availability, which serves as a direct next step for the client."
+   }
+  ]
+ }
+}

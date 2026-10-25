@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal accurately restates the client's goal, covering all explicit requirements including the specific fields (sender, company, request type, summary, priority) and the low-confidence review process."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal uses two specific details from the post: the 'Partners' Gmail label and the requirement for a '2-sentence summary'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('categorized hundreds of messages weekly... routing uncertain items to a human reviewer') aligns with Project P3 in the profile, which describes sorting ~300 emails/week and leaving low-confidence ones for review."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The proposal describes the general components of the solution (extracting, integrating, implementing logic) but does not name concrete first steps or a specific execution plan."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with one clear question about the Airtable schema and is within reasonable length limits."
+   }
+  ]
+ }
+}

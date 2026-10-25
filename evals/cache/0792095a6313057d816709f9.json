@@ -1,0 +1,88 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "goal": "Automate a daily morning digest from Airtable orders into a Slack channel using n8n or Make, filtering yesterday's new orders, showing total value and urgent orders, posting at 8:00 in #ops, and skipping weekends.",
+  "plan": [
+   {
+    "step": "Configure the scheduled trigger in n8n to fire every weekday at 8:00 AM, skipping weekends.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Make"
+    ]
+   },
+   {
+    "step": "Query Airtable to fetch yesterday's new orders, calculating total value and filtering for any orders marked urgent.",
+    "tools": [
+     "Airtable"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Format the retrieved order data into a structured summary message for Slack.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Send the formatted digest message to the #ops channel in Slack.",
+    "tools": [
+     "Slack"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Workflow Development and Testing",
+    "deliverable": "Fully functional n8n workflow fetching from Airtable and posting the correct daily digest to Slack on weekdays.",
+    "budget_share": "100%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Configure the scheduled trigger in n8n to fire every weekday at 8:00 AM, skipping weekends.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Query Airtable to fetch yesterday's new orders, calculating total value and filtering for any orders marked urgent.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Format the retrieved order data into a structured summary message for Slack.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Send the formatted digest message to the #ops channel in Slack.",
+    "project_id": "P1",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Airtable API rate limits or view filter misconfigurations might cause incorrect order data to be fetched.",
+    "mitigation": "Test the Airtable query node thoroughly with historical data ranges before activating the schedule."
+   },
+   {
+    "risk": "Time zone differences between the server running n8n and the local #ops schedule might cause the digest to post at the wrong time.",
+    "mitigation": "Explicitly set the timezone parameter within the n8n schedule trigger node."
+   }
+  ],
+  "questions": [
+   "What is the exact schema or field names for orders, total value, and the urgent flag in your Airtable base?",
+   "Do you prefer the n8n workflow to be hosted on n8n Cloud or your own self-hosted instance?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials for both Airtable and Slack.",
+   "Budget is paid hourly between $30 and $50 per hour as stated in the post."
+  ]
+ }
+}

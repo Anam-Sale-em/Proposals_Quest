@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires logo design and Adobe Illustrator, which are outside the freelancer's technical automation skills.",
+  "work_type_yes": false,
+  "work_type_reason": "The deliverable is a logo design, whereas the freelancer does automation and integration work.",
+  "realistic_yes": true,
+  "realistic_reason": "A $300 fixed price for a simple logo is a realistic starting budget.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear scope requesting a modern, minimal logo and brand mark.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different domain and core skills."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different domain and core skills."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Different domain and core skills."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

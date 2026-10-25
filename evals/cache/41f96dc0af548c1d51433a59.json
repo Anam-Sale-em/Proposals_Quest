@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python and PostgreSQL skills, though HubSpot API is not explicitly listed, REST APIs and general integrations are.",
+  "work_type_yes": true,
+  "work_type_reason": "The deliverable is a data sync script and API integration, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $800 is a reasonable starting point for an intermediate integration project.",
+  "clear_yes": true,
+  "clear_reason": "The steps are well-defined: build a two-way sync script for HubSpot and PostgreSQL, handle conflict resolution, and provide a README.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles data sync and leads/records, but uses a different platform."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and PostgreSQL for database sync, but with Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data processing scripts in Python, but for a different integration context."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

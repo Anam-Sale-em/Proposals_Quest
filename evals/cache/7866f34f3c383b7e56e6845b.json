@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets API, Slack API, and Webhooks in their core skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires building an automated workflow which matches the workflow automation work type.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is standard for n8n workflow development.",
+  "clear_yes": true,
+  "clear_reason": "The post provides exact steps for the n8n integration including Typeform triggers, duplicate check, Google Sheets logging, and Slack notification.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It builds an n8n workflow with form webhooks, duplicate checks, Google Sheets, and Slack alerts for leads."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It involves a Python service for Shopify inventory sync rather than an n8n workflow."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It is an LLM-powered support inbox triage using Python and Gmail rather than an n8n form integration."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

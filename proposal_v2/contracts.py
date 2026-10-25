@@ -281,6 +281,7 @@ class ValidationReport(BaseModel):
     instruction_failures: list[str] = Field(default_factory=list)
     voice_failures: list[str] = Field(default_factory=list)
     screening_failures: list[str] = Field(default_factory=list)
+    style_failures: list[str] = Field(default_factory=list)  # "My goal…" openers, broken verbs, repeated phrases (F8)
     notes: list[str] = Field(default_factory=list)  # plain words for the draft screen
     retried: bool = False
 

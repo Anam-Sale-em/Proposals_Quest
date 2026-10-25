@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal to audit the Laravel/PHP app and lists all five required deliverables (Code Audit Report, AI Architecture Assessment, Development Roadmap, Itemized Estimate, Security Review)."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the profile's 'AI Chatbot Agent' project, such as using n8n, authenticating users, and booking through the CRM API, which are unique to that entry."
+   },
+   {
+    "item": 3,
+    "passed": false,
+    "reason": "The proposal fails to include the required fixed-price quote and confirmation of availability as explicitly requested in the job post ('Please include... your fixed-price quote, and confirmation of availability')."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps like 'Kickoff and Source Code Review' and 'AI Architecture Evaluation' that directly map to the specific scope items in the post, rather than using generic process language."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with a placeholder '[your price and timeline]' instead of a clear next step or question, and it fails to provide the mandatory fixed-price quote required by the post's format instructions."
+   }
+  ]
+ }
+}

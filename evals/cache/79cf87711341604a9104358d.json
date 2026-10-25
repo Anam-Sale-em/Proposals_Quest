@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal to automate the daily Airtable digest to Slack, covering all requirements: listing orders, total value, urgent markers, 8:00 posting, #ops channel, and weekend skipping."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal uses specific details from the post, such as the requirement to post to '#ops' and the specific time '8:00', which are not generic automation terms."
+   },
+   {
+    "item": 3,
+    "passed": false,
+    "reason": "The claim 'I did nearly this for a sales team' is misleading; the profile project P1 was about lead intake from website forms, not an Airtable digest, and the proposal conflates the two without clarifying the difference in source systems."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps: configuring the n8n schedule trigger for weekdays, querying Airtable for yesterday's orders, and formatting the message with JavaScript."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a clear, specific question about the Airtable table name and field structure, and it begins with the required phrase 'blue whale'."
+   }
+  ]
+ }
+}

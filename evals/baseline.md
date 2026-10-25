@@ -2,7 +2,7 @@
 
 Before v2, one proposal took about an hour with plain ChatGPT, and 65–85+ minutes with v1, my previous pipeline. Plain ChatGPT's first drafts were honest and passed the rubric on the three test jobs. Most of the time went into getting the job and my background into the prompt, and into revision rounds to make the draft sound like me.
 
-All times are per-step estimates from me, not stopwatch runs. The ChatGPT drafts are real outputs, scored below.
+The Day 1 times below are my per-step estimates. On Day 5 I timed plain ChatGPT with a stopwatch on three of the same real jobs v2 ran; that measured baseline is in [Measured on real jobs](#measured-on-real-jobs-day-5), and it replaces the estimate wherever v2 is compared on time.
 
 ## Main baseline: plain ChatGPT on T01–T03
 
@@ -44,6 +44,29 @@ Scored by me against the [rubric](rubric.md) and checked line by line against th
 - **Judgment.** ChatGPT drafted all three without a word about the client or whether to apply. T01–T03 are all Apply cases, so this doesn't cost anything here, but plain ChatGPT has no skip path at all: it would draft T08–T10 too.
 - **Duplicates.** Nothing stops me from drafting the same job twice.
 
+## Measured on real jobs (Day 5)
+
+Three of the seven real jobs from the v2 check (results, section 7), run in plain ChatGPT the way I'd normally do it: paste the post, my projects or my resume, and ask for a fit check and a proposal. Stopwatch per step.
+
+| Step (minutes) | Laravel code audit (Guru) | Healthcare SaaS build (Upwork) | AI marketplace MVP (Freelancer.com) |
+| --- | --- | --- | --- |
+| Find the job | 7 | 5 | 5 |
+| Pick the projects to cite | 2 | — (resume attached) | 2 |
+| Write the prompt | 3 | 2 | 2 |
+| Generate | 1 | 1 | 1 |
+| Read and check the answer | 3 | 4 | 5 |
+| Revise, then check again | 1 + 2 | — | — |
+| **Total without finding the job** | **12** | **7** | **10** |
+| **Total with finding the job** | 19 | 12 | 15 |
+| ChatGPT's fit call | None (I didn't ask) | "Apply", 6.5 out of 10 | "Apply", with a budget warning |
+| Would I send the draft? | No, even after one revision | No | No: it reads AI-written, not like me |
+
+**What this shows:**
+- **The first draft is fast:** 7–12 minutes after the job is open, median 10. My Day 1 estimate assumed 25.5 minutes to a first draft, so it was too high on that part.
+- **None of the three was send-ready.** The Day 1 estimate's 31.5 minutes of revision rounds is the part I didn't run to the end; I stopped when it was clear the drafts still didn't sound like me. So I can't give a measured ChatGPT time to send-ready; it's longer than the 7–12 minutes above.
+- **ChatGPT said Apply on both jobs I asked about,** including the healthcare build v2 skipped and I agreed to skip. In my experience it calls a job a fit whenever one tool matches.
+- **What ChatGPT did well:** with my resume it named its own gaps honestly (no healthcare, no RAG shown) and kept the healthcare draft from overclaiming. It also suggested a bid, which v2 leaves to me on purpose.
+
 ## Reference: v1, my previous pipeline
 
 v1 can't be re-run: I no longer have access to it. These numbers come from testing it on 100+ jobs while I built it.
@@ -83,14 +106,15 @@ Five drafts v1 generated for real Upwork jobs (July–August 2026), scored by me
 - **Quality has to hold, not jump.** On these three clean jobs, plain ChatGPT with a real background already writes honest drafts that pass the rubric. v2 has to match that with zero unsupported claims; it won't beat 5/5. Its quality gains are judgment (skips, client trust, duplicates) and fewer rounds to a send-ready draft.
 - **Real proof is the deciding factor.** Plain ChatGPT given a real background passed 3 of 3. v1's agency format, built around generated case studies, passed 0 of 5 on a rubric written for solo freelancers. The difference is the source of the proof, not the prompting, so v2 is built around the freelancer's own project library.
 
-## Day 4 comparison
+## How v2 was compared on time
 
-v2 is timed with a stopwatch on T01–T03 with the same clock (opening the job to send-ready) and also on 3 fresh Upwork jobs. To keep the comparison fair, I also time one plain-ChatGPT run with a stopwatch on a fresh job, so at least one baseline number is measured the same way as v2's.
+Both sides are timed on real jobs with a stopwatch, from the job already open to a draft (and for v2, a draft I'd send). v2 ran on 7 real jobs; plain ChatGPT on 3 of the same jobs. The synthetic T01–T03 were used for quality, not time. Finding the job is reported separately, because it costs the same 5–7 minutes either way, except through v2's Freelancer.com keyword search (about 3 minutes, my estimate).
 
 ## Limits
 
-- The baseline times are per-step estimates; v2's will be stopwatch times. The stopwatch ChatGPT run on Day 4 checks the estimate.
+- The Day 1 times are estimates. The Day 5 ChatGPT runs are measured, but stop at a draft I wouldn't send, so ChatGPT's time to send-ready is still unmeasured.
+- In the Day 5 runs ChatGPT had my full resume, while v2 has only my project library. That gives ChatGPT more to work with, not less.
 - Three jobs is directional evidence, not proof.
 - The synthetic background is short and clean, which makes ChatGPT's job easier than with a real, messy CV.
-- The quality scores are mine. On Day 4 the AI judge rescores all eight drafts with labels removed.
+- The quality scores are mine. The AI judge (`scripts/judge.py`) exists but isn't calibrated against my scores yet, so it isn't used for any number here.
 - v1's drafts are on real jobs and ChatGPT's are on synthetic ones, so the two quality rows compare ways of working, not identical inputs.

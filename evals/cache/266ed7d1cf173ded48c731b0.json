@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has general automation and API integration skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation is one of the freelancer's main work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so it is treated as realistic.",
+  "clear_yes": false,
+  "clear_reason": "The post lacks details on which tools need to be connected to form a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves lead intake automation and data sync."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves backend tool integration and syncing records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves API integration and connecting different apps."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

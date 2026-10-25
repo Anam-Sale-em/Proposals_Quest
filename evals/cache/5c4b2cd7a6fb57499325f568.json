@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "text": "Your goal is to build a two-way contact sync between HubSpot and PostgreSQL. To deliver this, I will implement a two-way sync of contacts between HubSpot and your PostgreSQL users table, ensure new signups appear in HubSpot within 5 minutes, write changes to lifecycle stage in HubSpot back to PostgreSQL, handle conflict resolution where the most recent update wins and every conflict is logged, and ensure the code runs on your server with a short README so your developer can maintain it. My plan starts by analyzing the PostgreSQL users table schema and HubSpot contact properties to define the mapping fields for the two-way sync. Next, I will write a Python service to handle new signups from PostgreSQL and push them to HubSpot within 5 minutes. Different domain, same core work: in Shopify to PostgreSQL inventory sync I used PostgreSQL and Webhooks to reconcile counts on a schedule. Which specific hosting environment or operating system is running on your server?",
+  "screening_answers": []
+ }
+}

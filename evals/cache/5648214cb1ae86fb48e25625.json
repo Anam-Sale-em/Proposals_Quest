@@ -1,0 +1,54 @@
+{
+ "step": "extract",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "title": "Python script to pull Shopify orders into Google Sheets daily",
+  "description": "Python script to pull Shopify orders into Google Sheets daily\n\nBudget $250 \u2013 $750 USD\nPaid on delivery\n\nProject details\nI need a Python script that runs once a day, pulls the previous day's orders from my Shopify store through the API, and adds them to a Google Sheet: order number, date, customer email, items, total and fulfilment status. It should skip orders that are already in the sheet and write a short log so I can see it ran.\n\nPlease explain how you would schedule it and how you would handle Shopify API rate limits.\n\nSkills Required\nPython p Shopify p Google Sheets p API",
+  "budget": {
+   "kind": "fixed_range",
+   "amount_usd": null,
+   "min_usd": 250.0,
+   "max_usd": 750.0,
+   "approximate": false,
+   "raw_text": "$250 \u2013 $750 USD"
+  },
+  "skills": [
+   "Python",
+   "Shopify",
+   "Google Sheets",
+   "API"
+  ],
+  "screening_questions": [],
+  "explicit_requirements": [
+   "Please explain how you would schedule it and how you would handle Shopify API rate limits."
+  ],
+  "client_tools": [],
+  "client": {
+   "payment_verified": true,
+   "rating": null,
+   "reviews": null,
+   "jobs_posted": null,
+   "hire_rate_pct": null,
+   "total_spent_usd": null,
+   "total_spent_approximate": false,
+   "hires": null,
+   "active_hires": null,
+   "feedback_pct": null,
+   "jobs_paid": null,
+   "paid_invoices_pct": null,
+   "outstanding_invoices": null
+  },
+  "instructions": [
+   {
+    "text": "Please explain how you would schedule it and how you would handle Shopify API rate limits.",
+    "kind": "format",
+    "check": "answer_question",
+    "value": ""
+   }
+  ],
+  "red_flags": [],
+  "ignored_sections": []
+ }
+}

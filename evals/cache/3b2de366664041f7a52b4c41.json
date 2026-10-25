@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.8",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Airtable, and Slack, matching all listed skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The task is workflow automation, which is a core deliverable of the freelancer.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is appropriate for the required n8n and automation skill level.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly specifies connecting Airtable to Slack on a schedule using n8n.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n workflow automation and sending alerts to Slack, though platform records differ slightly."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It is a Python service for database and inventory sync, not an n8n scheduling automation."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It uses Python and Gemini for email triage rather than n8n or Airtable-to-Slack scheduling."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

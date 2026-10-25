@@ -234,3 +234,52 @@ def test_guru_trust_uses_the_posted_by_box():
     assert g(total_spent_usd=1041, jobs_posted=8).band == "Unknown"
     assert g(feedback_pct=99, total_spent_usd=30000, jobs_posted=14, jobs_paid=12, paid_invoices_pct=100).score == 79  # capped
     assert g(feedback_pct=70, total_spent_usd=900, jobs_posted=4, jobs_paid=3, paid_invoices_pct=60, outstanding_invoices=2).band == "Red flag"
+
+
+def test_a_shared_build_tool_is_not_evidence_for_similar():
+    """F7: an n8n booking agent cited as "nearly this" on an n8n SEO pipeline. n8n alone proves nothing."""
+    from proposal_v2.contracts import JobPost, Project
+    from proposal_v2.pipeline import _specific_tags_in_project
+    seo = JobPost(job_key="k", platform="freelancer", link="l", title="SEO autopilot", description="n8n into Sanity CMS",
+                  skills=["n8n", "SEO", "Automation"])
+    bot = Project(id="P1", title="AI Chatbot Agent", skills=["n8n", "Python", "webhooks"], what_i_did="Booking agent on n8n")
+    assert _specific_tags_in_project(seo, bot) == 0
+    sheets = JobPost(job_key="k2", platform="upwork", link="l", title="Typeform to Sheets", description="d",
+                     skills=["n8n", "Google Sheets"])
+    p1 = Project(id="P1", title="Lead intake", skills=["n8n", "Google Sheets API"], what_i_did="Typeform to Google Sheets")
+    assert _specific_tags_in_project(sheets, p1) >= 1  # the client's own system still counts (T01)
+
+
+def test_wording_checks_catch_the_real_job_slips():
+    """F8: "My goal…", "to shipped", a result pasted twice."""
+    from proposal_v2.validators import BROKEN_VERB, repeated_phrases
+    assert BROKEN_VERB.search("I used React Native to shipped four apps")
+    assert not BROKEN_VERB.search("I used React Native to ship four apps")
+    twice = "An LLM writes the proposal and script for four jobs a day, resulting in approved proposal and script for four jobs a day."
+    assert repeated_phrases(twice) == ["proposal and script for four jobs a day"]
+    assert repeated_phrases("Your goal is a clean n8n workflow. I will map your form fields to HubSpot contacts.") == []
+
+
+def test_my_goal_opener_is_sent_to_the_retry():
+    from proposal_v2.contracts import ClaimLists, JobPost, Profile
+    from proposal_v2.validators import failures_for_retry, validate
+    job = JobPost(job_key="k", platform="freelancer", link="l", title="MVP", description="Build a marketplace MVP.")
+    r = validate("Hi,\nMy goal is to build a 30-day MVP for you. Which payment gateway do you use?", [], job, None,
+                 Profile(), ClaimLists())
+    assert not r.ok and any("My goal" in f for f in failures_for_retry(r))
+    ok = validate("Your goal is a 30-day MVP. Which payment gateway do you use?", [], job, None, Profile(), ClaimLists())
+    assert not ok.style_failures
+
+
+def test_repeating_the_clients_own_terms_is_not_a_wording_slip():
+    """v2.0.7 eval: T01 repeated the post's field list and T12 a workflow name. Both are the client's words."""
+    from proposal_v2.contracts import ClaimLists, JobPost, Profile
+    from proposal_v2.validators import validate
+    job = JobPost(job_key="k", platform="upwork", link="l", title="Zapier to n8n",
+                  description="Rebuild 6 workflows: the form to Google Sheets, Sheets to Slack alerts, Stripe receipts.")
+    text = ("Your goal is moving 6 workflows to n8n, including the form to Google Sheets. "
+            "First I will rebuild the form to Google Sheets workflow. Which one is most urgent?")
+    assert not validate(text, [], job, None, Profile(), ClaimLists()).style_failures
+    pasted = ("Your goal is moving 6 workflows. In my last project an LLM writes the proposal and script every day, "
+              "resulting in approved proposal and script every day. Which one is most urgent?")
+    assert validate(pasted, [], job, None, Profile(), ClaimLists()).style_failures

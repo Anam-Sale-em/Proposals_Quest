@@ -37,7 +37,7 @@ flowchart TD
 | Validation | `validators.py` | The three-part claim check, voice, instructions, length, screening answers | Uses the claim lists |
 | Models | `llm.py`, `prompts.py` | Gemini first, Groq fallback, response cache, replay mode, run log | Yes |
 | Workflow | `pipeline.py` | Step order, the one retry, overrides, revisions, send and outcomes | Calls `llm.py` |
-| Data | `storage.py` | Local JSON or Firestore, same paths: `users/{uid}/proposals/{job_key}`, `projects/{id}`, `settings/profile` | — |
+| Data | `storage.py` | Local JSON files: `data/users/{uid}/proposals/`, `projects/`, `settings/profile`, `settings_log/` | — |
 | Tools | `integrations.py` | Freelancer.com public API, PDF text | — |
 | Interface | `app.py` (Streamlit), `scripts/cli.py` | Passphrase gate, screens, session state keyed by job key | — |
 | Evaluation | `evaluation.py`, `scripts/run_evals.py`, `scripts/judge.py` | Frozen fixtures, per-case checks, CSV, judge with labels removed | Cached |
@@ -66,7 +66,7 @@ An Apply job makes 2 calls on 3.8 Flash (free tier: 20 a day), so caching and th
 | Regex backstop for instructions | The policy holds even if extraction misses an instruction | Can over-match; flagged instructions are shown to the user |
 | Paste first, official APIs only | Upwork has no API access in time and its terms forbid page fetching | The user copies the page by hand |
 | Streamlit | A live link and a UI in one Python file | Reruns on every click; state is keyed by job key |
-| Local JSON first, Firestore optional | Works anywhere, no setup | Streamlit Cloud loses local files on restart; Firestore fixes that |
+| Local JSON only (Firestore was cut) | Works anywhere, no setup, no service account | Streamlit Cloud loses the files on restart; the Excel sent log is the copy that survives |
 | Response cache + replay mode | Evals and the demo run the same every time, offline, with no quota | Cache must be refreshed (`--record`) after prompt changes |
 
 ## Privacy and permissions

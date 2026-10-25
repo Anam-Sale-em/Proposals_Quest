@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.7",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, and workflow building.",
+  "work_type_yes": true,
+  "work_type_reason": "Debugging and fixing workflow automation is a core deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The fixed budget of $250 is realistic for fixing an existing n8n rate-limit error.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly asks to fix a rate-limit error in an n8n Google Sheets node by adding batching/retries and a Slack notification.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses n8n and Google Sheets for lead intake workflow automation."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles inventory sync in Python via Shopify API."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It deals with email classification using Gemini API and Python."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}
