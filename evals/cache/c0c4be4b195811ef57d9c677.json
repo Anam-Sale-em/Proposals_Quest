@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "text": "Your goal is to fix the n8n workflow so the full file of about 5,000 rows lands every night into a Google Sheet without hitting a 429 Too Many Requests error, with retries and a Slack message if it still fails. First, I will audit the existing n8n workflow and the Google Sheets node configuration to identify the rate limit and batching bottlenecks during the nightly import. Second, I will modify the workflow to split the CSV data into smaller chunks or add rate-limiting delays between requests to prevent 429 Too Many Requests errors. Third, I will implement built-in error handling with retries on the Google Sheets node for robust execution. Finally, I will configure a Slack alert node to trigger if the workflow execution ultimately fails after retries. I did nearly this: built an n8n workflow with form webhooks, field validation, a duplicate check by email, a new Google Sheets row, and a Slack alert to the sales channel. Do you already have a Slack webhook or channel set up for the alert notification?",
+  "screening_answers": []
+ }
+}

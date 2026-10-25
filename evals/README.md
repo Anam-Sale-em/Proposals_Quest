@@ -23,7 +23,7 @@ Results: [day4-results.md](day4-results.md) · failures: [failures.md](failures.
 | Core cases | 12 | Synthetic, frozen | Decisions, drafts, validators and failure handling; v1 against v2 |
 | Trust examples | 16 | From the plan | Unit tests for the trust scorer, with no LLM |
 | Decision table | 15 cells, both gates and every budget rule | From the plan | Unit tests for the decision function, with no LLM |
-| Fresh jobs | 7 | Real jobs from Upwork, Freelancer.com and Guru, run on the live link on Day 5 | Minutes per proposal by stopwatch, v2's call and my override, client trust per platform, draft problems |
+| Fresh jobs | 7 jobs, 13 runs | Real jobs from Upwork, Freelancer.com and Guru, run on the live link on Day 5 | Minutes per proposal by stopwatch, v2's call and my override, client trust per platform, draft problems |
 
 ## Running the evals
 
@@ -48,7 +48,9 @@ Results land in `evals/results/<prompt_version>_<time>/`: `results.csv`, `summar
 
 ## Fresh jobs
 
-Seven open jobs, run on the live link with my own projects: two pasted from Upwork, four from Freelancer.com (three links, one keyword search), one pasted from Guru. For each I timed opening the job to a draft I'd send, and noted v2's call, what I did with it, the proof it cited and any revision. Results are in [day4-results.md](day4-results.md), section 7; the job posts stay private.
+The real jobs are kept apart from the 12 frozen cases on purpose. The frozen cases were written before any code, with their expected answers fixed, and they're rerun on every change. A real job added after seeing how v2 handled it would turn the test set into a description of the system.
+
+Two rounds on the live link with my own projects: 7 jobs on v2.0.6, then 6 of them again on v2.0.8 (Upwork pastes, Freelancer.com links and keyword search, a Guru paste). For each I timed finding the job and then adding it to a draft I'd send, and noted v2's call, what I did with it, the proof it cited and any revision. The drafts are scored by the AI judge with `python scripts/judge.py --real private/real_jobs.json`. Results are in [day4-results.md](day4-results.md), section 7; the job posts stay private.
 
 Seven jobs show the time and the draft problems. They're too few for a skip accuracy. The next set is 30 jobs, with my own call written down before v2 runs (template: [`../labels/day4_calls_template.csv`](../labels/day4_calls_template.csv)), so v2 can't influence it.
 

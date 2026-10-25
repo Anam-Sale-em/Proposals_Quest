@@ -1,0 +1,99 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "goal": "Fix the n8n workflow so the full file of about 5,000 rows lands every night into a Google Sheet without hitting a 429 Too Many Requests error, with retries and a Slack message if it still fails.",
+  "plan": [
+   {
+    "step": "Audit the existing n8n workflow and the Google Sheets node configuration to identify the rate limit and batching bottlenecks during the nightly import of 5,000 rows",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Google Sheets"
+    ]
+   },
+   {
+    "step": "Modify the workflow to split the CSV data into smaller chunks or add rate-limiting delays between requests to prevent 429 Too Many Requests errors",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Google Sheets"
+    ]
+   },
+   {
+    "step": "Implement built-in error handling with retries on the Google Sheets node for robust execution",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Google Sheets"
+    ]
+   },
+   {
+    "step": "Configure a Slack alert node to trigger if the workflow execution ultimately fails after retries",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Slack"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Audit and Fix",
+    "deliverable": "Updated n8n workflow with batched processing and retry logic for the Google Sheets node",
+    "budget_share": "70%"
+   },
+   {
+    "name": "Testing and Slack Alert",
+    "deliverable": "End-to-end test of the nightly import and verified Slack failure notification",
+    "budget_share": "30%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Audit the existing n8n workflow and the Google Sheets node configuration to identify the rate limit and batching bottlenecks during the nightly import of 5,000 rows",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Modify the workflow to split the CSV data into smaller chunks or add rate-limiting delays between requests to prevent 429 Too Many Requests errors",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Implement built-in error handling with retries on the Google Sheets node for robust execution",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Configure a Slack alert node to trigger if the workflow execution ultimately fails after retries",
+    "project_id": "P1",
+    "gap": false
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Google Sheets API quota limits may still restrict write speeds even with batching.",
+    "mitigation": "Introduce structured delay nodes or smaller chunk sizes between API calls to stay under rate limits."
+   },
+   {
+    "risk": "The current CSV structure or data format might have changed, contributing to the failure.",
+    "mitigation": "Perform a test run with a full sample dataset during the initial audit phase."
+   }
+  ],
+  "questions": [
+   "What is the current batch size or loop structure in the failing n8n workflow?",
+   "Do you already have a Slack webhook or channel set up for the alert notification?"
+  ],
+  "assumptions": [
+   "Access to the existing n8n instance and Google Sheets account will be provided.",
+   "The fixed price budget of $250 is acceptable for this troubleshooting and fix scope."
+  ]
+ }
+}

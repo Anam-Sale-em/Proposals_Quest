@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal and lists all three deliverables (JSON file, walkthrough, support) and technical requirements (modular, error-handled)."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It cites specific details from the post such as 'Loom or written walkthrough', 'post-deployment support during the first week', and 'clear node labels'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about the AI Chatbot Agent project accurately reflects the profile's description of using n8n, webhooks, and CRM APIs, without exaggerating the role or results."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps like analyzing form/email data structures and mapping data sync requirements before building the workflow."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a single, clear question asking which specific core applications and CRM systems should be prioritized."
+   }
+  ]
+ }
+}

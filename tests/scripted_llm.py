@@ -121,7 +121,7 @@ class ScriptedLLM(LLM):
                     "When would you like it live?")
         else:
             proof = (f"I did nearly this before in {p['title']}: {p['result']}" if exp.get("framing") == "similar"
-                     else f"Different domain, same core work: in {p['title']} I {p['what_i_did'][0].lower() + p['what_i_did'][1:]}")
+                     else f"Different domain, same core work: in {p['title']} I worked with {' and '.join(p['skills'][:2])}.")
             text = (f"{opener}you need {FIXTURES[cid]['title'].lower()}. I'd start by confirming access and requirements, then build the core flow "
                     f"and test the edge cases before handover. {proof} Which accounts can I get access to first?")
             if cid == "T11" and n == 1:

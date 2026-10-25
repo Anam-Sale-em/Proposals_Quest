@@ -54,6 +54,16 @@ def repeated_phrases(text: str, n: int = 5) -> list[str]:
     return out
 
 
+def copied_run(text: str, source: str, n: int = 12) -> bool:
+    """True when the draft copies n+ words in a row from the source (a project's "What I did"), small words included."""
+    src = re.findall(r"[a-z0-9~%$]+", (source or "").lower())
+    if len(src) < n:
+        return False
+    grams = {tuple(src[i:i + n]) for i in range(len(src) - n + 1)}
+    words = re.findall(r"[a-z0-9~%$]+", text.lower())
+    return any(tuple(words[i:i + n]) in grams for i in range(len(words) - n + 1))
+
+
 def number_values(text: str) -> set[str]:
     """Every number in the text, normalized, including the K-expanded form."""
     values: set[str] = set()
@@ -207,9 +217,14 @@ def validate(
     content = lambda s: " ".join(w for w in re.findall(r"[a-z0-9~%$]+", s.lower()) if w not in STOP)  # noqa: E731
     post_words = content(job_text(job))
     for phrase in repeated_phrases(text):
-        if content(phrase) in post_words:  # small words aside: "the form to Google Sheets" = "a form to Google Sheets"
-            continue  # the client's own terms (a field list, a workflow name) can fairly appear twice
+        # A short term from the post (a field list, a workflow name) can fairly appear twice; a whole requirement
+        # restated word for word (10+ words, F9) can't. Small words aside: "the form to Google Sheets" = "a form to…".
+        if content(phrase) in post_words and len(phrase.split()) < 10:
+            continue
         r.style_failures.append(f"The phrase \"{phrase}\" appears twice; say it once.")
+    for p in [project, *extras]:
+        if p and copied_run(text, p.what_i_did):
+            r.style_failures.append(f"The proof copies \"{p.title}\" word for word; sum it up in your own words (F9).")
     for s in r.style_failures:
         r.notes.append(f"Wording: {s}")
 

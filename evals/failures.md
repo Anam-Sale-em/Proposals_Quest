@@ -1,6 +1,6 @@
 # Failure analysis
 
-Real failures found while running v2, each with its root cause, the fix and how the fix is checked. F1–F6 come from live use on Days 3–4, F7–F8 from the seven real jobs on Day 5. The eval-run failures (E1–E3) are in [day4-results.md](day4-results.md).
+Real failures found while running v2, each with its root cause, the fix and how the fix is checked. F1–F6 come from live use on Days 3–4, F7–F10 from the real jobs and eval runs on Day 5. The eval-run failures (E1–E3) are in [day4-results.md](day4-results.md).
 
 ## F1 · First live run: every model failed · 2026-10-22
 
@@ -89,7 +89,13 @@ Real failures found while running v2, each with its root cause, the fix and how 
 
 **Root cause:** the proof label is "similar" when the work is the same kind and the platform or the records match. Both jobs are n8n automation, so "same kind of work" and "same platform" were yes. The evidence rule (#60) asks for a specific tool named in both texts, and n8n is one. So every rule held, and the label was still wrong: sharing the tool says nothing about the deliverable. A booking agent and a content pipeline have different inputs, outputs and records.
 
-**Fix (next):** a platform alone can't make "similar". It also needs the same records or the same deliverable named in both texts, the evidence rule applied to records. T01 still has to pass (leads in, leads out, on n8n). Until then the draft shows the cited project, and I switch the proof or its framing before sending.
+**Fix (prompt v2.0.7 and v2.0.8):**
+- A tool the freelancer builds with (n8n, Python, Make, React Native and others, `build_tools` in config.toml) no longer counts as evidence for "similar". The shared tool has to be one of the client's own systems, like Shopify, Google Sheets or Airtable (#105).
+- The "nearly this" line now says what the past project was, naming its own systems, and never invents a client type (#108). The old template asked for "[client type]", and the model filled it with "a sales team" (v2.0.7 judge, T05 and T07).
+
+I first planned "records or deliverable must match too", but that rule would have flipped T03 and T05, whose frozen answer is "similar", so I didn't use it.
+
+**How it's checked:** a unit test asserts n8n alone gives no evidence while Google Sheets still does (T01). On v2.0.8 the judge passed T05 and T07 on honest proof, which v2.0.7 had failed.
 
 **Lesson:** a rule can hold on every test case and still be too loose. The real job found what the 12 cases didn't.
 
@@ -103,6 +109,40 @@ Real failures found while running v2, each with its root cause, the fix and how 
 
 **Root cause:** the proof sentence is filled from a template ("in [project] I used [skills] to [outcome]") with the project's own text, which is written as a past-tense sentence. The claim check confirms that every fact traces to a project, so it passes. Nothing checks grammar or repetition. "My goal" was already seen on two eval drafts (T04, T07).
 
-**Fix (next):** a code check for "My goal" at the start and for repeated phrases, sent to the existing automatic retry; and the proof line rewritten from the project's fields instead of pasted. Both change the prompt or the validators, so they go in with a fresh eval run, not as a quiet patch.
+**Fix (prompt v2.0.7):** the claim check now flags "My goal…" at the start, broken verbs ("to shipped") and a phrase of 5+ words repeated, and sends them to the automatic retry (#106). The prompt asks for the proof as one grammatical sentence of the freelancer's own.
+
+The first live run showed the repeat check was too strict: it flagged T01 and T12 for repeating the client's own field list and workflow name. Now it skips phrases from the post (#107).
+
+**How it's checked:** unit tests for each pattern, including the client's-own-words case. None of the three slips appeared in v2.0.8's eval drafts or its real-job drafts. What's left is F9.
 
 **Lesson:** a fact check isn't a read-through. That's why v2 stops at a draft and the freelancer sends.
+
+## F9 · Drafts restate the post and copy the project's wording · 2026-10-25
+
+**What happened:** on v2.0.8, T11's draft repeats two long phrases ("summarize and extract sender, company, request type, a 2-sentence summary and a priority flag"), and the automatic retry didn't fix it. On a real n8n job the draft says "production-ready n8n workflow file (JSON) with clear node labels" twice. Both real n8n drafts copy the chatbot project's "What I did" almost word for word as the proof.
+
+**Root cause:** v2.0.7 told the draft to state the goal, then every deliverable, then the steps, so the same requirement shows up two or three times. The repeat check skips the post's own phrases on purpose (#107), so it can't see this. Nothing in code compares the proof line with the project's text.
+
+A real SEO job on v2.0.8 showed the worst case: the draft listed every deliverable, then repeated the first three word for word as the plan. That made it 1,558 characters against Freelancer.com's 1,500 limit, and the automatic retry didn't fix it.
+
+**Fix (prompt v2.0.9, #111):**
+- Each requirement is said once, inside the step that delivers it.
+- The prompt states the platform's character limit.
+- The proof is one short sentence of my own.
+- The claim check now flags a requirement restated word for word (10+ words, even when the words come from the post), and a proof that copies 12+ words of a project's "What I did".
+
+**How it's checked:** unit tests for both checks, and the v2.0.9 live run (11 of 12). No v2.0.9 draft repeats a requirement, and none exceeded a length limit. One draft (T05) still copied 12+ words of its project. The new check caught it, but the retry didn't fix it, so the draft page shows it as a warning. Still open: copying needs a stronger instruction or a rewrite step of its own.
+
+**Lesson:** a fix for one rubric item (cover every requirement) can cost another (reads like a person wrote it). The judge measures the first, not the second.
+
+## F10 · An override skipped the proof rules · 2026-10-25
+
+**What happened:** a real Freelancer.com SEO job ($16–132) was a Skip for being below my minimum, so no fit check ran. I overrode it. The draft said "I did nearly this: built an AI chatbot agent with n8n…": the F7 overstatement, back on the job that first showed it.
+
+**Root cause:** when the Skip comes before the fit check, the override runs one fit check itself. That path kept the model's own proof label and never applied the rules: the label decided from facts, the evidence rule, and the build-tool rule from F7. The main path had them; the override path didn't.
+
+**Fix (#109):** the proof rules live in one function that the fit check and the override both call. Also new (#110): "similar" needs its key fact to hold in all three checks, not only the majority.
+
+**How it's checked:** a unit test for the split-vote rule. Simulated on the saved facts from both live runs, it changes only T02, which is the case it should fix.
+
+**Lesson:** a rule that only runs on the main path isn't a rule. Every way into "write a draft" has to pass through the same checks.

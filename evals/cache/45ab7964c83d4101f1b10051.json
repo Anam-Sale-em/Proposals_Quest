@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets, Slack, and APIs required for the migration.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation matches the requested n8n migration deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "A fixed price of $450 for 6 simple workflows is a reasonable budget for an automation task.",
+  "clear_yes": true,
+  "clear_reason": "The steps are concrete: rebuild the 6 Zaps in n8n, test them, and hand over a short documentation.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves n8n, forms, Google Sheets, and Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "similar",
+    "reason": "It is an automation project built with code rather than n8n."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "similar",
+    "reason": "It handles email triage workflows using APIs."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

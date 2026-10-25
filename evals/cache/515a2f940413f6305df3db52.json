@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal fails to restate the client's goal or cover explicit requirements such as the specific tech stack (Node/PostgreSQL), admin dashboard, or acceptance criteria."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal uses specific details from the post, including 'multiple service categories,' 'single cart,' and 'flexible payment options' (online vs post-service)."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about leading React Native apps and shipping four to the App Store traces directly to the provided profile project details."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The plan is generic ('focus first on getting the core marketplace flow right') and lacks concrete first steps like specific architecture decisions or immediate technical tasks."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with a vague statement ('Looking forward to hearing more') rather than one clear question or specific next step."
+   }
+  ]
+ }
+}

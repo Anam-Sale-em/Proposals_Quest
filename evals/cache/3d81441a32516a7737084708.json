@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the 30-day MVP goal and lists all major scope items including the app, portal, dashboard, payment flows, and AI layer."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It uses specific details from the post such as 'India-focused', 'post-service payment', and 'companion professional portal' which are not generic."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The proposal makes no claims about past work or results, and explicitly labels the marketplace experience as 'new', adhering to the honesty constraint."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "It names concrete first steps: selecting the tech stack, designing the database schema, and prioritizing core features for the initial 30 days."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "It ends with a single, clear question about payment gateway providers and fits within standard proposal length limits."
+   }
+  ]
+ }
+}

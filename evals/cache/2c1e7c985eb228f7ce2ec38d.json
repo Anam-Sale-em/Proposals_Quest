@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has general automation and API integration skills.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation and API integrations match the freelancer's listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so the scope is assumed realistic.",
+  "clear_yes": false,
+  "clear_reason": "The post lacks specific details on tools and deliverables to form a concrete 3-step plan.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves connecting tools and handling leads using workflow automation."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves API integrations and data sync scripts for records."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves automation and API integration for messaging records."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

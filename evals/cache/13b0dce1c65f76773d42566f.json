@@ -1,0 +1,111 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "goal": "Move off Zapier to self-hosted n8n by rebuilding 6 workflows (a form to Google Sheets, Sheets to Slack alerts, a Stripe payment to an email receipt, and three small Gmail filters), testing them with the team, and handing over a short documentation.",
+  "plan": [
+   {
+    "step": "Audit and map the 6 existing Zaps including the form to Google Sheets, Sheets to Slack alerts, Stripe payment to email receipt, and the three small Gmail filters.",
+    "tools": [
+     "Zapier",
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Rebuild the form to Google Sheets and Sheets to Slack alerts workflows in self-hosted n8n.",
+    "tools": [
+     "n8n",
+     "Google Sheets",
+     "Slack"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Rebuild the Stripe payment to email receipt and the three small Gmail filters in n8n.",
+    "tools": [
+     "n8n",
+     "Stripe",
+     "Gmail"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Test all 6 rebuilt n8n workflows with the client.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Hand over a short documentation detailing the 6 n8n workflows.",
+    "tools": [
+     "n8n"
+    ],
+    "suggested_tools": [
+     "Notion",
+     "Google Docs"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1: Core Workflow Migration",
+    "deliverable": "Rebuild the form to Google Sheets, Sheets to Slack alerts, and Stripe payment to email receipt workflows in n8n.",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2: Remaining Workflows, Testing, and Documentation",
+    "deliverable": "Rebuild the three small Gmail filters, test all 6 workflows with the client, and hand over the short doc.",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Audit and map the 6 existing Zaps including the form to Google Sheets, Sheets to Slack alerts, Stripe payment to email receipt, and the three small Gmail filters.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Rebuild the form to Google Sheets and Sheets to Slack alerts workflows in self-hosted n8n.",
+    "project_id": "P1",
+    "gap": false
+   },
+   {
+    "step": "Rebuild the Stripe payment to email receipt and the three small Gmail filters in n8n.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Test all 6 rebuilt n8n workflows with the client.",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Hand over a short documentation detailing the 6 n8n workflows.",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "API credential or webhook access limitations on the self-hosted n8n instance.",
+    "mitigation": "Verify administrative and credential access to Stripe, Google Sheets, Slack, and Gmail before starting."
+   },
+   {
+    "risk": "Complex Zapier step configurations or code steps that do not translate directly to n8n.",
+    "mitigation": "Review all 6 Zaps during the initial audit phase to identify and plan for any custom JavaScript or complex logic."
+   }
+  ],
+  "questions": [
+   "What specific form tool triggers the form-to-Google-Sheets workflow?",
+   "Do the Stripe and Gmail integrations require specific email templates or filter criteria?"
+  ],
+  "assumptions": [
+   "The client will provide necessary credentials and access to the self-hosted n8n instance and relevant third-party accounts.",
+   "The fixed price of $450 covers the full scope of migrating and documenting the 6 specified workflows."
+  ]
+ }
+}

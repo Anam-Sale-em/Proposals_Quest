@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL and has extensive API integration experience.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is a data sync script and API integration, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "An $800 fixed price for a focused two-way sync script is reasonable.",
+  "clear_yes": true,
+  "clear_reason": "The scope clearly outlines a two-way contact sync between HubSpot and PostgreSQL with specific requirements.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It handles leads and uses n8n rather than HubSpot and PostgreSQL sync."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves a Python data sync with PostgreSQL, but uses Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It focuses on LLM email sorting rather than database and CRM synchronization."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

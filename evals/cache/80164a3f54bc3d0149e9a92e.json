@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python and PostgreSQL, which are core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The job is a data sync script and API integration, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The $800 fixed budget is plausible for a targeted two-way sync script.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: set up HubSpot webhooks/polling, build the PostgreSQL sync logic with conflict resolution, and containerize/document it.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Deals with lead intake via forms, not HubSpot and PostgreSQL sync."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Uses Python and PostgreSQL for database sync, though the platform is Shopify instead of HubSpot."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Deals with support email triage using Gemini and Airtable."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

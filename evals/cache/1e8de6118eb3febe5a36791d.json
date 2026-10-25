@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal fails to answer the three mandatory questions in the order requested and omits specific requirements like the 90-day raw payload retention and 12-month logging retention."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post, such as the 'pricing-page chat webhooks' and the '30-minute claim/reassignment timers'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('built an n8n workflow...') accurately reflects Project P1 in the freelancer's profile, and no other unverified claims are made."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The plan lists high-level deliverables (e.g., 'Design and execute SQL migration files') rather than concrete first steps or a specific technical approach for the initial setup."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with a question about email parsing services, but it fails to address the other two mandatory questions in the main body, violating the post's instruction to answer all three clearly."
+   }
+  ]
+ }
+}

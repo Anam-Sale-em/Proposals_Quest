@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal restates the goal and explicitly covers all five requirements: triggers for both forms, duplicate check by email, specific row fields, Slack notification with link, and failure emails."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It uses two details unique to the post: the specific requirement to trigger on 'both Typeform forms' and the specific Slack channel name '#sales'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('automated lead intake... Lead entry dropped from about 2 hours a week to under 10 minutes') directly matches Project P1 in the profile, and no other unverified claims are made."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "It names concrete first steps such as configuring Typeform triggers and implementing the duplicate check via Google Sheet query, rather than using generic process language."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "It ends with one clear question about the email service preference, fits within standard length limits, and follows the post's request for a similar workflow and duplicate handling strategy."
+   }
+  ]
+ }
+}

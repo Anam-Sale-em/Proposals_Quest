@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has general automation and API integration skills matching the post.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation and API integrations are listed work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget is a placeholder, so the scope is assumed realistic.",
+  "clear_yes": false,
+  "clear_reason": "The post lacks details on which tools to connect or what the workflow should do.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves lead intake automation handling leads and using core automation skills, but lacks a specific named platform match."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data sync and API integrations for inventory records using Shopify."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It handles email triage automation using Gmail and Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

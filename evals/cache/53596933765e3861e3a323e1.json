@@ -1,0 +1,81 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "goal": "Connect a few of our tools using automation.",
+  "plan": [
+   {
+    "step": "Review the specific tools and connection requirements provided by the client",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "REST APIs"
+    ]
+   },
+   {
+    "step": "Build the automation workflow connecting the requested tools and APIs",
+    "tools": [],
+    "suggested_tools": [
+     "n8n",
+     "Python"
+    ]
+   },
+   {
+    "step": "Test the workflow to ensure data syncs correctly across the connected tools",
+    "tools": [],
+    "suggested_tools": [
+     "Webhooks"
+    ]
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Review details and build initial automation connection",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Testing and final deployment of the automation",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Review the specific tools and connection requirements provided by the client",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Build the automation workflow connecting the requested tools and APIs",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Test the workflow to ensure data syncs correctly across the connected tools",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "The budget is listed as a $5 placeholder, meaning the actual project scope and budget are undefined.",
+    "mitigation": "Discuss scope and agree on a proper budget before starting work."
+   },
+   {
+    "risk": "Specific tools to be connected are not mentioned in the post.",
+    "mitigation": "Ask the client to list all tools and APIs that need integration."
+   }
+  ],
+  "questions": [
+   "What specific tools and applications do you need to connect?",
+   "What is the expected workflow or data flow between these tools?"
+  ],
+  "assumptions": [
+   "The budget of $5 is a placeholder and will be adjusted based on the actual scope.",
+   "The client will provide access credentials and details for the tools that need to be connected."
+  ]
+ }
+}

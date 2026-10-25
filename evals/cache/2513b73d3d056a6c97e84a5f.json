@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal restates the goal and explicitly lists all five scope items and acceptance criteria from the post."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It cites specific details unique to the post, such as 'taxi company website,' 'Sanity CMS,' and 'Google Search Console resubmits.'"
+   },
+   {
+    "item": 3,
+    "passed": false,
+    "reason": "The claim 'I did nearly this' is misleading; the profile project is an AI chatbot for booking, not an SEO automation tool, and the proposal fails to clearly distinguish the new work from the unrelated past work."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The plan merely repeats the client's requirements verbatim without naming concrete first steps, technical architecture decisions, or specific implementation actions."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "It ends with a single, clear question about the preferred database/spreadsheet tool, which is relevant and within format limits."
+   }
+  ]
+ }
+}

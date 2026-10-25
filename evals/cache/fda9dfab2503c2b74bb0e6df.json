@@ -1,0 +1,26 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "Typeform",
+   "Google Sheets",
+   "Slack",
+   "Google Sheets API",
+   "Slack API"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this: automated lead intake using n8n webhooks, Google Sheets API, and Slack API to eliminate manual data entry.",
+    "maps_to": "P1"
+   },
+   {
+    "sentence": "Lead entry dropped from about 2 hours a week to under 10 minutes.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

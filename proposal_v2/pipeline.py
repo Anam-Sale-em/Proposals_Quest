@@ -58,6 +58,28 @@ def _specific_tags_in_project(job: JobPost, project: Project) -> int:
     return _tags_in_project(tags, project)
 
 
+def _label_projects(rec: ProposalRecord, projects: list[Project]) -> None:
+    """The proof label for each project comes from the facts, by rule, never from the model's own label."""
+    by_id = {pr.id: pr for pr in projects}
+    split = set(rec.assessment.split_facts or [])
+    for j in rec.assessment.project_labels:
+        j.label = proof_label(j)
+        if j.label != "similar":
+            continue
+        # "Similar" needs evidence in both texts: a specific tool the post names that the project also used.
+        # A post that names none (only "Automation", "API Integration") can't be "nearly this".
+        if j.project_id in by_id and not _specific_tags_in_project(rec.job, by_id[j.project_id]):
+            j.label = "same_skills"
+            continue
+        # And the fact that makes it "similar" (same platform or same records) has to hold in every check,
+        # not just the majority: "nearly this" is the strongest claim a draft makes (E3, T02's "same records").
+        firm = [name for field, name in (("same_platform", "same platform"), ("same_records", "same records"))
+                if getattr(j, field) and f"{j.project_id} {name}" not in split]
+        no_facts = j.same_platform is None and j.same_records is None  # the model's own label stands (old runs)
+        if not firm and not no_facts:
+            j.label = "same_skills"
+
+
 class PipelineError(Exception):
     """Shown to the user as written."""
 
@@ -164,13 +186,7 @@ class Pipeline:
                     runs.append(self.llm.call("assess", "light", system, user + f"\n\n(Independent check {i}.)",
                                               Assessment, m.get("temperature_vote", 0.3)))
                 rec.assessment = majority(runs)
-            by_id = {pr.id: pr for pr in projects}
-            for j in rec.assessment.project_labels:  # the label comes from the facts, by rule
-                j.label = proof_label(j)
-                # "Similar" needs evidence in both texts: a specific tool the post names that the project also used.
-                # A post that names none (only "Automation", "API Integration") can't be "nearly this".
-                if j.label == "similar" and j.project_id in by_id and not _specific_tags_in_project(rec.job, by_id[j.project_id]):
-                    j.label = "same_skills"
+            _label_projects(rec, projects)
             if gate in ("placeholder", "none_stated") and not rec.assessment.realistic_yes:
                 # The rule, not the model, decides this: a placeholder or missing budget says nothing about scope.
                 rec.assessment.realistic_yes = True
@@ -269,6 +285,7 @@ class Pipeline:
             # Skipped before the assessment ran (red flag or below minimum): assess now, so proof can be suggested.
             system, user = prompts.assessment(rec.job, self.profile(), self.projects())
             rec.assessment = self.llm.call("assess", "light", system, user, Assessment, 0.0)
+            _label_projects(rec, self.projects())  # same rules as the fit check, so an override can't skip them
             self._pick_proof(rec)
         self.storage.put_proposal(rec)
         return rec

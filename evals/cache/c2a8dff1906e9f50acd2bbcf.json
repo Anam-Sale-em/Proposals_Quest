@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "Fails to restate the goal and misses explicit requirements like the AI layer, PWA, and specific acceptance criteria."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "Uses 'KAAMLYY' and 'India-focused' which are specific details from the job post."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about shipping four apps in React Native traces directly to the provided profile project."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The plan is generic ('architecture and tech stack selection') and does not name concrete first steps or specific technical decisions."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "Ends with two separate calls to action (a question and a request to review a plan in chat) instead of one clear next step."
+   }
+  ]
+ }
+}

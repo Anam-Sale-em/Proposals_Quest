@@ -131,5 +131,5 @@ Logs: `logs/runs/<date>.jsonl` has one line per LLM call (step, model, provider,
 ## Results and docs
 
 - [Case study](docs/case-study.md) · [AI collaboration note](docs/ai-collaboration-note.md)
-- [Day 4 results](evals/day4-results.md): four fully live eval runs, every decision and trust score right (48 of 48); final code 12/12 and 11/12 live; 8 of 9 drafts pass the rubric by my scoring (6 of 9 by an AI judge) with zero unsupported claims in the last run
+- [Results, Days 4–5](evals/day4-results.md): seven fully live eval runs, every decision and trust score right (84 of 84); an AI judge passed v2's drafts 5–7 of 9 across four prompt versions; the submitted v2.0.9 passes 11 of 12 live
 - [Failures](evals/failures.md) · [Architecture](docs/architecture.md) · [Decision log](docs/decision-log.md)

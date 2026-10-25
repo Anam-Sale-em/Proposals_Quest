@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python, PostgreSQL, and API Integration experience matching the required skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The job is an API integration and data sync script, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The $800 fixed budget is plausible for a focused two-way sync script.",
+  "clear_yes": true,
+  "clear_reason": "The post lists specific requirements including endpoints, sync direction, and conflict resolution.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation and record syncing, though not HubSpot."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses Python and PostgreSQL for database sync, but handles inventory instead of contacts."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It uses different tools like Gemini and Airtable for inbox triage."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

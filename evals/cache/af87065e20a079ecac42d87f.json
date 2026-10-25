@@ -1,0 +1,20 @@
+{
+ "step": "claims",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "tools_named": [
+   "n8n",
+   "Google Sheets",
+   "Slack",
+   "CSV"
+  ],
+  "experience_sentences": [
+   {
+    "sentence": "I did nearly this: automated lead intake using n8n webhooks, field validation, duplicate email checking, Google Sheets rows, and Slack channel alerts.",
+    "maps_to": "P1"
+   }
+  ]
+ }
+}

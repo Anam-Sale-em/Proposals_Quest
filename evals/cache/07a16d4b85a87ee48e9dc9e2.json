@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal and covers all requirements: triggering on both Typeform forms, duplicate checking by email, adding specific fields, posting to Slack with a link, and emailing on failure."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal uses two details unique to the post: the specific requirement to handle 'two Typeform forms' and the specific fields to include ('name, email, company, form name, and timestamp')."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about a similar workflow (lead intake, duplicate check, Sheets, Slack) and the specific result (2 hours to 10 minutes) directly trace to Project P1 in the freelancer's profile."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete first steps: connecting the specific forms, normalizing/validating emails, checking the sheet, and testing specific scenarios (duplicates, failures) on the self-hosted instance."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal does not end with a clear question or next step; it ends with a statement about when work can start ('I can get started once...') and a sign-off, rather than a direct call to action or question."
+   }
+  ]
+ }
+}

@@ -3,6 +3,7 @@
   python scripts/judge.py evals/results/<run>            # v2 drafts from a run + the ChatGPT baseline drafts
   python scripts/judge.py evals/results/<run> --hand evals/rubric_scores_live_v2.0.6.csv
   python scripts/judge.py --real private/real_jobs.json   # real jobs: v2 and ChatGPT drafts on the same posts
+  python scripts/judge.py --real private/real_jobs.json --only v2.0.8,chatgpt   # just these sources
 
 The judge is a different model (config [models].judge) from the drafting models, so nothing
 grades itself. With --hand, agreement with my own scores is reported per rubric item; items
@@ -41,9 +42,10 @@ def main():
     ap.add_argument("run", type=Path, nargs="?")
     ap.add_argument("--hand", type=Path)
     ap.add_argument("--real", type=Path, help="JSON list of {id, job, source, post, profile, draft}; kept in private/")
+    ap.add_argument("--only", help="comma-separated sources to score, e.g. v2.0.8,chatgpt (default: all)")
     a = ap.parse_args()
     if a.real:
-        return judge_real(a.real)
+        return judge_real(a.real, [x.strip() for x in a.only.split(",")] if a.only else None)
     if not a.run or not (a.run / "drafts").is_dir():
         found = sorted(p.name for p in (ROOT / "evals" / "results").glob("*") if (p / "drafts").is_dir())
         sys.exit(f"No drafts folder in {a.run}. Runs with drafts: {', '.join(found[-5:]) or 'none yet'}. "
@@ -81,10 +83,14 @@ def main():
 ITEMS = ["goal", "specific", "honest_proof", "plan", "ask"]
 
 
-def judge_real(path: Path) -> None:
+def judge_real(path: Path, only: list[str] | None = None) -> None:
     """Scores real-job drafts (the posts and my real projects stay in private/). Same judge, same rubric;
     the judge never sees which tool wrote a draft."""
     jobs = json.loads(path.read_text(encoding="utf-8"))
+    if only:
+        jobs = [j for j in jobs if j["source"] in only]
+        if not jobs:
+            sys.exit(f"No drafts with source {', '.join(only)} in {path}.")
     random.Random(7).shuffle(jobs)
     llm = LLM(mode="cache_first")
     rows = []

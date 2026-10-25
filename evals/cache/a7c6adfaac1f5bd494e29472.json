@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": false,
+    "reason": "The proposal fails to acknowledge the $5.00 fixed price, which is a critical explicit requirement in the job post."
+   },
+   {
+    "item": 2,
+    "passed": false,
+    "reason": "The proposal only uses generic details ('connect a few of your tools') and does not cite any specific details unique to this post (like the $5 budget or 'Entry level' status) to demonstrate specificity."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about 'Lead intake automation with n8n' and the use of 'n8n and Webhooks' accurately traces to Project P1 in the freelancer's profile."
+   },
+   {
+    "item": 4,
+    "passed": false,
+    "reason": "The proposed first step ('review the specific tools... provided by you') is a generic process step rather than a concrete action the freelancer can take immediately or a specific technical approach."
+   },
+   {
+    "item": 5,
+    "passed": false,
+    "reason": "The proposal ends with two distinct questions instead of one clear question or next step."
+   }
+  ]
+ }
+}

@@ -2,7 +2,7 @@
 
 **Success:** on the same three jobs (T01–T03), v2's median time from opening a job to a send-ready proposal is below the plain-ChatGPT baseline (about 57 minutes) and v1 (65–85+), every v2 draft passes the rubric, and none carries an unsupported claim. I report the result either way, including if v2 is not faster.
 
-**Result (Day 5), measured on real jobs instead of T01–T03:** v2 got to a draft I'd send in 10 minutes median (7–14) on 5 jobs. Plain ChatGPT got to a first draft in 7–12 on 3 of the same jobs, and none of those was one I'd send, so its time to send-ready is longer but not measured. On the two jobs both drafted, v2 was 2–3 minutes faster. The time target is met, narrowly; the 57-minute estimate below was too high for a first draft. Details: [baseline.md](baseline.md#measured-on-real-jobs-day-5) and [day4-results.md](day4-results.md), section 7.
+**Result (Day 5), measured on real jobs instead of T01–T03:** v2 got to a draft I'd send in 6–10 minutes (median 8) on the final real-job round (v2.0.8), and in 10 minutes median on an earlier round of 6 (v2.0.6). Plain ChatGPT got to a first draft in 7–12 on 3 of the same jobs, and none of those was one I'd send, so its time to send-ready is longer but not measured. On the two jobs both drafted, v2 was 2–3 minutes faster. The time target is met, narrowly; the 57-minute estimate below was too high for a first draft. Details: [baseline.md](baseline.md#measured-on-real-jobs-day-5) and [day4-results.md](day4-results.md), section 7. On quality, the bar "every v2 draft passes the rubric" is **not met**: the AI judge passes 6–7 of 9 test drafts on v2.0.8–v2.0.9 (T04 and T06 fail every time), and no unsupported claim was found by hand on v2.0.6.
 
 ## North-star
 

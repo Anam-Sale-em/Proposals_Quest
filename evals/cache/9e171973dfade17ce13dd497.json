@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "text": "Your goal is to build a two-way contact sync between HubSpot and a PostgreSQL users table. First, I will analyze your PostgreSQL users table schema and HubSpot contact properties to map fields and identify timestamps for the most-recent-update-wins conflict resolution rule. Next, I will develop the Python service to listen for new signups and push them to HubSpot within 5 minutes. Then, I will implement the reverse sync from HubSpot to PostgreSQL for lifecycle stage changes, add conflict logging to record every conflict, and package the service for your server with a short README for your developer. Different domain, same core work: in Shopify to PostgreSQL inventory sync I used Python and PostgreSQL to reconcile counts and log every change. Which server environment will host the sync script?",
+  "screening_answers": []
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows n8n, Google Sheets API, and APIs required to handle this automation.",
+  "work_type_yes": true,
+  "work_type_reason": "Workflow automation troubleshooting and fixing is a core deliverable.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250 for fixing a rate-limiting issue in an n8n workflow is reasonable.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: inspect the n8n workflow, implement batching or rate-limit handling with retries, and add a Slack alert.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It uses n8n, Google Sheets, and Slack for lead data."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It uses Python and webhooks for inventory sync."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It deals with email classification using Python and Gmail API."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

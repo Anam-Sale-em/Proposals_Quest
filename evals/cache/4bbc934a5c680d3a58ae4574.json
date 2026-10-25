@@ -1,0 +1,84 @@
+{
+ "step": "brief",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "goal": "We get partnership requests by email. We want each new email in our \"Partners\" Gmail label summarized by an AI model and added to Airtable: sender, company, request type, a 2-sentence summary and a priority flag. A person on our team reviews anything marked low confidence.",
+  "plan": [
+   {
+    "step": "Configure Python script to poll new emails in the \"Partners\" Gmail label",
+    "tools": [
+     "Gmail API",
+     "Python"
+    ],
+    "suggested_tools": []
+   },
+   {
+    "step": "Integrate AI model to extract sender, company, request type, 2-sentence summary and priority flag with confidence scoring",
+    "tools": [
+     "Python"
+    ],
+    "suggested_tools": [
+     "OpenAI API",
+     "Gemini API"
+    ]
+   },
+   {
+    "step": "Write extracted lead data to Airtable and route low-confidence items for human review",
+    "tools": [
+     "Airtable",
+     "Python"
+    ],
+    "suggested_tools": []
+   }
+  ],
+  "milestones": [
+   {
+    "name": "Milestone 1",
+    "deliverable": "Gmail fetching and AI extraction script setup",
+    "budget_share": "50%"
+   },
+   {
+    "name": "Milestone 2",
+    "deliverable": "Airtable integration and low-confidence review routing",
+    "budget_share": "50%"
+   }
+  ],
+  "proof_map": [
+   {
+    "step": "Configure Python script to poll new emails in the \"Partners\" Gmail label",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Integrate AI model to extract sender, company, request type, 2-sentence summary and priority flag with confidence scoring",
+    "project_id": null,
+    "gap": true
+   },
+   {
+    "step": "Write extracted lead data to Airtable and route low-confidence items for human review",
+    "project_id": null,
+    "gap": true
+   }
+  ],
+  "risks": [
+   {
+    "risk": "Hourly budget constraints or uncertainty on total hours required",
+    "mitigation": "Provide regular hour tracking updates and weekly status reports."
+   },
+   {
+    "risk": "AI model misclassifying confidence scores",
+    "mitigation": "Include explicit fallback logic to route ambiguous partnership requests to human review."
+   }
+  ],
+  "questions": [
+   "What specific AI model (OpenAI vs other) should be used for the summary?",
+   "What is the exact schema of the Airtable base where leads should be added?"
+  ],
+  "assumptions": [
+   "The client will provide access credentials to the Gmail account and Airtable base.",
+   "The hourly budget of $35-$55 per hour is acceptable."
+  ]
+ }
+}

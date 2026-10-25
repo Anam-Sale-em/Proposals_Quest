@@ -283,3 +283,37 @@ def test_repeating_the_clients_own_terms_is_not_a_wording_slip():
     pasted = ("Your goal is moving 6 workflows. In my last project an LLM writes the proposal and script every day, "
               "resulting in approved proposal and script every day. Which one is most urgent?")
     assert validate(pasted, [], job, None, Profile(), ClaimLists()).style_failures
+
+
+def test_similar_needs_a_fact_every_check_agreed_on():
+    """E3 / T02 on v2.0.8: "same records" won 2 of 3 checks and made P2 "similar". A split vote can't."""
+    from proposal_v2.contracts import Assessment, JobPost, Project, ProjectJudgement as J
+    from proposal_v2.pipeline import _label_projects
+    from proposal_v2.contracts import ProposalRecord
+    job = JobPost(job_key="k", platform="upwork", link="l", title="HubSpot and PostgreSQL sync", description="d",
+                  skills=["HubSpot", "PostgreSQL"])
+    p2 = Project(id="P2", title="Shopify to PostgreSQL inventory sync", skills=["Python", "PostgreSQL"], what_i_did="sync")
+
+    def labelled(split):
+        asm = Assessment(skills_yes=True, skills_reason="", work_type_yes=True, work_type_reason="", realistic_yes=True,
+                         realistic_reason="", clear_yes=True, clear_reason="", split_facts=split,
+                         project_labels=[J(project_id="P2", same_kind_of_work=True, same_platform=False,
+                                           same_records=True, shares_core_skills=True)])
+        rec = ProposalRecord(uid="t", job_key="k", job=job, assessment=asm)
+        _label_projects(rec, [p2])
+        return rec.assessment.project_labels[0].label
+    assert labelled(["P2 same records"]) == "same_skills"
+    assert labelled([]) == "similar"
+
+
+def test_copied_proof_and_long_restatements_are_flagged():
+    """F9: the proof copies the project's own sentence; a whole requirement is restated word for word."""
+    from proposal_v2.contracts import ClaimLists, JobPost, Profile, Project
+    from proposal_v2.validators import copied_run, validate
+    did = "Built an AI chatbot agent that authenticates users, maintains multi-turn context, uses tool calling to fetch and validate open slots"
+    assert copied_run("In AI Chatbot Agent I built an AI chatbot agent that authenticates users, maintains multi-turn context, uses tool calling to fetch slots.", did)
+    assert not copied_run("In AI Chatbot Agent I built a booking agent that checks open slots and books them through a CRM.", did)
+    req = "pull keyword location and intent data create outlines and push them into Sanity as draft documents"
+    job = JobPost(job_key="k", platform="freelancer", link="l", title="SEO autopilot", description=f"The automation should {req}.")
+    text = f"Your goal is SEO on autopilot. You need to {req}. First I will {req}. Which tool stores rankings?"
+    assert validate(text, [], job, Project(id="P1", title="Bot", what_i_did=did), Profile(), ClaimLists()).style_failures

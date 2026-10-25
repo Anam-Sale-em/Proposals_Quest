@@ -165,11 +165,14 @@ def proposal(job: JobPost, profile: Profile, project: Optional[Project], framing
                  f"never \"My goal\"), one proof line, the one concrete first step you'd take, then 2-3 scoping questions "
                  f"from the brief, ending on the most important one. At most {max_words} words.")
     else:
-        shape = (f"Write {fmt} in this order: (1) the client's goal in your own words (\"Your goal…\" or their project's name; "
-                 f"never \"My goal\"); (2) every deliverable or requirement the post lists, a short clause each; "
-                 f"(3) the first 2-3 plan steps from the brief, each a concrete action on the client's own tools, data or "
-                 f"deliverables, never \"kickoff\" or \"requirements gathering\"; (4) one proof; (5) end with one clear "
-                 f"question as the last sentence. At most {max_words} words.")
+        limit = load_config()["length"].get(f"{job.platform}_chars", load_config()["length"]["default_chars"])
+        shape = (f"Write {fmt} in this order: (1) the client's goal in one sentence of your own (\"Your goal…\" or their "
+                 f"project's name; never \"My goal\"); (2) 2-4 plan steps from the brief that together cover every "
+                 f"deliverable or requirement the post lists, each a concrete action on the client's own tools, data or "
+                 f"deliverables, never \"kickoff\" or \"requirements gathering\". Mention each requirement once, inside "
+                 f"the step that delivers it: don't list the deliverables and then repeat them as steps, and never repeat "
+                 f"a phrase; (3) one proof; (4) end with one clear question as the last sentence. At most {max_words} "
+                 f"words and under {limit} characters.")
     framing_rule = {
         "similar": ("Proof framing: \"I did nearly this: [what the chosen project was, in a few words, naming its own systems]. "
                     "[Its result, if it has one].\" Never name a client type, team or industry the project doesn't state, and "
@@ -178,8 +181,8 @@ def proposal(job: JobPost, profile: Profile, project: Optional[Project], framing
         "plan_only": "Proof framing: no past project. Say \"here's how I'd do it\" and \"this part is new for me, here's how I'd de-risk it\".",
     }[framing]
     if framing != "plan_only":
-        framing_rule += (" Write the proof as one grammatical sentence of your own from the project's fields: "
-                         "never paste a field word for word, and never repeat its result.")
+        framing_rule += (" Write the proof as one short grammatical sentence of your own (at most about 30 words) that "
+                         "sums up the project: never copy its \"What I did\" text, and never repeat its result.")
     allowed = [i.text for i in job.allowed_instructions]
     refused = [i.text for i in job.refused_instructions]
     system = f"""You write a freelance proposal from a Solution Brief. {UNTRUSTED}

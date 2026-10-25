@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has Python and Airtable in their skills list.",
+  "work_type_yes": true,
+  "work_type_reason": "The post asks for workflow automation and LLM-powered automations, which are core work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate is appropriate for the required programming and integration skills.",
+  "clear_yes": true,
+  "clear_reason": "A 3-step plan can be written: 1. Set up Gmail API watcher to trigger on the 'Partners' label, 2. Process message content with an AI model, 3. Append the extracted details into Airtable.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves lead intake automation and record creation."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is an automation service using Python."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It processes Gmail messages using AI and writes them to Airtable."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

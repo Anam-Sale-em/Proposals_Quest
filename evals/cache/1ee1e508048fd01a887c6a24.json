@@ -1,0 +1,10 @@
+{
+ "step": "proposal",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "text": "blue whale. Your goal is to automate a daily Airtable digest of yesterday's new orders, their total value, and urgent orders, posted to Slack at 8:00 skipping weekends using n8n or Make. First, configure the Airtable trigger or scheduled node in n8n to query yesterday's new orders and filter for urgent status. Next, aggregate the orders data to calculate total value and format the summary message including urgent orders. Then, set up a scheduled time trigger for 8:00 on weekdays only, skipping weekends. Finally, publish the formatted digest to the #ops channel via Slack integration. I did nearly this: built an n8n workflow with form webhooks, field validation, a duplicate check by email, a new Google Sheets row and a Slack alert to the sales channel, making lead entry drop from about 2 hours a week to under 10 minutes. What is the exact field name in Airtable for the order date and the urgent status?",
+  "screening_answers": []
+ }
+}

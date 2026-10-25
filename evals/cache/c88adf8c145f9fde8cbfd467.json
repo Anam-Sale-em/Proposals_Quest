@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal to pull previous day's orders to Google Sheets and covers all requirements including specific fields, duplicate skipping, logging, scheduling, and rate limit handling."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "The proposal cites specific details from the post such as 'fulfillment status' and the requirement to 'skip orders that are already in the sheet'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('Shopify to PostgreSQL inventory sync') accurately reflects Project P2 in the profile, including the specific result metrics."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "The plan names concrete technical steps like authenticating with the Shopify API, checking existing rows for duplicates, and implementing rate limit handling, rather than using generic process language."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "The proposal ends with a single clear question about hosting preferences and fits within standard length limits."
+   }
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer knows Python, Shopify API, Google Sheets API, and REST APIs required for the job.",
+  "work_type_yes": true,
+  "work_type_reason": "Data sync scripts and API integrations are core work types for this freelancer.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $250 to $750 is reasonable for a simple daily Python script pulling Shopify orders into Google Sheets.",
+  "clear_yes": true,
+  "clear_reason": "The post details the exact data to pull, storage destination, and required explanations for scheduling and rate limits.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Involves data flow to Google Sheets and duplicate checking, but uses different platform and language."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Uses Python and Shopify API for data synchronization, though syncing inventory to PostgreSQL instead of orders to Google Sheets."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Involves processing email messages using Gemini and Airtable rather than pulling Shopify orders via Python."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

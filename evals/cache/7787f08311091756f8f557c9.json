@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Airtable, and Slack in their skillset.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The hourly rate of $30-$50 is realistic for an n8n automation task.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly states fetching records from Airtable, processing them, and posting to Slack via n8n on a schedule.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves workflow automation and posting alerts to Slack, though using different source platforms."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves automated data synchronization and scheduled jobs, though on a different platform."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": true,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It involves data processing and integration using Airtable, but for emails instead of orders."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

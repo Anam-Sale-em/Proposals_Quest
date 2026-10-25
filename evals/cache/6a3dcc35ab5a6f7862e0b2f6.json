@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": false,
+  "skills_reason": "The job requires graphic design skills like Adobe Illustrator and Logo Design, which are outside the freelancer's technical skill set.",
+  "work_type_yes": false,
+  "work_type_reason": "Logo design is a creative branding task, not workflow automation or API integration.",
+  "realistic_yes": true,
+  "realistic_reason": "The budget of $300 for a simple logo is reasonable.",
+  "clear_yes": true,
+  "clear_reason": "The post clearly requests a modern, minimal logo and brand mark with 3 portfolio samples.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Lead intake automation is unrelated to graphic design."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Inventory sync is unrelated to graphic design."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "Support inbox triage is unrelated to graphic design."
+   }
+  ],
+  "votes": 0,
+  "split_facts": []
+ }
+}

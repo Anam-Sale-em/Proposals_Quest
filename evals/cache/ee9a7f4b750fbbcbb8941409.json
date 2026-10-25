@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, PostgreSQL, and API integration skills which match the core requirements.",
+  "work_type_yes": true,
+  "work_type_reason": "The project is a complex workflow automation and integration system, matching the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "The $3,500 fixed price for an advanced n8n and PostgreSQL automation project is a reasonable mid-market scope.",
+  "clear_yes": true,
+  "clear_reason": "The job post provides exhaustive specifications allowing a concrete 3-step plan to be written.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "Both involve lead intake automation using n8n, Google Sheets, and Slack."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": true,
+    "same_records": false,
+    "shares_core_skills": true,
+    "label": "same_skills",
+    "reason": "It uses PostgreSQL and webhooks, but deals with inventory sync rather than lead routing."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It processes support inbox emails using the Gemini API, which is a different domain."
+   }
+  ],
+  "votes": 3,
+  "split_facts": []
+ }
+}

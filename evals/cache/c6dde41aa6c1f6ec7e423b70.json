@@ -1,0 +1,47 @@
+{
+ "step": "assess",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "skills_yes": true,
+  "skills_reason": "The freelancer has n8n, Google Sheets API, Slack API, and Webhooks in their core skills.",
+  "work_type_yes": true,
+  "work_type_reason": "The job requires building a workflow automation, which matches the freelancer's work types.",
+  "realistic_yes": true,
+  "realistic_reason": "Hourly rate of $25-$40 is realistic for an n8n automation project.",
+  "clear_yes": true,
+  "clear_reason": "The post provides a clear 3-step plan: trigger from Typeform, check for duplicates in Google Sheets, and send alerts to Slack.",
+  "project_labels": [
+   {
+    "project_id": "P1",
+    "same_kind_of_work": true,
+    "same_platform": true,
+    "same_records": true,
+    "shares_core_skills": true,
+    "label": "similar",
+    "reason": "It is an n8n workflow handling form submissions, Google Sheets, and Slack alerts with duplicate checking."
+   },
+   {
+    "project_id": "P2",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It uses Python and Shopify for inventory sync instead of n8n and Typeform."
+   },
+   {
+    "project_id": "P3",
+    "same_kind_of_work": false,
+    "same_platform": false,
+    "same_records": false,
+    "shares_core_skills": false,
+    "label": "not_relevant",
+    "reason": "It involves Gmail and LLM triage in Python instead of n8n and Typeform lead intake."
+   }
+  ],
+  "votes": 1,
+  "split_facts": []
+ }
+}

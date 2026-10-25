@@ -5,10 +5,10 @@
 I rebuilt my own freelance proposal workflow as a small AI OS. You paste a job; it checks the link and duplicates, scores the client, decides **Apply**, **Apply with questions** or **Skip** with one plain reason, and drafts a proposal that only claims work you've actually done. You confirm the details, review the draft and send it yourself.
 
 **Results in brief:**
-- In four fully live eval runs, it got every decision and trust score right (48 of 48).
-- The final code passed 12 of 12 and 11 of 12 in two live runs.
-- In the last run, 8 of 9 drafts passed the rubric by my scoring and 6 of 9 by an independent AI judge (agreement 83–100% per item), with zero unsupported claims.
-- On 7 real jobs from Upwork, Freelancer.com and Guru, v2 got to a draft I'd send in 10 minutes median (7–14). Plain ChatGPT, timed on 3 of the same jobs, gave a first draft in 7–12 minutes, but I wouldn't send any of the three, and it said Apply on a job v2 skipped.
+- Every decision and trust score was right in all seven fully live eval runs (84 of 84).
+- The submitted version, v2.0.9, passes 11 of 12 test cases live, with the proof framed right on all 12.
+- An AI judge from a different model family, checked against my own scores, passes 6–7 of v2's 9 test drafts. Plain ChatGPT's 3 drafts pass 3 of 3.
+- On the final round of real jobs, v2 got to a draft I'd send in 6–10 minutes. The judge passed 3 of its 4 drafts and 0 of ChatGPT's 2.
 - It runs from a live link with nothing to install.
 
 ## 1. User and problem
@@ -132,8 +132,10 @@ Every screen shows why: the reason for the decision, the trust score and how man
 | F4 | "API" flagged on a post asking for REST APIs | No plurals; generic words treated as tools | Plural matching, generic-word list |
 | F5 | My honest "this is new for me" was flagged | v2 asked for honesty, then flagged it | Only past-work sentences are checked |
 | F6 | $40–150/hour judged as a $150 total | The model saw "$40 – $150" without "Hourly" | Budget sent in plain words |
-| F7 | Real job: "I did nearly this" from a booking chatbot on an SEO content job | Sharing a tool (n8n) counted as evidence | Open: platform alone won't make "similar" |
-| F8 | Real jobs: "My goal…", "to shipped", a repeated phrase | The claim check checks facts, not wording | Open: a code check plus the automatic retry |
+| F7 | Real job: "I did nearly this" from a booking chatbot on an SEO content job | Sharing a build tool (n8n) counted as evidence | Fixed: build tools aren't evidence; the line names the real project |
+| F8 | Real jobs: "My goal…", "to shipped", a repeated phrase | The claim check checks facts, not wording | Fixed: checked in code and retried |
+| F9 | v2.0.8: drafts restate the post and copy the project's wording | v2.0.7's "cover every deliverable" order | v2.0.9: no repeated requirements; copied proof is flagged, but still happens (T05) |
+| F10 | Real SEO job: "nearly this" for the chatbot again, after an override | The override path skipped the proof rules | Fixed: one labelling function for both paths |
 | E1–E3 | Eval decisions and proof wording flipped between runs | Judgments left to the model | Rules in code, a vote over three checks, an evidence rule |
 
 **Evaluation (12 frozen test cases):**
@@ -158,34 +160,46 @@ Every screen shows why: the reason for the decision, the trust score and how man
 2. Live reruns showed that even a fact can flip, so each fact is asked three times and the majority wins.
 3. "Similar" now needs a specific tool named in both the post and the project. That fixed the vague-post case for good.
 
-**Where I stopped:** one fact, "same records", still flips now and then. I stopped there on purpose. Each live run was failing on a different single fact, so more tuning would only fit the 12 cases. Two failures were the test set's own fault ("0 reviews" expected where the page shows none), and I corrected them openly.
+**Day 5: an outside score.** My rubric scores were an AI first pass that I checked, so they weren't blind. An AI judge from a different model family scored the same drafts. It agreed with me 83–100% per item but was stricter: 6 of 9, where I had 8. I used its written reasons to pick the next fixes:
+
+| Version | Change | Checks, live | Judge |
+| --- | --- | --- | --- |
+| v2.0.6 | Day 4 final | 12 / 12, then 11 / 12 | 6 of 9 |
+| v2.0.7 | Concrete plans, every deliverable, one closing question, wording checks, build tools aren't evidence | 10 / 12 (a new check's false alarm), 12 / 12 once fixed | 5 of 9 |
+| v2.0.8 | The "nearly this" line names the real project, never an invented client | 10 / 12 | 7 of 9 |
+| **v2.0.9** | Each requirement said once; "similar" needs every check to agree; the override uses the proof rules | **11 / 12** | 6 of 9 |
+
+v2.0.7 fixed everything it targeted and still scored worse. The reasons showed why: the old template asked for a client type, so the model invented "a sales team". v2.0.8 fixed that, and v2.0.9 fixed the repetition and a real override bug (F10).
+
+**Where I stopped:** I checked the judge too. Re-scoring the same old drafts changed one verdict in four, so 6 versus 7 of 9 is noise. I stopped at v2.0.9 instead of tuning toward 9 of 9 on twelve cases, and I never edited the frozen test set to get there. The one correction to it was on Day 4: two cases expected "0 reviews" where the page shows none, against the extraction rule, and I logged the fix openly.
 
 **Measured in the fully live runs:**
 
 | | Plain ChatGPT | v1 | v2 |
 | --- | --- | --- | --- |
-| Decisions and trust scores right | No decision step | No decision step | 48 / 48 over 4 runs |
-| Rubric pass | 3 / 3 (T01–T03) | 0 / 5 (agency format) | 8 / 9 by me, 6 / 9 by an AI judge, last run (7 / 9 the two before) |
-| Unsupported or overstated claims | 0 | 5–7 per draft | 0 in 9 drafts last run (2, then 1, before) |
+| Decisions and trust scores right | No decision step | No decision step | 84 / 84 over 7 runs |
+| Rubric pass | 3 / 3 (T01–T03), me and the judge | 0 / 5 (agency format) | AI judge: 6–7 / 9 on v2.0.8–v2.0.9 (6 / 9 on v2.0.6, where I scored 8 / 9) |
+| Unsupported or overstated claims | 0 | 5–7 per draft | 0 in 9 drafts on v2.0.6's last run, by hand (2, then 1, before) |
 | Pipeline time per drafted job | ~30 s per answer | ~3 min per generation | ~1.5–2 min on the free tier, mostly rate-limit waits; a Skip takes seconds |
 | LLM calls | 1 + 3 revisions | Full chain + images | Drafted: 7. Red-flag or below-minimum Skip: 1 |
 | Errors absorbed | — | — | 57 per run, by retries and fallbacks; no case lost |
-| Minutes from the open job to a draft | 7–12 on 3 real jobs, measured; none I'd send | 65–85+ (estimate) | **10 median (7–14)** on 6 real jobs, measured, to a draft I'd send |
-| Same jobs side by side | Laravel audit 12 · marketplace MVP 10 | — | Laravel audit 10 · marketplace MVP 7 |
-| Revision rounds | 3+ | 2–3 | 0–1 (1 on 3 of 6 real jobs) |
+| Minutes from the open job to a draft | 7–12 on 3 real jobs, measured; none I'd send | 65–85+ (estimate) | **6–10, median 8** on the v2.0.8 round, to a draft I'd send (10 median on the earlier v2.0.6 round) |
+| Same jobs side by side | Laravel audit 12 · marketplace MVP 10 | — | Laravel audit 10 · marketplace MVP 7 (v2.0.6 round) |
+| Revision rounds | 3+ | 2–3 | 0–1 |
 
-**Real jobs (Day 5):** seven open jobs, timed by stopwatch. v2 said Apply on four and Skip on three (a healthcare SaaS build, a Figma-only design job, a Laravel code audit). I agreed with one Skip and overrode two to get a draft. Asked to "exaggerate my project", the revision added adjectives but no new facts. On the Guru job the draft left the price for me. Full table in `evals/day4-results.md`, section 7.
+**Real jobs.** Two rounds, each job timed by stopwatch from adding it in v2 to a draft I'd send. Finding the job is timed on its own.
 
-**Judged on the real jobs:** the same AI judge passed 3 of v2's 4 real-job drafts and 0 of ChatGPT's 2. v2's one fail is the Laravel audit, a job v2 had said to Skip. Small sample, one judge; full table in `evals/day4-results.md`, section 7.
+- **Final round (v2.0.8), 6 jobs:** 6–10 minutes per draft, plus 3–5 minutes to find the job. Both work-type Skips (a Laravel code audit, a design-only job) held, and I agreed with them. The marketplace job turned into a Skip because $131–395 can't cover the scope, the same warning ChatGPT gave. The judge passed 3 of 4 drafts. The one fail was the SEO job, the override bug (F10) that v2.0.9 fixes.
+- **Earlier round (v2.0.6), 7 jobs:** 10 minutes median. Asked to "exaggerate my project", the revision added adjectives but no new facts. On a Guru job that asked for a quote, the draft left the price for me to fill in.
+- **Against plain ChatGPT, on 3 of the same jobs:** ChatGPT got to a first draft in 7–12 minutes. It said Apply on both jobs I asked it about, including a healthcare build I'd skip, and I wouldn't have sent any of its three drafts. The judge passed 0 of 2.
 
-**Scored by the AI judge on real jobs:** v2 passed 3 of 4 drafts, and plain ChatGPT 0 of 2 on the same posts. v2's one fail was the Laravel audit (a Skip I overrode), because the client asked for a quote and v2 leaves "[your price and timeline]" for me to fill in.
-
-**Against plain ChatGPT on three of the same jobs:** ChatGPT was quick to a first draft, 7–12 minutes. But it said Apply on both jobs I asked it about, including the healthcare build, and none of its three drafts sounded like me. The honest reading: v2 is only a little faster to a draft. The real difference is that v2's draft is the one I send, and it skips before any writing.
+The honest reading: v2 is only a little faster to a first draft. The difference is that v2's draft is the one I send, and the Skip comes before any writing.
 
 **Limitations:**
-- **The biggest one:** "how close is my past project to this job?" is still the weakest call. The claim check can't catch an overstated "I did nearly this", because the project behind it is real. The vote and the evidence rule bring it down to 0–1 misses per eval run, but a real job still got one (F7): a shared tool was enough.
+- **The biggest one:** "how close is my past project to this job?" is still the weakest call. The claim check can't catch an overstated "I did nearly this", because the project behind it is real. The vote and the evidence rules brought it to 12 of 12 on v2.0.9, but it took four live versions, and the facts under it still split between checks.
 - Vague posts get honest but generic "questions first" drafts (T04 fails the rubric).
-- Wording slips pass the claim check (F8), and the drafts read alike: each opens "Your goal is to…".
+- The model sometimes copies a project's own sentence as the proof (T05 on v2.0.9). The check flags it, but the retry didn't fix it. Drafts also read alike: each opens "Your goal is to…".
+- The judge fails the same 2 of 9 test drafts in every version: the vague post (T04) and the 2,000-word spec (T06).
 - The free tier sets the speed, and sometimes which model answers.
 - Freelancer.com shares no client history through its API, so trust there rests on what the user copies in.
 - The live app forgets on restart, so the sent log has to be downloaded.
@@ -196,6 +210,7 @@ Every screen shows why: the reason for the decision, the trust score and how man
 - **Running it:** open the live link, enter the passphrase. Nothing to install.
 - **Trying it:** the Sample workspace loads a sample freelancer with 3 projects, the 12 test jobs, and sample Freelancer.com jobs for the link and search tabs.
 - **Handing it over:** the README has the 3-step local setup, the operator runbook (what each error means and what to do) and the eval commands.
+- **Reproducing it without me:** `python -m pytest -q` runs all 121 tests with no API keys. `python scripts/run_evals.py --replay` reruns the 12 cases offline from the saved model answers. The README also says exactly what the live link keeps and loses on a restart.
 - **Proxy user:** a computer science student learning Django, with no freelance experience and no project library, ran two real jobs on the live link: an Upwork paste and a Freelancer.com link. It took him about 10 minutes to open the app, pick a job and get a proposal. He needed me twice: to ask what "exclude terms" and "client history" mean. With no projects, both drafts said honestly that the work was new to him. His session led to five changes:
   - "Exclude terms" removed, because it confused him.
   - The search tab explained in plain words.
@@ -217,12 +232,13 @@ Every screen shows why: the reason for the decision, the trust score and how man
 ## 9. Next two weeks
 
 **Week 1: steadier calls, measured on real work**
-- Apply the evidence rule to "same records": the record type has to appear in both the post and the project, and a shared platform alone can't make "similar" (F7).
-- A code check for "My goal…" and repeated phrases, sent to the automatic retry (F8).
+- A steadier "same records" fact. A plain word match would flip T05's frozen answer, so it needs a better test.
+- A rewrite step for a proof that copies its project (T05), since the retry alone doesn't fix it.
+- A better draft for very long specs (T06), which leans on the screening answers today.
 - Move the four fit questions to facts plus rules, the way the proof label already works.
-- A better "questions first" draft for vague posts.
+- A better "questions first" draft for vague posts (T04).
 - Grow the real-job set to 30 jobs, with my call recorded before v2's.
-- Calibrate the AI judge against my hand scores, and use it only on the items where it agrees with me.
+- A blind score from a second person on the same drafts (`scripts/blind_pack.py` is ready), next to the AI judge's.
 
 **Week 2: close the loop with outcomes**
 - Persistent storage, so the live app keeps jobs across restarts, with a workspace per user.

@@ -1,0 +1,35 @@
+{
+ "step": "judge",
+ "provider": "groq",
+ "model": "qwen/qwen3.8-27b",
+ "prompt_version": "v2.0.9",
+ "response": {
+  "items": [
+   {
+    "item": 1,
+    "passed": true,
+    "reason": "The proposal explicitly restates the goal to fix the n8n workflow for 5,000 rows, avoid 429 errors, and include retries and Slack alerts."
+   },
+   {
+    "item": 2,
+    "passed": true,
+    "reason": "It cites specific details from the post: '5,000 rows', '429 Too Many Requests', and the requirement for a 'Slack message'."
+   },
+   {
+    "item": 3,
+    "passed": true,
+    "reason": "The claim about past work ('automated lead intake...') accurately reflects Project P1 in the profile, and no unverified claims are made."
+   },
+   {
+    "item": 4,
+    "passed": true,
+    "reason": "It names concrete first steps: auditing the existing workflow/node configuration and modifying it to split CSV data into smaller chunks or add delays."
+   },
+   {
+    "item": 5,
+    "passed": true,
+    "reason": "It ends with a single, clear question about the Slack webhook setup, which is relevant to the next step."
+   }
+  ]
+ }
+}
